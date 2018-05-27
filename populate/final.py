@@ -8,6 +8,11 @@ import csv
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+ROOT_DIR = os.path.abspath(os.sep)
+#return os.path.abspath(os.sep)
+
+#pass the path for the bitcoin-node data
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks/')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOCK_DIR = os.path.join(BASE_DIR,'populate/csv_files')
 def extract_output_from_blockchain():
@@ -23,7 +28,7 @@ def extract_output_from_blockchain():
     filenames = extract_filenames()
 
     for c, i in enumerate(reversed(filenames)):
-        blockchain = Blockchain(BASE_DIR + '/Bitcoin_data/' + i)
+        blockchain = Blockchain(BLOCK_DATA_DIR + i)
         for block in blockchain.get_unordered_blocks():
             for tx in block.transactions:
                 for no, output in enumerate(tx.outputs):
@@ -40,10 +45,11 @@ def extract_output_from_blockchain():
 def extract_filenames():
     #var = '/home/praful/Bitcoin_data/blocks/'
     file_names_list = []
-    for filename in os.listdir(BASE_DIR + '/Bitcoin_data/'):
+    for filename in os.listdir(BLOCK_DATA_DIR):
         if(filename.startswith('blk') and filename.endswith('.dat')):
             file_names_list.append(filename)
-            #print(filename)
+
+            print(filename)
     return file_names_list
 
 
@@ -61,7 +67,7 @@ def extract_input_from_blockchain():
     print("initiated")
     filenames = extract_filenames()
     for c, i in enumerate(reversed(filenames)):
-        blockchain = Blockchain(BASE_DIR + '/Bitcoin_data/' + i)
+        blockchain = Blockchain(BLOCK_DATA_DIR + i)
         for block in blockchain.get_unordered_blocks():
             for tx in block.transactions:
                 for inputs in tx.inputs:
@@ -102,7 +108,7 @@ def generate_csv():
     else :
 
 
-        with open(BLOCK_DIR + 'output' + '.csv', "wb") as f:
+        with open(BLOCK_DIR + '_output' + '.csv', "wb") as f:
             fieldnames = ['transaction', 'output_no', 'output_type', 'output_value', 'size script', 'address']
             writer = csv.DictWriter(f, dialect='excel',fieldnames = fieldnames)#, encoding='utf-8')
             writer.writeheader()
@@ -121,7 +127,9 @@ def generate_csv():
 
 
 def main():
-    print(BASE_DIR)
+    #print(ROOT_DIR)
+    #print(BLOCK_DATA_DIR)
+    extract_filenames()
     extract_input_from_blockchain()
     generate_csv()
     print(" input files are populated")
