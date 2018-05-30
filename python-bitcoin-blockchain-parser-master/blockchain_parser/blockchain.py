@@ -85,6 +85,7 @@ class Blockchain(object):
         """Yields the blocks contained in the .blk files as is,
         without ordering them according to height.
         """
+        print("running")
         for blk_file in get_files(self.path):
             for raw_block in get_blocks(blk_file):
                 yield Block(raw_block)

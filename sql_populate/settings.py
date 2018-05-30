@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
+SECRET_KEY = '^1&!(h)5o$fky=ub4v0z*ruooe%xc!d%=zcw4+j96fyqu6v1oy'
 
 import os
+#import django
+#django.setup()
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +24,6 @@ BLOCK_DIR = os.path.join(BASE_DIR,'populate/csv_files')
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '^1&!(h)5o$fky=ub4v0z*ruooe%xc!d%=zcw4+j96fyqu6v1oy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,13 +35,17 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'populate',
+    'sql',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'myprojectdb',
         'USER': 'mydbuser',
-        'PASSWORD': 'PASSWORD',
+        'PASSWORD': 'Xperia@12',
         'HOST':'localhost',
         'PORT':'',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
