@@ -81,6 +81,6 @@ folder:
 7. python3 manage.py runserver
 
 
-### Now open browser and type in the url field :  '[127.0.0.0:8000/run]'
+### Now open browser and type in the url field :  '{127.0.0.0:8000/run}'
 
-### You can also check your admin panel by :  '[127.0.0.0:8000/admin]'
+### You can also check your admin panel by :  '{127.0.0.0:8000/admin}'
