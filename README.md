@@ -27,6 +27,8 @@ Run Command :
 
 DO NOT FORGET THE SEMICOLON
 
+TO EXIT THE POSTGRES SHELL
+
 6. \q
 
 7. exit
@@ -37,7 +39,7 @@ After installing the postgres, make changes in the settings.py file of your Djan
 folder:
 
 
-# Look for DATABASES = {}
+## Look for DATABASES = {}
 
 
   DATABASES = {
@@ -61,8 +63,8 @@ folder:
       }
   }
 
-  
-# Make these changes and then follow these steps in order:
+
+## Make these changes and then follow these steps in order:
 
 1. Change your directory to the django project folder from command line.
 
@@ -79,6 +81,6 @@ folder:
 7. python3 manage.py runserver
 
 
- Now open browser and type in the url field : # '127.0.0.0:8000/run'
+### Now open browser and type in the url field :  '127.0.0.0:8000/run'
 
- You can also check your admin panel by : # '127.0.0.0:8000/admin'
+### You can also check your admin panel by :  '127.0.0.0:8000/admin'
