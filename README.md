@@ -39,6 +39,7 @@ folder:
 
 # Look for DATABASES = {}
 
+
   DATABASES = {
 
       'default': {
@@ -59,6 +60,8 @@ folder:
 
       }
   }
+
+  
 # Make these changes and then follow these steps in order:
 
 1. Change your directory to the django project folder from command line.
@@ -76,6 +79,6 @@ folder:
 7. python3 manage.py runserver
 
 
-# Now open browser and type in the url field : '127.0.0.0:8000/run'
+ Now open browser and type in the url field : # '127.0.0.0:8000/run'
 
-# You can also check your admin panel by : '127.0.0.0:8000/admin'
+ You can also check your admin panel by : # '127.0.0.0:8000/admin'
