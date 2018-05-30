@@ -20,7 +20,7 @@ def extract_input_output_main_from_blockchain(request):
     #filenames=['blk00000.dat']
     print("running")
     blockchain = Blockchain(BLOCK_DATA_DIR)
-    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', end=210000):
+    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index',start=0, end=210000):
         for index, tx in enumerate(block.transactions):
             #get_block_header(tx, block)
             get_block(tx, block, index)
@@ -95,20 +95,3 @@ def get_output_table(output, number, tx, add):
             }
     loader_output_table = Output_Table(**record)
     loader_output_table.save()
-
-
-
-
-##########   INITIATILIZING MODEL CLASS VARIABLES FOR DATA LOADING   ################
-'''
-loader_main_table = main_table()
-loader_input_table = input_table()
-loader_output_table = output_table()
-
-
-def main():
-    extract_input_output_main_from_blockchain()
-
-if __name__ == '__main__':
-    main()
-'''
