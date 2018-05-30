@@ -3,6 +3,7 @@
 Block files hex to SQL linked data. Allows fast seek and queries on the blockchain
 
 TO INSTALL POSTGRESS ALONG WITH DJANGO:
+
 1. sudo apt-get update
 
 
@@ -11,7 +12,9 @@ TO INSTALL POSTGRESS ALONG WITH DJANGO:
 
 
 CREATING DATABASE IN POSTGRES:
+
 Run Command :
+
 1. sudo -su postgres
 
 2. psql
