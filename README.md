@@ -63,6 +63,10 @@ folder:
       }
   }
 
+## Change these lines in populate_sql.py in the populate folder
+
+1. Change the path of the BLOCK_DATA_DIR + 'path where your bitcoin_data is stored'
+
 
 ## Make these changes and then follow these steps in order:
 
