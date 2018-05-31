@@ -31,13 +31,15 @@ def extract_input_output_main_from_blockchain(request):
             thread1 = myThread(block)
             thread1.start()
             threads.append(thread1)
-            count_thread = len(threading.enumerate())
-            while count_thread > MAX_NUM_OF_THREAD:
-                # print("threading active_count >>>>>>>>>>>>"+str(count_thread))
-                continue
 
-        for thread in threads:
-            thread.join()
+            for thread in threads:
+                thread.join()
+
+            count_thread = threading.active_count()
+
+            while count_thread > MAX_NUM_OF_THREAD:
+                print("threading active_count >>>>>>>>>>>>"+str(count_thread))
+                continue
 
         return JsonResponse({"res":""}, status=200)
 
@@ -65,7 +67,7 @@ class myThread(threading.Thread):
                 for add in output.addresses:
                     self.get_output_table(output, number, tx, add)
 
-        return None
+        exit()
 
     def get_block(self, block):
         record = {
