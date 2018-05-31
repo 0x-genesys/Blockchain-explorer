@@ -10,8 +10,12 @@ TO INSTALL POSTGRESS ALONG WITH DJANGO:
 2. sudo apt-get install python-pip python-dev libpq-dev postgresql postgresql-contrib
 
 
+### Go into the subdirectory python-bitcoin-blockchain-parser through the command line and run the following command :
 
-CREATING DATABASE IN POSTGRES:
+1. pip3 setup.py install
+
+
+###CREATING DATABASE IN POSTGRES:
 
 Run Command :
 

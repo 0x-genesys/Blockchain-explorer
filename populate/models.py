@@ -19,10 +19,10 @@ class Block_Table(models.Model):
     nonce = models.CharField(max_length=50)
     difficulty = models.IntegerField()
 
-    #def __str__(self):
-    #    return str(self.previous_block_hash)
-    def __unicode__(self):
-        return str(self.block_height)    
+    def __str__(self):
+        return str(self.previous_block_hash)
+    #def __unicode__(self):
+    #    return str(self.block_height)    
 
 class Transaction_Table(models.Model):
     transaction_hash = models.CharField(primary_key=True,max_length=200, null=False)
