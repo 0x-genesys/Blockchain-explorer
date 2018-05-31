@@ -17,16 +17,15 @@ BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Su
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOCK_DIR = os.path.join(BASE_DIR,'populate/csv_files')
 
-MAX_NUM_OF_THREAD = 20
+MAX_NUM_OF_THREAD = 100
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
-
-
 
 def extract_input_output_main_from_blockchain(request):
         
         blockchain = Blockchain(BLOCK_DATA_DIR)
         print("blocks accessed")
         threads = []
+        #blockchain.
         for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index',start=0, end=210000):
             thread1 = myThread(block)
             thread1.start()
@@ -90,7 +89,6 @@ class myThread(threading.Thread):
         loader_block_table = Block_Table(**record)
 
         loader_block_table.save()
-
 
 
     def get_tx_table(self, tx, block):
