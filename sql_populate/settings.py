@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'sql_populate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myprojectdb',
-        'USER': 'mydbuser',
-        'PASSWORD': 'Xperia@12',
+        'NAME': 'bitcoin',
+        'USER': 'karan',
+        'PASSWORD': 'blockwala@123',
         'HOST':'localhost',
-        'PORT':'5432',
+        'PORT':'5432'
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
