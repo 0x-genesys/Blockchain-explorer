@@ -85,10 +85,13 @@ class myThread(threading.Thread):
         }
 
         # print(record)
+        block_object = Block_Table.objects.filter(block_hash=block.hash)
+        if not block_hash:
+            loader_block_table = Block_Table(**record)
+            loader_block_table.save()
+        else:
+            print("Entry is already present")
 
-        loader_block_table = Block_Table(**record)
-
-        loader_block_table.save()
 
 
     def get_tx_table(self, tx, block):
@@ -104,8 +107,13 @@ class myThread(threading.Thread):
                 #'raw_hex':tx.hash,
                 }
         # print(record)
-        loader_main_table = Transaction_Table(**record)
-        loader_main_table.save()
+        tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
+        if not tx_object:
+            loader_main_table = Transaction_Table(**record)
+            loader_main_table.save()
+        else:
+            print("Entry is already present")
+
 
 
     def get_input_table(self, input, tx):
@@ -117,9 +125,12 @@ class myThread(threading.Thread):
                 'input_size': input.size,
                 #'input_hex': input.hex
                 }
-
-        loader_input_table = Input_Table(**record)
-        loader_input_table.save()
+        input_object = Input_Table.objects.filter(input_script= input.script)
+        if not input_object:
+            loader_input_table = Input_Table(**record)
+            loader_input_table.save()
+        else:
+            print("Entry is already present")
 
     def get_output_table(self, output, number, tx, add):
         record = {
@@ -131,16 +142,9 @@ class myThread(threading.Thread):
                     'script':output.script,
                     'address':add.address,
                   }
-
-        loader_output_table = Output_Table(**record)
-        loader_output_table.save()
-
-
-
-
-
-
-
-print("Exiting Thread")
-#return 0
-#def main(request):
+        output_object = Output_Table.objects.filter(address=add.address)
+        if not output_object:
+            loader_output_table = Output_Table(**record)
+            loader_output_table.save()
+        else:
+            print("Entry is already present")
