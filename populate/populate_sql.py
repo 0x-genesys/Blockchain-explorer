@@ -12,16 +12,16 @@ from django.http import JsonResponse
 #pass the path for the bitcoin-node data
 
 ROOT_DIR = os.path.abspath(os.sep)
-# BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
+#BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOCK_DIR = os.path.join(BASE_DIR,'populate/csv_files')
 
-MAX_NUM_OF_THREAD = 100
+MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
 def extract_input_output_main_from_blockchain(request):
-        
+
         blockchain = Blockchain(BLOCK_DATA_DIR)
         print("blocks accessed")
         threads = []

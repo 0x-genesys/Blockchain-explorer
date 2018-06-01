@@ -28,7 +28,7 @@ BLOCK_DIR = os.path.join(BASE_DIR,'populate/csv_files')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.42.91', '127.0.0.1']
 
 
 # Application definition
@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'sql_populate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bitcoin',
-        'USER': 'karan',
-        'PASSWORD': 'blockwala@123',
+        'NAME': 'myprojectdb',
+        'USER': 'mydbuser',
+        'PASSWORD': 'Xperia@12',
         'HOST':'localhost',
         'PORT':'5432'
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
