@@ -1,0 +1,26 @@
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+  <h1> This transaction is contained in Block {{block_height}}</h1>
+
+
+    <table id = bitcoin_data>
+    <tr><td>Transaction Hash :</td> <td> {{transaction_hash}}</td></tr><br>
+    <tr><td>Block Size :</td> <td> {{block_size}}</td></tr><br>
+    <tr><td>Number of Inputs :</td> <td> {{Number_of_inputs}}</td></tr><br>
+    <tr><td>Number of Outputs :</td> <td> {{Number_of_outputs}}</td></tr><br>
+    <tr><td>Locktime :</td> <td> {{locktime}}</td></tr><br>
+    <tr><td>Version :</td> <td> {{version}}</td></tr>
+
+  </table>
+
+</div>
+    {% endblock %}
+
+
+  </body>
+</html>

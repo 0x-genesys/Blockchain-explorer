@@ -1,0 +1,68 @@
+{% extends 'website_api/base.html' %}
+
+{% load staticfiles %}
+  {% block content %}
+      <div class="first" >
+            <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+    <h1>BLOCK  {{block_height}}</h1>
+
+
+
+
+<table id = "bitcoin_data">
+  <tr>  <td>SUMMARY</td> <td> </td>  </tr>
+<tr><td>Block Hash </td> <td> {{block_hash}} </td></tr>
+          <br>
+
+
+          <tr>  <td> Previous Block Hash</td><td><a class="btn-link" href="/search/?q={{previous_block_hash}}">{{previous_block_hash}}</a></td> </tr>
+          <tr> <td>Merkle Root</td> <td>{{merkle_root}}</td> </tr>
+          <tr><td>Number of transactions </td> <td> {{block_no_of_transactions}}</td></tr>
+          <br>
+          <tr><td>Block Size  </td> <td>{{block_size}}</td></tr>
+          <br>
+          <tr><td>Block Height </td> <td> {{block_height}}</td></tr>
+          <br>
+          <tr><td>Block timestamps </td> <td> {{timestamp}}</td></tr>
+          <tr> <td>Difficulty  </td> <td>{{difficulty}}</td> </tr>
+          <tr> <td>Bits  </td> <td>{{bits}}</td> </tr>
+          <tr> <td>Nonce  </td> <td>{{nonce}}</td> </tr>
+
+</table>
+
+</div>
+<div class="container_first">
+
+<table class = "table">
+
+
+<h2>Transactions </h2>
+
+
+
+{% for index_transaction in transactions %}
+Transactions<br>
+
+  <a class="btn-link" href="/searchTransaction/?q={{index_transaction}}"> <li>{{index_transaction}}</li></a>
+  Input addresses<br>
+      {% for index_input in input_addresses %}
+
+      <a href="/searchAddress/?q={{index_input}}"> <li>{{index_input}}</li> </a>
+      {% endfor %}
+
+      Output Addresses<br>
+      {% for index_output in output_addresses %}
+      <a class = "btn-link" href="/searchAddress/?q={{index_output}}"> <li>{{index_output.output_address}}</li></a>
+      {% endfor %}
+
+{% endfor %}
+</table>
+</div>
+
+    {% endblock %}
+
+
+  </body>
+</html>

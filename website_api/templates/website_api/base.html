@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+  </head>
+        {# MEDIUM STYLE EDITOR#}
+              <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+              <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+<body>
+
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+              <nav class="navbar navbar-inverse navbar-static-top">
+                  <div class="container - fluid">
+                    <ul class="nav navbar-nav">
+
+                      {# Django Home Link / Admin Link / Register Link#}
+                      <li><a href = "{% url 'recent_data'%}" class="navbar-brand" >BLOCKWALA</a></li>
+                      <li><a href = "{% url 'recent_data'%}"  >Recent Blocks</a></li>
+                      <li><a class="navbar-brand">WALLET</a></li>
+                      <li><a href= "http://blockwala.io/">SITE</a></li>
+                    <form  action="/search/" method="get">
+                      <input type="text" name="q" placeholder="Block Hash" >
+                      <input type="submit"  value="search">
+                    </form>
+
+                    <form  action="/searchTransaction/" method="get" >
+                      <input type="text" name="q" placeholder='Transaction Hash' >
+                      <input type="submit"  value="search">
+                    </form>
+
+
+                    <form  action="/searchAddress/" method="get" >
+                      <input type="text" name="q" placeholder='Address'>
+                      <input type="submit"  value="search">
+                    </form>
+
+</nav>
+<div class="container">
+{% block content %}
+{% endblock content %}
+</div>
+
+
+              {# Fonts#}
+              <link href="https://fonts.googleapis.com/css?family=Montserrat|Russo+One" rel="stylesheet">
+
+
+              <div class="footer">
+                <p>Blockwala.io</p>
+              </div>
+
+
+  </body>
+</html>

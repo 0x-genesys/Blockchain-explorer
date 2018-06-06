@@ -1,0 +1,38 @@
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<table id = "bitcoin_data">
+
+   <tr>
+   <th>Block Height</th>
+   <th>Block Hash</th>
+   <th>Block Number of Transactions</th>
+   <th>Block Size</th>
+
+   <th>Timestamps</th>
+   </tr>
+<tr>
+  {% for i in output %}
+  <tr>
+    <td>{{i.block_height_list}}</td>
+  <a href="<td>{{i.block_hash_list}}</td>"><td>{{i.block_hash_list}}</td></a>
+    <td>{{i.block_no_of_transactions_list}}</td>
+    <td>{{i.block_size_list}}</td>
+
+    <td>{{i.timestamp_list}}</td>
+  </tr>
+  {% endfor %}
+</tr>
+</table>
+
+<h2>See More? </h2>
+<form action="/recentHundredData/" method="get">
+  <input type="submit" name="button"></button>
+</form>
+{% endblock %}
+  </body>
+</html>

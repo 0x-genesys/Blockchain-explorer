@@ -1,0 +1,54 @@
+
+#bitcoin_data {
+font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+#bitcoin_data td, #bitcoin_data th {
+border: 1px solid #ddd;
+padding: 8px;
+}
+
+#bitcoin_data tr:nth-child(even){background-color: #f2f2f2;}
+
+#bitcoin_data tr:hover {background-color: #ddd;}
+
+#bitcoin_data th {
+padding-top: 12px;
+padding-bottom: 12px;
+text-align: left;
+background-color: #4CAF50;
+color: white;
+}
+#bitcoin_data td {
+  padding-left: 15px;
+  padding-right: 30px;
+  }
+
+.first{
+  width : 1000px;
+  border:5px solid blue;
+  padding : 20px;
+  margin : 100px;
+
+}
+  .container_first{
+
+      width: 600px;
+      border: 2px solid olive;
+      padding: 15px;
+      margin: 25px;
+
+
+  }
+.footer, .push {
+     position: fixed;
+     left: 0;
+     bottom: 0;
+     width: 100%;
+     background-color: black;
+     color: #00FFFF;
+     text-align: center;
+     height: 50px;
+  }

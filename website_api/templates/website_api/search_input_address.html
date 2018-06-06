@@ -1,0 +1,24 @@
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div >
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+      <table id = bitcoin_data>
+
+
+          <tr> <td>Address</td>  <td> {{Address}} </td> </tr>
+
+
+          <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
+          <tr><td>Transaction Index</td> <td>{{transaction_index}}</td></tr><br>
+          <tr><td>Input Script</td> <td>{{input_script}}</td></tr><br>
+          <tr><td>Sequence Number</td> <td>{{input_sequence_number}}</td></tr><br>
+          <tr><td>Size </td> <td>{{input_size}}</td></tr>
+
+      </table>
+
+
+</div>
+
+{% endblock %}

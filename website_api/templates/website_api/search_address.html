@@ -1,0 +1,31 @@
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div>
+
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<table id = bitcoin_data>
+
+
+    <tr> <td>Address</td>  <td> {{Address}} </td> </tr>
+
+
+    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
+    <tr><td>Output Number </td> <td>{{output_no}}</td></tr><br>
+    <tr><td>Output Type </td> <td>{{output_type}}</td></tr><br>
+    <tr><td>Output Value </td> <td>{{output_value}}</td></tr><br>
+    <tr><td>Size </td> <td>{{size}}</td></tr>
+
+</table>
+<h2>Qr code for the address</h2>
+<img src="{{image}}" alt="qr_code" width="100" height="100">
+
+<form class="" action="" method="post">
+  <button type="donate" name="donate">Donate</button>
+  <button type="button" name="button">Request Payment</button>
+</form>
+
+
+</div>
+{% endblock %}
