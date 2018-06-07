@@ -128,12 +128,10 @@ class myThread(threading.Thread):
                     'input_size': input.size,
                     'input_address':index,
                     }
-            input_object = Input_Table.objects.filter(input_address=index).filter(transaction_hash_id=tx.hash)
-            if not input_object:
-                loader_input_table = Input_Table(**record)
-                loader_input_table.save()
-            else:
-                print("Entry is already present")
+
+            loader_input_table = Input_Table(**record)
+            loader_input_table.save()
+
 
 
     def get_output_table(self, output, number, tx, add):
@@ -146,9 +144,6 @@ class myThread(threading.Thread):
                     'script':output.script,
                     'address':add.address,
                   }
-        output_object = Output_Table.objects.filter(address=add.address).filter(transaction_hash_id=tx.hash)
-        if not output_object:
-            loader_output_table = Output_Table(**record)
-            loader_output_table.save()
-        else:
-            print("Entry is already present")
+
+        loader_output_table = Output_Table(**record)
+        loader_output_table.save()
