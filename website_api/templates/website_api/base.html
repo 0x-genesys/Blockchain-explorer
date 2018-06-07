@@ -6,6 +6,7 @@
     <title></title>
 
 
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
         <!-- Optional theme -->
@@ -23,25 +24,26 @@
 
                       {# Django Home Link / Admin Link / Register Link#}
                       <li><a href = "{% url 'recent_data'%}" class="navbar-brand" >BLOCKWALA</a></li>
-                      <li><a href = "{% url 'recent_data'%}"  >Recent Blocks</a></li>
+                      <li><a href = "{% url 'recent_data'%}">Recent Blocks</a></li>
                       <li><a class="navbar-brand">WALLET</a></li>
                       <li><a href= "http://blockwala.io/">SITE</a></li>
-                    <form  action="/search/" method="get">
-                      <input type="text" name="q" placeholder="Block Hash" >
-                      <input type="submit"  value="search">
+                      <nav class="navbar navbar-light bg-light">
+                    <form   class="form-inline" action="/search/" method="get">
+                      <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Block Hash' aria-label="Block Hash">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                    <br>
+                    <form  class="form-inline"  action="/searchTransaction/" method="get" >
+                      <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Transaction' aria-label="Transaction">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
 
-                    <form  action="/searchTransaction/" method="get" >
-                      <input type="text" name="q" placeholder='Transaction Hash' >
-                      <input type="submit"  value="search">
+                    <br>
+                    <form  class="form-inline" action="/searchAddress/" method="get" >
+                      <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Address' aria-label="Address">
+                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
-
-
-                    <form  action="/searchAddress/" method="get" >
-                      <input type="text" name="q" placeholder='Address'>
-                      <input type="submit"  value="search">
-                    </form>
-
+                    </nav>
 </nav>
 <div class="container">
 {% block content %}
@@ -53,9 +55,7 @@
               <link href="https://fonts.googleapis.com/css?family=Montserrat|Russo+One" rel="stylesheet">
 
 
-              <div class="footer">
-                <p>Blockwala.io</p>
-              </div>
+            
 
 
   </body>

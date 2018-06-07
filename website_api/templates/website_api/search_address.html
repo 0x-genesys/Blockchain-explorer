@@ -1,12 +1,15 @@
 {% extends 'website_api/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div>
+<div class="jumbotron jumbotron-fluid">
 
       <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<table id = bitcoin_data>
-
+<table class = "table table-borderless ">
+<tr>
+  <td word-wrap: break-word;
+max-width: 150px; >Summary </td>
+</tr>
 
     <tr> <td>Address</td>  <td> {{Address}} </td> </tr>
 

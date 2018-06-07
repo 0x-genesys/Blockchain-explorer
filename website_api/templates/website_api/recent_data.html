@@ -4,10 +4,14 @@
 
 {% block content %}
 
+    <div class="jumbotron jumbotron-fluid" >
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<table id = "bitcoin_data">
+<table class = "table table-hover ">
 
    <tr>
+
+
+
    <th>Block Height</th>
    <th>Block Hash</th>
    <th>Block Number of Transactions</th>
@@ -15,14 +19,14 @@
 
    <th>Timestamps</th>
    </tr>
+
 <tr>
   {% for i in output %}
   <tr>
     <td>{{i.block_height_list}}</td>
-  <a href="<td>{{i.block_hash_list}}</td>"><td>{{i.block_hash_list}}</td></a>
+    <a href="<td>{{i.block_hash_list}}</td>"><td>{{i.block_hash_list}}</td></a>
     <td>{{i.block_no_of_transactions_list}}</td>
     <td>{{i.block_size_list}}</td>
-
     <td>{{i.timestamp_list}}</td>
   </tr>
   {% endfor %}
@@ -33,6 +37,7 @@
 <form action="/recentHundredData/" method="get">
   <input type="submit" name="button"></button>
 </form>
+</div>
 {% endblock %}
   </body>
 </html>

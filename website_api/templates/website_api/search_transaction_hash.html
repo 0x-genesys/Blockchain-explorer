@@ -1,14 +1,18 @@
 {% extends 'website_api/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div>
+<div class="jumbotron jumbotron-fluid">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
   <h1> This transaction is contained in Block {{block_height}}</h1>
 
 
-    <table id = bitcoin_data>
+    <table class = "table table-borderless">
+      <tr>
+        <td word-wrap: break-word;
+    max-width: 150px; >Summary</td>
+      </tr>
     <tr><td>Transaction Hash :</td> <td> {{transaction_hash}}</td></tr><br>
     <tr><td>Block Size :</td> <td> {{block_size}}</td></tr><br>
     <tr><td>Number of Inputs :</td> <td> {{Number_of_inputs}}</td></tr><br>

@@ -95,9 +95,11 @@ def search_block_hash(request):
         #print(message)
         search_term = Block_Table.objects.filter(block_hash=message)
         transaction_list = []
-        output_address_list = []
-        input_address_list = []
+
         input_address_list_final = []
+        flag = []
+        final_list = []
+        c = 0
         if not search_term:
             print("block not present")
         else:
@@ -107,7 +109,10 @@ def search_block_hash(request):
             transaction_list.append(i.transaction_hash)
             output_address_search_term = Output_Table.objects.filter(transaction_hash_id=i.transaction_hash)
             input_address_search_term = Input_Table.objects.filter(transaction_hash_id=i.transaction_hash)
-
+            flag.append(c)
+            c += 1
+            output_address_list = []
+            input_address_list = []
             # final_list.append(i.transaction_hash)
             # for add in input_address_search_term:
             #     final_list.append(add.address)
@@ -117,13 +122,16 @@ def search_block_hash(request):
                 print("NOT")
             for add in output_address_search_term:
 
-                record_output_address = {'transaction_hash':i.transaction_hash,
-                                         'output_address':add.address,}
-                output_address_list.append(record_output_address)
+
+                output_address_list.append(add.address)
             for add in input_address_search_term:
                 input_address_list.append(add.input_address)
-
-
+            print(output_address_list)
+            record_output_address = {'transaction_hash':i.transaction_hash,
+                                      'output_address':output_address_list,
+                                      'input_address':input_address_list,
+                                      'flag':c}
+            final_list.append(record_output_address)
             # output_address_list.append('0')
             # input_address_list.append('0')
         #print(final)
@@ -143,10 +151,13 @@ def search_block_hash(request):
                                                                 'difficulty':search_term[0].difficulty,
                                                                 'bits':search_term[0].bits,
                                                                 'nonce':search_term[0].nonce,
-                                                                'transactions':transaction_list,
-                                                                'output_addresses':output_address_list,
-                                                                'input_addresses':input_address_list,
+                                                                'final_list':final_list,
                                                                 })
+                                                                # 'transactions':transaction_list,
+                                                                # 'output_addresses':output_address_list,
+                                                                # 'input_addresses':input_address_list,
+                                                                # 'c':c,
+
 
 def search_transaction_hash(request):
     if 'q' in request.GET:

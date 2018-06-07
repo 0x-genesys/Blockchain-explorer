@@ -28,10 +28,19 @@ color: white;
 
 .first{
   width : 1000px;
-  border:5px solid blue;
+  border:1px solid blue;
   padding : 20px;
   margin : 100px;
 
+}
+
+#square1{
+  width:400px;
+  height:500px;
+  background-color:white;
+  margin-top:20px;
+  color:white;
+  padding:10px;
 }
   .container_first{
 
