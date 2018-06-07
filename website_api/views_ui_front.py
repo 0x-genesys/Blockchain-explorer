@@ -5,7 +5,9 @@ from bitcoin_data_app.models import Block_Table, Transaction_Table, Output_Table
 
 from django.urls import reverse_lazy
 import qrcode
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+#import JsonResponse
+import os
 
 def base_view(request):
 
@@ -101,6 +103,7 @@ def search_block_hash(request):
         final_list = []
         c = 0
         if not search_term:
+            return render(request,'website_api/wrong_search.html')
             print("block not present")
         else:
             print("whooo")
@@ -152,6 +155,7 @@ def search_block_hash(request):
                                                                 'bits':search_term[0].bits,
                                                                 'nonce':search_term[0].nonce,
                                                                 'final_list':final_list,
+                                                                'c':c,
                                                                 })
                                                                 # 'transactions':transaction_list,
                                                                 # 'output_addresses':output_address_list,
@@ -165,6 +169,7 @@ def search_transaction_hash(request):
         search_term = Transaction_Table.objects.filter(transaction_hash=message)
         print(message)
         if not search_term:
+            return render(request,'website_api/wrong_search.html')
             print("hash not present")
         else:
             print("present")
@@ -188,16 +193,18 @@ def search_address(request):
         if not output_search_term:
 
             input_search_term = Input_Table.objects.filter(input_address=message)
-            flag = 1
-            print("no output")
+            if not input_search_term:
+                return render(request,'website_api/wrong_search.html')
+            else:
+                flag = 1
+
+            #print("no output")
             search_term = input_search_term
         else:
-            print("no input")
-            flag = 2
+            #print("no input")
+            #flag = 2
             search_term = output_search_term
-        if flag == 0:
-            return JsonResponse({'key':'Sorry your request might not be correct'})
-        else:
+        if flag == 0 or flag == 1:
             qr = qrcode.QRCode(
             version = 1,
             error_correction = qrcode.constants.ERROR_CORRECT_H,
@@ -210,7 +217,8 @@ def search_address(request):
             img.save("/home/praful/bitcoin-sql-migrator/website_api/static/qr_codes/{0}.png".format(message),delimiter=",")
             #response = HttpResponse(content_type="image/png")
             #url.save(response,"PNG")
-            print(search_term)
+            #print(search_term)
+            print(flag)
             url = 'http://localhost:8000/static/'+message+'.png'
             if flag == 1:
                 return render(request, 'website_api/search_input_address.html',{'Address':message,
@@ -219,7 +227,7 @@ def search_address(request):
                                                                                 'input_script':search_term[0].input_script,
                                                                                 'input_sequence_number':search_term[0].input_sequence_number,
                                                                                 'input_size':search_term[0].input_size,
-
+                                                                                'image':url,
                                                                                 })
             else:
                 return render(request, 'website_api/search_address.html',{'Address':message,
@@ -230,3 +238,8 @@ def search_address(request):
                                                                           'size':search_term[0].size,
                                                                           'image':url,
                                                                           })
+
+
+
+def wrong_query(request):
+    return render(request,'website_api/wrong_search.html')

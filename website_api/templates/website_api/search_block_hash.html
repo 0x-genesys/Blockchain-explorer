@@ -44,32 +44,7 @@ max-width: 150px;>Hash</td>
 
 
 
-<script type="text/javascript">
-
-
-var flag = {{flag}}
-var transactions = {{transactions}}
-var output_address = {{output_address_list}}
-var c = {{c}}
-for (i=0;i<c;i++)
-{
-  if(i.output_address.flag == 0)
-
-}
-
-
-
-</script>
-
-
-
-
-
-
-
-
-
-<h2>Transactions </h2>
+<h2>Transactions - {{c}} </h2>
 
 
 
@@ -81,38 +56,40 @@ for (i=0;i<c;i++)
 {% for i in final_list %}
 <table class="table">
 <h2>Transaction</h2>
-<td><a href="/searchTransaction/?q={{i.transaction_hash}}">{{i.transaction_hash}}</a> </td>
-</tr>
-<table class="table">
-
-
 <tr>
-    <td align="right"><h3>Output Address</h3></td>
-    {% for index in i.output_address %}</tr>
+<td> <li> <a href="/searchTransaction/?q={{i.transaction_hash}}">{{i.transaction_hash}}</a></li> </td>
+</tr>
+<tr>
+      <td> <h3>Addresses</h3></td><tr>
 
-      <tr>  <td align="right"> <a class="btn-link" href="/searchAddress/?q={{index}}"> {{index}}</a> </td>
-        </tr>
-    {% endfor %}
+      </tr>
 
-    </table>
+      <td>
+        {% for index_input in i.input_address %}
+            {% if not index_input %}
+                <h3>coinbase</h3>
+            {% endif %}    
+        <ul>
+          <li> <a class="btn-link" href="/searchAddress/?q={{index_input}}"> {{index_input}} </li></a>
+        </ul>
+        {% endfor %}
+      </td>
+<td>-------></td>
 
+      {% for index in i.output_address %}
 
-<table class="table">
-
-
-    <tr>
-      <td> <h3>Input Address</h3></td>
-      {% for index_input in i.input_address %}</tr>
-      <tr> <td><a class="btn-link" href="/searchAddress/?q={{index_input}}"> {{index_input}}</a> </td>
-
-    </tr>
+         <td align="right">
+          <ul>
+            <li><a class="btn-link" href="/searchAddress/?q={{index}}"> {{index}}</a></li>
+          </ul>
+          </td>
       {% endfor %}
-    </table>
+
 
 
 
     </tr>
-  <h3>-------------------------------------------------------------------------------------------------------</h3>
+  <h3>------------------------------------------------------------------------------------------------------------------------------</h3>
 {% endfor %}
 </table>
 </div>

@@ -27,7 +27,8 @@
                       <li><a href = "{% url 'recent_data'%}">Recent Blocks</a></li>
                       <li><a class="navbar-brand">WALLET</a></li>
                       <li><a href= "http://blockwala.io/">SITE</a></li>
-                      <nav class="navbar navbar-light bg-light">
+                    </ul><br><br><br><br>
+                      <ulclass="navbar navbar-light bg-light">
                     <form   class="form-inline" action="/search/" method="get">
                       <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Block Hash' aria-label="Block Hash">
                       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -43,7 +44,8 @@
                       <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Address' aria-label="Address">
                       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
-                    </nav>
+                    <br>
+                  </ul>
 </nav>
 <div class="container">
 {% block content %}
@@ -55,7 +57,7 @@
               <link href="https://fonts.googleapis.com/css?family=Montserrat|Russo+One" rel="stylesheet">
 
 
-            
+
 
 
   </body>

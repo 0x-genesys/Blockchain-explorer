@@ -1,9 +1,10 @@
 {% extends 'website_api/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div >
-      <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+<div class="jumbotron jumbotron-fluid">
+      <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<h1>Address</h1>
       <table class = "table table-borderless">
 
 
@@ -17,6 +18,14 @@
           <tr><td>Size </td> <td>{{input_size}}</td></tr>
 
       </table>
+      <h2>QR code of the Address</h2>
+      <img src="{{image}}" alt="qr_code" width="100" height="100">
+
+      <form class="" action="" method="post">
+        <button class="btn btn-outline-success my-2 my-sm-0"  type="submit"name="button">Donate</button>
+        <button class="btn btn-outline-success my-2 my-sm-0"  type="submit" name="button">Request Payment</button>
+      </form>
+      <br>
 
 
 </div>
