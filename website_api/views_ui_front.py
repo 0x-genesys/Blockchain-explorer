@@ -8,7 +8,7 @@ import qrcode
 from django.http import HttpResponse, JsonResponse
 #import JsonResponse
 import os
-
+import re
 def base_view(request):
 
 
@@ -88,62 +88,73 @@ def recent_hundred_data(request):
         #print(list[i])
     return render(request,'website_api/recent_data.html',{'output':output,
                                                             'range':range(5)})
-
-
-
-def search_block_hash(request):
+def main_search_bar(request):
     if 'q' in request.GET:
         message = request.GET['q']
-        #print(message)
-        search_term = Block_Table.objects.filter(block_hash=message)
-        transaction_list = []
-
-        input_address_list_final = []
-        flag = []
-        final_list = []
-        c = 0
-        if not search_term:
-            return render(request,'website_api/wrong_search.html')
-            print("block not present")
+        pattern_block_hash = re.compile("^[0]{8}[a-zA-Z0-9]{56}$")
+        pattern_transaction_hash = re.compile("^[a-zA-Z0-9]{64}$")
+        pattern_address = re.compile("^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$")
+        if pattern_block_hash.match(message):
+            search_block_hash(message)
+        elif pattern_transaction_hash.match(message):
+            search_transaction_hash(message)
+        elif pattern_address.match(message):
+            searchAddress(message)
         else:
-            print("whooo")
-        transaction_search_term = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
-        for i in transaction_search_term:
-            transaction_list.append(i.transaction_hash)
-            output_address_search_term = Output_Table.objects.filter(transaction_hash_id=i.transaction_hash)
-            input_address_search_term = Input_Table.objects.filter(transaction_hash_id=i.transaction_hash)
-            flag.append(c)
-            c += 1
-            output_address_list = []
-            input_address_list = []
-            # final_list.append(i.transaction_hash)
-            # for add in input_address_search_term:
-            #     final_list.append(add.address)
-            # for add in output_address_search_term:
-            #     final_list.append(add.input_address)
-            if not input_address_search_term:
-                print("NOT")
-            for add in output_address_search_term:
+            return render(request,'website_api/wrong_search.html')
+
+def search_block_hash(request):
+    message = request
+    search_term = Block_Table.objects.filter(block_hash=message)
+    transaction_list = []
+
+    input_address_list_final = []
+    flag = []
+    final_list = []
+    c = 0
+    if not search_term:
+        return render(request,'website_api/wrong_search.html')
+        print("block not present")
+    else:
+        print("whooo")
+    transaction_search_term = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
+    for i in transaction_search_term:
+        transaction_list.append(i.transaction_hash)
+        output_address_search_term = Output_Table.objects.filter(transaction_hash_id=i.transaction_hash)
+        input_address_search_term = Input_Table.objects.filter(transaction_hash_id=i.transaction_hash)
+        flag.append(c)
+        c += 1
+        output_address_list = []
+        input_address_list = []
+        # final_list.append(i.transaction_hash)
+        # for add in input_address_search_term:
+        #     final_list.append(add.address)
+        # for add in output_address_search_term:
+        #     final_list.append(add.input_address)
+        if not input_address_search_term:
+            print("NOT")
+        for add in output_address_search_term:
 
 
-                output_address_list.append(add.address)
-            for add in input_address_search_term:
-                input_address_list.append(add.input_address)
-            print(output_address_list)
-            record_output_address = {'transaction_hash':i.transaction_hash,
-                                      'output_address':output_address_list,
-                                      'input_address':input_address_list,
-                                      'flag':c}
-            final_list.append(record_output_address)
-            # output_address_list.append('0')
-            # input_address_list.append('0')
-        #print(final)
-        # for x in input_address_list:
-        #     a, b = x.split('(')
-        #     final, temp = b.split(',')
-        #     input_address_list_final.append(final)
-        #
-        #print(transaction_list)
+            output_address_list.append(add.address)
+        for add in input_address_search_term:
+            input_address_list.append(add.input_address)
+        print(output_address_list)
+        record_output_address = {'transaction_hash':i.transaction_hash,
+                                  'output_address':output_address_list,
+                                  'input_address':input_address_list,
+                                  'flag':c}
+        final_list.append(record_output_address)
+        # output_address_list.append('0')
+        # input_address_list.append('0')
+    #print(final)
+    # for x in input_address_list:
+    #     a, b = x.split('(')
+    #     final, temp = b.split(',')
+    #     input_address_list_final.append(final)
+    #
+    #print(transaction_list)
+
     return render(request,'website_api/search_block_hash.html',{'block_hash':search_term[0].block_hash,
                                                                 'previous_block_hash':search_term[0].previous_block_hash,
                                                                 'merkle_root':search_term[0].merkle_root,
@@ -157,24 +168,19 @@ def search_block_hash(request):
                                                                 'final_list':final_list,
                                                                 'c':c,
                                                                 })
-                                                                # 'transactions':transaction_list,
-                                                                # 'output_addresses':output_address_list,
-                                                                # 'input_addresses':input_address_list,
-                                                                # 'c':c,
 
 
 def search_transaction_hash(request):
-    if 'q' in request.GET:
-        message = request.GET['q']
-        search_term = Transaction_Table.objects.filter(transaction_hash=message)
-        print(message)
-        if not search_term:
-            return render(request,'website_api/wrong_search.html')
-            print("hash not present")
-        else:
-            print("present")
+    message = request
+    search_term = Transaction_Table.objects.filter(transaction_hash=message)
+    print(message)
+    if not search_term:
+        return render(request,'website_api/wrong_search.html')
+        print("hash not present")
+    else:
+        print("present")
 
-    return render(request, 'website_api/search_transaction_hash.html',{'transaction_hash':search_term[0].transaction_hash,
+    return render(request,'website_api/search_transaction_hash.html',{'transaction_hash':search_term[0].transaction_hash,
                                                                         'block_size':search_term[0].block_size,
                                                                         'Number_of_inputs':search_term[0].V_in,
                                                                         'Number_of_outputs':search_term[0].V_out,

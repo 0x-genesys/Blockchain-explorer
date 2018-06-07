@@ -29,4 +29,6 @@ urlpatterns =[
     url(r'^recentHundredData/$',views_ui_front.recent_hundred_data,name='recent_hundred_data'),
 
     url(r'^wrongQuery/$',views_ui_front.wrong_query,name='wrong_query'),
+
+    url(r'^mainSearch/$',views_ui_front.main_search_bar,name='main_search_bar'),
 ]
