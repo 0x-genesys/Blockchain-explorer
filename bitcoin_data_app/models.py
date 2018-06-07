@@ -45,10 +45,13 @@ class Transaction_Table(models.Model):
 class Input_Table(models.Model):
     transaction_hash = models.ForeignKey('Transaction_Table', blank=True, null=True, on_delete=models.CASCADE)
     transaction_index = models.CharField(max_length=20,null=False)
-    input_script = models.TextField(max_length=400, null=False)
     input_sequence_number = models.CharField(max_length=20, null=False)
     input_size = models.IntegerField(null=False)
-    input_address = models.CharField(max_length=100)
+    input_address = models.CharField(max_length=100, null=True)
+
+    input_script_type = models.TextField(max_length=400, null=True)
+    input_script_value = models.TextField(max_length=400, null=True)
+    input_script_operations = models.TextField(max_length=400, null=True)
 
     def __str__(self):
         return self.input_script
@@ -59,8 +62,11 @@ class Output_Table(models.Model):
     output_type = models.CharField(max_length=20, null=False)
     output_value = models.CharField(max_length=100,null=False)
     size = models.IntegerField(null=False)
-    script = models.CharField(max_length=200, null=False)
     address = models.CharField(max_length=400, null=False)
+
+    output_script_type = models.TextField(max_length=400, null=True)
+    output_script_value = models.TextField(max_length=400, null=True)
+    output_script_operations = models.TextField(max_length=400, null=True)
 
     def __str__(self):
         return self.address

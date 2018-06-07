@@ -11,8 +11,8 @@ from django.http import JsonResponse
 #pass the path for the bitcoin-node data
 
 ROOT_DIR = os.path.abspath(os.sep)
-BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-#BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+# BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOCK_DIR = os.path.join(BASE_DIR,'bitcoin_data_app/csv_files')
 
@@ -57,14 +57,8 @@ class myThread(threading.Thread):
         for index, tx in enumerate(self.block.transactions):
             print("run tx "+str(tx.hash))
             self.get_tx_table(tx, self.block)
-
-            for input in tx.inputs:
-
-                self.get_input_table(input,tx)
-
-            for number,output in enumerate(tx.outputs):
-                for add in output.addresses:
-                    self.get_output_table(output, number, tx, add)
+            self.get_input_table(tx)
+            self.get_output_table(tx)
 
         exit()
 
@@ -117,33 +111,74 @@ class myThread(threading.Thread):
 
 
 
-    def get_input_table(self, input, tx):
+    def get_input_table(self, tx):
         #temp_list = []
-        for index in tx.inputs:
-            record ={
-                    'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
-                    'transaction_index': input.transaction_index,
-                    'input_script': input.script,
-                    'input_sequence_number': input.sequence_number,
-                    'input_size': input.size,
-                    'input_address':index,
-                    }
+        for _input in tx.inputs:
+            record = {
+                        'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                        'transaction_index': _input.transaction_index,
+                        'input_sequence_number': _input.sequence_number,
+                        'input_size': _input.size,
+                        'input_address':None, #todo pointer to object, resolve this
+                        'input_script_type': None,
+                        'input_script_value': _input.script.value,
+                        'input_script_operations': _input.script.operations
+                     }
+
+
+            script_type = None
+
+            if _input.script.is_return is True:
+                script_type = 'return'
+            elif _input.script.is_p2sh is True:
+                script_type = 'p2sh'
+            elif _input.script.is_pubkey is True:
+                script_type = 'pubkey'
+            elif _input.script.is_pubkeyhash is True:
+                script_type = 'pubkeyhash'
+            elif _input.script.is_multisig is True:
+                script_type = 'multisig'
+            elif _input.script.is_unknown is True:
+                script_type = 'unknown'
+
+            record['input_script_type'] = script_type
 
             loader_input_table = Input_Table(**record)
             loader_input_table.save()
 
 
 
-    def get_output_table(self, output, number, tx, add):
-        record = {
-                    'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
-                    'output_no':number,
-                    'output_type':output.type,
-                    'output_value':output.value,
-                    'size':output.size,
-                    'script':output.script,
-                    'address':add.address,
-                  }
+    def get_output_table(self, tx):
+        for number, output in enumerate(tx.outputs):
+            for _address in output.addresses:
+                record = {
+                            'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                            'output_no':number,
+                            'output_type':output.type,
+                            'output_value':output.value,
+                            'size':output.size,
+                            'address':_address.address,
+                            'output_script_type': None,
+                            'output_script_value': output.script.value,
+                            'output_script_operations': output.script.operations
+                          }
 
-        loader_output_table = Output_Table(**record)
-        loader_output_table.save()
+                script_type = None
+                
+                if output.script.is_return is True:
+                    script_type = 'return'
+                elif output.script.is_p2sh is True:
+                    script_type = 'p2sh'
+                elif output.script.is_pubkey is True:
+                    script_type = 'pubkey'
+                elif output.script.is_pubkeyhash is True:
+                    script_type = 'pubkeyhash'
+                elif output.script.is_multisig is True:
+                    script_type = 'multisig'
+                elif output.script.is_unknown is True:
+                    script_type = 'unknown'
+
+                record['output_script_type'] = script_type
+
+                loader_output_table = Output_Table(**record)
+                loader_output_table.save()
