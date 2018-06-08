@@ -1,24 +1,67 @@
 {% extends 'website_api/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="jumbotron jumbotron-fluid">
+
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+<table class="table table-borderless">
+  <tr>
+    <h2>Transaction</h2> <h3> (View information about a bitcoin Transaction)</h3>
+  </tr>
+  <td>{{transaction_hash}}</td>
 
+</table>
+<table class="table table-borderless">
+  <tr>
+    <th>Input</th>
+    <td></td>
+    <td></td>
+    <th align="right">Output</th>
+  </tr>
+
+  <td>
+  {% for index in input_addresses %}
+
+
+    <ul>
+
+      <li> <a href="/searchAddress/?q={{index}}">{{index}}</a> </li>
+
+    </ul>
+
+
+  {% endfor %}
+  </td>
+  <td> <img src='http://localhost:8000/static/arrow.png' alt="arrow"> </td>
+  <td align="right">
+  {% for index in output_addresses %}
+
+
+        <ul>
+          <li> <a href="/searchAddress/?q={{index}}">{{index}}</a> </li>
+        </ul>
+
+
+      {% endfor %}
+      </td>
+</table>
+<div class="jumbotron jumbotron-fluid">
   <h1> Transaction  in Block {{block_height}}</h1>
 
 
     <table class = "table table-borderless">
       <tr>
+
         <td word-wrap: break-word;
     max-width: 150px; >Summary</td>
       </tr>
-    <tr><td>Transaction Hash :</td> <td> {{transaction_hash}}</td></tr><br>
-    <tr><td>Block Size :</td> <td> {{block_size}}</td></tr><br>
+    <tr><td word-wrap: break-word;max-width: 150px;>Block Size :</td> <td> {{block_size}}</td></tr><br>
     <tr><td>Number of Inputs :</td> <td> {{Number_of_inputs}}</td></tr><br>
     <tr><td>Number of Outputs :</td> <td> {{Number_of_outputs}}</td></tr><br>
     <tr><td>Locktime :</td> <td> {{locktime}}</td></tr><br>
     <tr><td>Version :</td> <td> {{version}}</td></tr>
+    <tr><td>Block Height :</td> <td>{{block_height}}</td> </tr>
+    <tr> <td>Coinbase :</td> <td>{{coinbase}}</td> </tr>
 
   </table>
 
