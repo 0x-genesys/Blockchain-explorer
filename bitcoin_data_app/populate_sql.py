@@ -11,8 +11,8 @@ from django.http import JsonResponse
 #pass the path for the bitcoin-node data
 
 ROOT_DIR = os.path.abspath(os.sep)
-# BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
+#BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOCK_DIR = os.path.join(BASE_DIR,'bitcoin_data_app/csv_files')
 
@@ -99,6 +99,7 @@ class myThread(threading.Thread):
                 'V_out':tx.n_outputs,
                 'locktime':tx.locktime,
                 'version':tx.version,
+                'transaction_hash_size':tx.size,
                 #'raw_hex':tx.hash,
                 }
         # print(record)
@@ -158,27 +159,11 @@ class myThread(threading.Thread):
                             'output_value':output.value,
                             'size':output.size,
                             'address':_address.address,
-                            'output_script_type': None,
                             'output_script_value': output.script.value,
                             'output_script_operations': output.script.operations
                           }
 
-                script_type = None
-                
-                if output.script.is_return is True:
-                    script_type = 'return'
-                elif output.script.is_p2sh is True:
-                    script_type = 'p2sh'
-                elif output.script.is_pubkey is True:
-                    script_type = 'pubkey'
-                elif output.script.is_pubkeyhash is True:
-                    script_type = 'pubkeyhash'
-                elif output.script.is_multisig is True:
-                    script_type = 'multisig'
-                elif output.script.is_unknown is True:
-                    script_type = 'unknown'
 
-                record['output_script_type'] = script_type
 
                 loader_output_table = Output_Table(**record)
                 loader_output_table.save()

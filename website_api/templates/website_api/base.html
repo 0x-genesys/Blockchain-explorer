@@ -11,53 +11,98 @@
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
   </head>
         {# MEDIUM STYLE EDITOR#}
-              <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
-              <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+        <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+
 <body>
 
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
               <nav class="navbar navbar-inverse navbar-static-top">
-                  <div class="container - fluid">
+
+                      <a href="#" class="pull-left animated bounce infinite"> <img src="http://localhost:8000/static/logo.png" alt="logo" height="150" width="250"></a>
+
                     <ul class="nav navbar-nav">
 
-                      {# Django Home Link / Admin Link / Register Link#}
-                      <li><a href = "{% url 'recent_data'%}" class="navbar-brand" >BLOCKWALA</a></li>
-                      <li><a href = "{% url 'recent_data'%}">Recent Blocks</a></li>
-                      <li><a class="navbar-brand">WALLET</a></li>
-                      <li><a href= "http://blockwala.io/">SITE</a></li>
-                    </ul><br><br><br><br>
-                      <ulclass="navbar navbar-light bg-light">
-                    <form   class="form-inline" action="/search/" method="get">
-                      <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Block Hash' aria-label="Block Hash">
-                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                    <br>
-                    <form  class="form-inline"  action="/searchTransaction/" method="get" >
-                      <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Transaction' aria-label="Transaction">
-                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
+                      <li ><a href = "{% url 'recent_data'%}" class="navbar-brand" >BLOCKWALA Explorer</a></li>
+                      <li class="dropdown">
+                        <a class = "dropdown-toggle" data-toggle="dropdown" href="#">Recent Blocks
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li> <a href="{% url 'recent_data' %}">Recent 5 Blocks</a> </li>
+                          <li> <a href="{% url 'recent_hundred_data' %}">Recent 100 Blocks</a> </li>
 
-                    <br>
-                    <form  class="form-inline" action="/searchAddress/" method="get" >
-                      <input  class="form-control mr-sm-2" type="text" name="q" placeholder='Address' aria-label="Address">
-                      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                    </form>
-                    <br>
-                  </ul>
+                        </ul>
+                      </li>
+                      <li><a class="navbar-brand">WALLET</a></li>
+                    <li><a href= "http://blockwala.io/">SITE</a></li>
+
+                    <form action="/mainSearch/" class="search-form" method="get">
+                <div class="form-group has-feedback">
+            		<label align="right" for="search" class="sr-only">Search</label>
+            		<input type="text" class="form-control" name="q"  placeholder="Block Hash, Transaction Hash, Address, Block Height">
+              		<span class="glyphicon glyphicon-search form-control-feedback"></span>
+            	</div>
+            </form>
+
+
+
+                </ul>
 </nav>
 <div class="container">
 {% block content %}
 {% endblock content %}
 </div>
-
-
-              {# Fonts#}
-              <link href="https://fonts.googleapis.com/css?family=Montserrat|Russo+One" rel="stylesheet">
-
-
-
+<div class="content">
+</div>
+    <footer id="myFooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="#">Company Information</a></li>
+                        <li><a href="#">Contact us</a></li>
+                        <li><a href="#">Reviews</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3 info">
+                    <h5>Information</h5>
+                    <p> Blockwala.io aims to be a leading provider of blockchain services, offering scalable solutions for businesses of all sizes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="second-bar">
+           <div class="container">
+                <h2 class="logo" align="center"><a href="#"> © Blockwala 2018</a></h2>
+                <div class="social-icons">
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
   </body>

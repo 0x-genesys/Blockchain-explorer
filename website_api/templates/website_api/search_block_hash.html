@@ -2,99 +2,100 @@
 
 {% load staticfiles %}
   {% block content %}
-      <div class="jumbotron jumbotron-fluid" >
             <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
-    <h1>BLOCK  {{block_height}}</h1>
+  <h1>&nbsp;&nbsp;BLOCK  #{{block_height}}</h1>
+
+  <div class="col-md-6 col-sm-6">
+
+<table class = "table table-responsive">
+  <tbody>
+
+  <tr class="active">  <td>SUMMARY</td> <td> </td>  </tr>
 
 
+          <tr class="info"><td  word-wrap: break-word;
+      max-width: 150px; >Block Height </td> <td> {{block_height}}</td></tr>
+          <tr class="warning"> <td >Block timestamps </td> <td> {{timestamp}}</td></tr>
+          <tr class="danger"> <td >Difficulty  </td> <td>{{difficulty}}</td></tr>
+          <tr class="success"><td>Number of transactions </td> <td> {{block_no_of_transactions}}</td></tr>
+          <tr class="active"><td >Block Size  </td> <td>{{block_size}}</td></tr>
+          <tr class="active"> <td >Bits  </td> <td>{{bits}}</td></tr>
+          <tr class="warning"> <td >Nonce  </td> <td>{{nonce}}</td></tr>
 
-
-<table class = "table table-borderless" style="display: inline-block; border: 1px solid; float: left; " >
-  <tr>  <td>SUMMARY</td> <td> </td>  </tr>
-
-          <tr><td word-wrap: break-word;
-      max-width: 150px;>Number of transactions </td> <td> {{block_no_of_transactions}}</td></tr>
-          <br>
-          <tr><td>Block Size  </td> <td>{{block_size}}</td></tr></div>
-          <br>
-          <tr><td>Block Height </td> <td> {{block_height}}</td></tr>
-          <br>
-          <tr><td>Block timestamps </td> <td> {{timestamp}}</td></tr>
-          <tr> <td>Difficulty  </td> <td>{{difficulty}}</td> </tr>
-          <tr> <td>Bits  </td> <td>{{bits}}</td> </tr>
-          <tr> <td>Nonce  </td> <td>{{nonce}}</td> </tr>
-
+          </tbody>
 </table>
+</div>
 
-<table class="table table-borderless" style="display: inline-block; border: 1px solid; ">
-  <tr>
-    <td word-wrap: break-word;
-max-width: 150px;>Hash</td>
-  </tr>
-  <tr><td>Block Hash </td> <td> {{block_hash}} </td></tr>
-            <br>
+<div class="col-md-6 col-sm-6">
+  <table class="table table-responsive">
+    <tbody>
+      <tr class="active"><td>Hash</td> <td></td>
+      </tr>
+      <tr  class="active">
+      <td>Block Hash </td> <td> {{block_hash}} </td>
+      </tr>
+      <tr  class="active">
 
-
-            <tr>  <td> Previous Block Hash</td><td><a class="btn-link" href="/search/?q={{previous_block_hash}}">{{previous_block_hash}}</a></td> </tr>
-            <tr> <td>Merkle Root</td> <td>{{merkle_root}}</td> </tr>
-</table>
+      <td> Previous Block Hash</td><td><a class="btn-link" href="/search/?q={{previous_block_hash}}">{{previous_block_hash}}</a></td>
+        </tr>
+        <tr  class="active">
+       <td>Merkle Root</td> <td>{{merkle_root}}</td>
+       </tr>
+    </tbody>
+  </table>
+<br><br><br><br>
 </div>
 
 
 
-<h2>Transactions - {{c}} </h2>
 
 
-
-
-  <div class="jumbotron jumbotron-fluid">
-
-
-
+<h2>  &nbsp;&nbsp;&nbsp;<u>Transactions - {{c}} </u> </h2>
+<br>
 {% for i in final_list %}
-<table class="table">
-<h2>Transaction</h2>
+
+<div class="blockContainer">
+<table class="table table-border">
+<h3>&nbsp;&nbsp;&nbsp;Transaction</h3>
 <tr>
-<td> <li> <a href="/searchTransaction/?q={{i.transaction_hash}}">{{i.transaction_hash}}</a></li> </td>
+<td class="active"> <li> <a href="/searchTransaction/?q={{i.transaction_hash}}">{{i.transaction_hash}}</a></li> </td>
 </tr>
 <tr>
       <td> <h3>Addresses</h3></td><tr>
-
       </tr>
+        <td>
+        {% if not input_addresses %}
+            <h3>coinbase</h3>
 
-      <td>
-        {% for index_input in i.input_address %}
-            {% if not index_input %}
-                <h3>coinbase</h3>
-            {% endif %}    
-        <ul>
-          <li> <a class="btn-link" href="/searchAddress/?q={{index_input}}"> {{index_input}} </li></a>
-        </ul>
-        {% endfor %}
+            {% for index_input in i.input_address %}
+              <ul>
+                  <li> <a class="btn-link" href="/searchAddress/?q={{index_input}}"> {{index_input}} </li></a>
+              </ul>
+
+            {% endfor %}
       </td>
-<td>-------></td>
-
-      {% for index in i.output_address %}
-
-         <td align="right">
-          <ul>
-            <li><a class="btn-link" href="/searchAddress/?q={{index}}"> {{index}}</a></li>
-          </ul>
-          </td>
-      {% endfor %}
-
-
-
-
+        {% endif %}
+<td> <img src='http://localhost:8000/static/arrow.png' alt="arrow" width="25" height="25"> </td>
+            {% for index in i.output_address %}
+              <td align="right">
+                <ul>
+                  <li><a class="btn-link" href="/searchAddress/?q={{index}}"> {{index}}</a></li>
+                </ul>
+              </td>
+            {% endfor %}
     </tr>
+
   <h3>------------------------------------------------------------------------------------------------------------------------------</h3>
-{% endfor %}
 </table>
 </div>
+<br>
+{% endfor %}
 
-    {% endblock %}
+
+
+{% endblock %}
 
 
   </body>

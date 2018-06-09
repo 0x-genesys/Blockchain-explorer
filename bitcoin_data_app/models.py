@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-
+from django.contrib.postgres.indexes import GinIndex
+#import djngo.contrib.postgres.search as pg_search
 class Block_Table(models.Model):
     block_hash = models.CharField(max_length=200)
     block_header = models.CharField(max_length=200)
@@ -34,6 +35,7 @@ class Transaction_Table(models.Model):
     V_out = models.IntegerField(default=0)
     locktime = models.IntegerField( null=False)
     version = models.CharField(max_length=10)
+    transaction_hash_size = models.IntegerField(default=0)
 
 
     def __str__(self):
@@ -64,7 +66,7 @@ class Output_Table(models.Model):
     size = models.IntegerField(null=False)
     address = models.CharField(max_length=400, null=False)
 
-    output_script_type = models.TextField(max_length=400, null=True)
+    #output_script_type = models.TextField(max_length=400, null=True)
     output_script_value = models.TextField(max_length=400, null=True)
     output_script_operations = models.TextField(max_length=400, null=True)
 

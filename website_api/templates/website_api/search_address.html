@@ -1,24 +1,21 @@
 {% extends 'website_api/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="jumbotron jumbotron-fluid">
+<div class="container_second">
 
       <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <h1>Address</h1>
 <table class = "table table-borderless ">
-<tr>
-  <td word-wrap: break-word;
-max-width: 150px; >Summary </td>
+<tr  word-wrap: break-word;max-width: 150px; >
+  <td>Summary </td>
 </tr>
 
-    <tr> <td>Address</td>  <td> {{Address}} </td> </tr>
-
-
-    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
-    <tr><td>Output Number </td> <td>{{output_no}}</td></tr><br>
-    <tr><td>Output Type </td> <td>{{output_type}}</td></tr><br>
-    <tr><td>Output Value </td> <td>{{output_value}}</td></tr><br>
-    <tr><td>Size </td> <td>{{size}}</td></tr>
+    <tr class="success"> <td>Address</td>  <td> {{Address}} </td> </tr>
+    <tr class="active"><td>Transaction Hash </td> <td><a class="btn-link" href="/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
+    <tr class="info"><td>Output Number </td> <td>{{output_no}}</td></tr><br>
+    <tr class="warning"><td>Output Type </td> <td>{{output_type}}</td></tr><br>
+    <tr class="danger"><td>Output Value </td> <td>{{output_value}}</td></tr><br>
+    <tr class="success"><td>Size </td> <td>{{size}}</td></tr>
 
 </table>
 <h2>Qr code for the address</h2>

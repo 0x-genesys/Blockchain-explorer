@@ -27,6 +27,8 @@ urlpatterns =[
 
     url(r'^searchAddress/$',views_ui_front.search_address,name='search_address'),
     url(r'^recentHundredData/$',views_ui_front.recent_hundred_data,name='recent_hundred_data'),
-
+    url(r'^searchBlockHeight/$',views_ui_front.search_block_height,name='search_block_height'),
     url(r'^wrongQuery/$',views_ui_front.wrong_query,name='wrong_query'),
+
+    url(r'^mainSearch/$',views_ui_front.main_search_bar,name='main_search_bar'),
 ]

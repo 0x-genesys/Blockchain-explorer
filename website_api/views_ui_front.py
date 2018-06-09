@@ -2,13 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render,get_object_or_404,redirect
 from bitcoin_data_app.models import Block_Table, Transaction_Table, Output_Table, Input_Table
-
-from django.urls import reverse_lazy
+from django.shortcuts import render_to_response
+from django.urls import reverse_lazy, reverse
 import qrcode
-from django.http import HttpResponse, JsonResponse
+# from django.core.urlresolvers import reverse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 #import JsonResponse
 import os
-
+import re
 def base_view(request):
 
 
@@ -56,45 +57,47 @@ def recent_data(request):
                                                                 'range':range(5)})
 
 def recent_hundred_data(request):
-    display_object = Block_Table.objects.all().order_by('timestamp')[:100]
-    block_hash_list = []
-    block_header_list = []
-    block_no_of_transactions_list = []
-    block_size_list = []
-    block_height_list = []
-    timestamp_list = []
+    if 'q' in request.GET:
+        message = request.GET['q']
+        print(message)
+        display_object = Block_Table.objects.all().order_by('timestamp')[:100]
+        block_hash_list = []
+        block_header_list = []
+        block_no_of_transactions_list = []
+        block_size_list = []
+        block_height_list = []
+        timestamp_list = []
 
-    output = []
+        output = []
 
-    for i in range(0,100):
-        block_hash_list.append(display_object[i].block_hash)
-        block_header_list.append(display_object[i].block_header)
-        block_no_of_transactions_list.append(display_object[i].block_no_of_transactions)
-        block_size_list.append(display_object[i].block_size)
-        block_height_list.append(display_object[i].block_height)
-        timestamp_list.append(display_object[i].timestamp)
-        record = {'block_hash_list':display_object[i].block_hash,
-                                                    'block_header_list':display_object[i].block_header,
-                                                    'block_no_of_transactions_list':display_object[i].block_no_of_transactions,
-                                                    'block_size_list':display_object[i].block_size,
-                                                    'block_height_list':display_object[i].block_height,
-                                                    'timestamp_list':display_object[i].timestamp,
-                                                    }
-        output.append(record)
+        for i in range(0,100):
+            block_hash_list.append(display_object[i].block_hash)
+            block_header_list.append(display_object[i].block_header)
+            block_no_of_transactions_list.append(display_object[i].block_no_of_transactions)
+            block_size_list.append(display_object[i].block_size)
+            block_height_list.append(display_object[i].block_height)
+            timestamp_list.append(display_object[i].timestamp)
+            record = {'block_hash_list':display_object[i].block_hash,
+                                                        'block_header_list':display_object[i].block_header,
+                                                        'block_no_of_transactions_list':display_object[i].block_no_of_transactions,
+                                                        'block_size_list':display_object[i].block_size,
+                                                        'block_height_list':display_object[i].block_height,
+                                                        'timestamp_list':display_object[i].timestamp,
+                                                        }
+            output.append(record)
 
-    record = {}
+        record = {}
 
-    print(record)
-        #print(list[i])
-    return render(request,'website_api/recent_data.html',{'output':output,
-                                                            'range':range(5)})
-
+        print(record)
+            #print(list[i])
+        return render(request,'website_api/recent_data.html',{'output':output,
+                                                                'range':range(5)})
 
 
 def search_block_hash(request):
     if 'q' in request.GET:
         message = request.GET['q']
-        #print(message)
+        #message = request
         search_term = Block_Table.objects.filter(block_hash=message)
         transaction_list = []
 
@@ -123,18 +126,20 @@ def search_block_hash(request):
             #     final_list.append(add.input_address)
             if not input_address_search_term:
                 print("NOT")
-            for add in output_address_search_term:
+            if output_address_search_term:
 
-
-                output_address_list.append(add.address)
-            for add in input_address_search_term:
-                input_address_list.append(add.input_address)
+                for add in output_address_search_term:
+                    output_address_list.append(add.address)
+            if input_address_search_term:
+                for add in input_address_search_term:
+                    input_address_list.append(add.input_address)
             print(output_address_list)
             record_output_address = {'transaction_hash':i.transaction_hash,
                                       'output_address':output_address_list,
                                       'input_address':input_address_list,
                                       'flag':c}
             final_list.append(record_output_address)
+
             # output_address_list.append('0')
             # input_address_list.append('0')
         #print(final)
@@ -144,28 +149,26 @@ def search_block_hash(request):
         #     input_address_list_final.append(final)
         #
         #print(transaction_list)
-    return render(request,'website_api/search_block_hash.html',{'block_hash':search_term[0].block_hash,
-                                                                'previous_block_hash':search_term[0].previous_block_hash,
-                                                                'merkle_root':search_term[0].merkle_root,
-                                                                'block_no_of_transactions':search_term[0].block_no_of_transactions,
-                                                                'block_size':search_term[0].block_size,
-                                                                'block_height':search_term[0].block_height,
-                                                                'timestamp':search_term[0].timestamp,
-                                                                'difficulty':search_term[0].difficulty,
-                                                                'bits':search_term[0].bits,
-                                                                'nonce':search_term[0].nonce,
-                                                                'final_list':final_list,
-                                                                'c':c,
-                                                                })
-                                                                # 'transactions':transaction_list,
-                                                                # 'output_addresses':output_address_list,
-                                                                # 'input_addresses':input_address_list,
-                                                                # 'c':c,
-
+        print("here in function")
+        return render(request,'website_api/search_block_hash.html',{'block_hash':search_term[0].block_hash,
+                                                                    'previous_block_hash':search_term[0].previous_block_hash,
+                                                                    'merkle_root':search_term[0].merkle_root,
+                                                                    'block_no_of_transactions':search_term[0].block_no_of_transactions,
+                                                                    'block_size':search_term[0].block_size,
+                                                                    'block_height':search_term[0].block_height,
+                                                                    'timestamp':search_term[0].timestamp,
+                                                                    'difficulty':search_term[0].difficulty,
+                                                                    'bits':search_term[0].bits,
+                                                                    'nonce':search_term[0].nonce,
+                                                                    'final_list':final_list,
+                                                                    'c':c,})
 
 def search_transaction_hash(request):
     if 'q' in request.GET:
         message = request.GET['q']
+        #message = request
+        output_address_list = []
+        input_address_list = []
         search_term = Transaction_Table.objects.filter(transaction_hash=message)
         print(message)
         if not search_term:
@@ -173,71 +176,131 @@ def search_transaction_hash(request):
             print("hash not present")
         else:
             print("present")
+        output_search_term = Output_Table.objects.filter(transaction_hash_id=message)
+        input_search_term = Input_Table.objects.filter(transaction_hash_id=message)
+        for add in output_search_term:
+            output_address_list.append(add)
+        #input_address_list = ['qwertyuiop','asdfghjkl','zxcvbnm','7415852963']
+        output_address_list.append('lazwsxedcrfv')
+        print("here it is = ")
+        print(search_term[0].transaction_hash_size)
+        return render(request,'website_api/search_transaction_hash.html',{'transaction_hash':search_term[0].transaction_hash,
+                                                                            'block_size':search_term[0].block_size,
+                                                                            'Number_of_inputs':search_term[0].V_in,
+                                                                            'Number_of_outputs':search_term[0].V_out,
+                                                                            'locktime':search_term[0].locktime,
+                                                                            'version':search_term[0].version,
+                                                                            'block_height':search_term[0].block_height,
+                                                                            'coinbase':search_term[0].is_CoinBase,
+                                                                            'output_addresses':output_address_list,
+                                                                            'input_addresses':input_address_list,
+                                                                            'transaction_hash_size':search_term[0].transaction_hash_size,
+                                                                            'output_script':output_search_term[0].output_script_value,
+                                                                            })
 
-    return render(request, 'website_api/search_transaction_hash.html',{'transaction_hash':search_term[0].transaction_hash,
-                                                                        'block_size':search_term[0].block_size,
-                                                                        'Number_of_inputs':search_term[0].V_in,
-                                                                        'Number_of_outputs':search_term[0].V_out,
-                                                                        'locktime':search_term[0].locktime,
-                                                                        'version':search_term[0].version,
-                                                                        'block_height':search_term[0].block_height,
-                                                                        })
+
+def main_search_bar(request):
+    if 'q' in request.GET:
+        message = request.GET['q']
+        pattern_block_hash = re.compile("^[0]{8}[a-zA-Z0-9]{56}$")
+        pattern_transaction_hash = re.compile("^[a-zA-Z0-9]{64}$")
+        pattern_address = re.compile("^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$")
+        pattern_height = re.compile("^[+]?\d+$")
+        if pattern_block_hash.match(message):
+            print("block")
+            return redirect('/search/?q='+message)
+        elif pattern_transaction_hash.match(message):
+            print("transaction")
+            return redirect('/searchTransaction/?q='+message)
+        elif pattern_address.match(message):
+            print(message)
+            print("TRUE")
+            #return redirect(search_address,message)
+            return redirect('/searchAddress/?q='+message)
+            #return render(message,'website_api/search_address.html',{'request':message})
+            #return search_address(message)
+            #return HttpResponseRedirect(reverse('search_address',args=(message)))
+            #return HttpResponseRedirect(reverse('website_api:search_address',args=(message)))
+        elif pattern_height.match(message):
+            return redirect('/searchBlockHeight/?q='+message)
+        else:
+            return render(request,'website_api/wrong_search.html')
+
 
 
 def search_address(request):
+     if 'q' in request.GET:
+         message = request.GET['q']
+         flag = 0
+         #print("it's cominnngggg")
+         #print(var)
+
+
+         #print(message)
+         #print("here too")
+         output_search_term = Output_Table.objects.filter(address=message)
+         if not output_search_term:
+
+             input_search_term = Input_Table.objects.filter(input_address=message)
+             if not input_search_term:
+                 return render(request,'website_api/wrong_search.html')
+             else:
+                 flag = 1
+
+             #print("no output")
+             search_term = input_search_term
+         else:
+             #print("no input")
+             #flag = 2
+             search_term = output_search_term
+         if flag == 0 or flag == 1:
+             qr = qrcode.QRCode(
+             version = 1,
+             error_correction = qrcode.constants.ERROR_CORRECT_H,
+             box_size = 10,
+             border = 4,
+             )
+             qr.add_data(message)
+             qr.make(fit=True)
+             img = qr.make_image()
+             img.save("/home/praful/bitcoin-sql-migrator/website_api/static/qr_codes/{0}.png".format(message),delimiter=",")
+             #response = HttpResponse(content_type="image/png")
+             #url.save(response,"PNG")
+             #print(search_term)
+             print(flag)
+             url = 'http://localhost:8000/static/'+message+'.png'
+             if flag == 1:
+                 return render(request, 'website_api/search_input_address.html',{'Address':message,
+                                                                                 'transaction_hash':search_term[0].transaction_hash,
+                                                                                 'transaction_index':search_term[0].transaction_index,
+                                                                                 'input_script':search_term[0].input_script,
+                                                                                 'input_sequence_number':search_term[0].input_sequence_number,
+                                                                                 'input_size':search_term[0].input_size,
+                                                                                 'image':url,
+                                                                                 })
+             else:
+                 return render(request, 'website_api/search_address.html',{'Address':message,
+                                                                           'transaction_hash':search_term[0].transaction_hash,
+                                                                           'output_no':search_term[0].output_no,
+                                                                           'output_type':search_term[0].output_type,
+                                                                           'output_value':search_term[0].output_value,
+                                                                           'size':search_term[0].size,
+                                                                           'image':url,
+                                                                           })
+
+
+
+def search_block_height(request):
     if 'q' in request.GET:
         message = request.GET['q']
-        flag = 0
-
-        output_search_term = Output_Table.objects.filter(address=message)
-        if not output_search_term:
-
-            input_search_term = Input_Table.objects.filter(input_address=message)
-            if not input_search_term:
-                return render(request,'website_api/wrong_search.html')
-            else:
-                flag = 1
-
-            #print("no output")
-            search_term = input_search_term
+        print("anything")
+        print(message)
+        block_search_term = Block_Table.objects.filter(block_height=message)
+        if not block_search_term:
+            return render(request,'website_api/wrong_search.html')
         else:
-            #print("no input")
-            #flag = 2
-            search_term = output_search_term
-        if flag == 0 or flag == 1:
-            qr = qrcode.QRCode(
-            version = 1,
-            error_correction = qrcode.constants.ERROR_CORRECT_H,
-            box_size = 10,
-            border = 4,
-            )
-            qr.add_data(message)
-            qr.make(fit=True)
-            img = qr.make_image()
-            img.save("/home/praful/bitcoin-sql-migrator/website_api/static/qr_codes/{0}.png".format(message),delimiter=",")
-            #response = HttpResponse(content_type="image/png")
-            #url.save(response,"PNG")
-            #print(search_term)
-            print(flag)
-            url = 'http://localhost:8000/static/'+message+'.png'
-            if flag == 1:
-                return render(request, 'website_api/search_input_address.html',{'Address':message,
-                                                                                'transaction_hash':search_term[0].transaction_hash,
-                                                                                'transaction_index':search_term[0].transaction_index,
-                                                                                'input_script':search_term[0].input_script,
-                                                                                'input_sequence_number':search_term[0].input_sequence_number,
-                                                                                'input_size':search_term[0].input_size,
-                                                                                'image':url,
-                                                                                })
-            else:
-                return render(request, 'website_api/search_address.html',{'Address':message,
-                                                                          'transaction_hash':search_term[0].transaction_hash,
-                                                                          'output_no':search_term[0].output_no,
-                                                                          'output_type':search_term[0].output_type,
-                                                                          'output_value':search_term[0].output_value,
-                                                                          'size':search_term[0].size,
-                                                                          'image':url,
-                                                                          })
+            return redirect('/search/?q='+block_search_term[0].block_hash)
+
 
 
 

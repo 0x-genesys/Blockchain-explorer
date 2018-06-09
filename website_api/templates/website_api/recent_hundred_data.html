@@ -5,8 +5,9 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
+<div class="container_second">
 
-<table id = "bitcoin_data">
+<table class="table table-responsive">
 
    <tr>
    <th>Block Height</th>
@@ -19,8 +20,8 @@
 <tr>
   {% for i in output %}
   <tr>
-    <td>{{i.block_height_list}}</td>
-  <a href="<td>{{i.block_hash_list}}</td>"><td>{{i.block_hash_list}}</td></a>
+    <td> <a class="btn-link" href="/searchBlockHeight/?q={{i.block_height_list}}">{{i.block_height_list}}</a></td>
+    <td><a class="btn-link" href="/search/?q={{i.block_hash_list}}">{{i.block_hash_list}}</a></td>
     <td>{{i.block_no_of_transactions_list}}</td>
     <td>{{i.block_size_list}}</td>
 
@@ -29,6 +30,8 @@
   {% endfor %}
 </tr>
 </table>
+
+</div>
 {% endblock %}
   </body>
 </html>

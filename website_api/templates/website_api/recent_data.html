@@ -4,14 +4,12 @@
 
 {% block content %}
 
-    <div class="jumbotron jumbotron-fluid" >
+
+<div class="container_second" >
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <table class = "table table-hover ">
 
    <tr>
-
-
-
    <th>Block Height</th>
    <th>Block Hash</th>
    <th>Block Number of Transactions</th>
@@ -23,8 +21,8 @@
 <tr>
   {% for i in output %}
   <tr>
-    <td>{{i.block_height_list}}</td>
-    <a href="<td>{{i.block_hash_list}}</td>"><td>{{i.block_hash_list}}</td></a>
+    <td> <a class="btn-link" href="/searchBlockHeight/?q={{i.block_height_list}}">{{i.block_height_list}}</a></td>
+    <td><a class="btn-link" href="/search/?q={{i.block_hash_list}}">{{i.block_hash_list}}</a></td>
     <td>{{i.block_no_of_transactions_list}}</td>
     <td>{{i.block_size_list}}</td>
     <td>{{i.timestamp_list}}</td>
@@ -33,10 +31,28 @@
 </tr>
 </table>
 
-<h2>See More? </h2>
-<form action="/recentHundredData/" method="get">
-  <input type="submit" name="button"></button>
-</form>
+<script type="text/javascript">
+
+               function countAndSend() {
+            countClicks++;
+               }
+
+               var countClicks = 0;
+
+               function upCount() {
+           alert(countClicks);
+               }
+
+</script>
+
+
+<h2>Next 100? </h2>
+<form class="search-form" action="/recentHundredData/" method="get">
+  <button class="btn btn-outline-success my-2 my-sm-0" class="form-control"  type="submit" name="q" value=countClicks onclick="countAndSend();">Click for Next 100 blocks</button>
+  </form>
+
+
+
 </div>
 {% endblock %}
   </body>
