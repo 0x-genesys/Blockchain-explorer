@@ -3,54 +3,161 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
-
-
+    <title>BTC explorer</title>
+    <link rel="icon" type="image/png" href="http://localhost:8000/static/images/download.png" sizes="16*16">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-        <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-  </head>
-        {# MEDIUM STYLE EDITOR#}
-        <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-
-<body>
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
-              <nav class="navbar navbar-inverse navbar-static-top">
 
-                      <a href="#" class="pull-left animated bounce infinite"> <img src="http://localhost:8000/static/logo.png" alt="logo" height="150" width="250"></a>
 
-                    <ul class="nav navbar-nav">
 
-                      <li ><a href = "{% url 'recent_data'%}" class="navbar-brand" >BLOCKWALA Explorer</a></li>
-                      <li class="dropdown">
-                        <a class = "dropdown-toggle" data-toggle="dropdown" href="#">Recent Blocks
-                        <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                          <li> <a href="{% url 'recent_data' %}">Recent 5 Blocks</a> </li>
-                          <li> <a href="{% url 'recent_hundred_data' %}">Recent 100 Blocks</a> </li>
+          <style>
+          input[type=text] {
+              width: 200px;
+              float: right !important;
 
-                        </ul>
-                      </li>
-                      <li><a class="navbar-brand">WALLET</a></li>
-                    <li><a href= "http://blockwala.io/">SITE</a></li>
+              height:40px;
+              box-sizing: border-box;
+              border: 2px solid #ccc;
+              border-radius: 2px;
+              font-size: 16px;
+              background-color: white;
+              background-image: url('searchicon.png');
+              background-position: 10px 10px;
+              background-repeat: no-repeat;
+              padding: 12px 20px 12px 40px;
+              margin-right: 50px;
+              margin-bottom: 10px;
 
-                    <form action="/mainSearch/" class="search-form" method="get">
-                <div class="form-group has-feedback">
-            		<label align="right" for="search" class="sr-only">Search</label>
-            		<input type="text" class="form-control" name="q"  placeholder="Block Hash, Transaction Hash, Address, Block Height">
-              		<span class="glyphicon glyphicon-search form-control-feedback"></span>
-            	</div>
+              -webkit-transition: width 0.2s ease-in-out;
+              transition: width 0.2s ease-in-out;
+          }
+
+          input[type=text]:focus {
+              width: 50%;
+          }
+          </style>
+          <style>
+          .navbar {
+              overflow: hidden;
+              background-color: #00004d;
+              font-family: Arial, Helvetica, sans-serif;
+          }
+
+          .navbar a {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+              float: left;
+              font-size: 16px;
+              color: white;
+              text-align: center;
+              padding: 14px 16px;
+              text-decoration: none;
+          }
+          .navbar h1 {
+            float:right;
+            color: white;
+            padding-right: 50px;
+            margin-right: 10px;
+          }
+
+          .dropdown {
+              float: left;
+              overflow: hidden;
+          }
+
+          .dropdown .dropbtn {
+              cursor: pointer;
+              font-size: 16px;
+              border: none;
+              outline: none;
+              color: white;
+              padding: 14px 16px;
+              background-color: inherit;
+              font-family: inherit;
+              margin: 0;
+          }
+
+          .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+              background-color: white;
+          }
+
+          .dropdown-content {
+              display: none;
+              position: absolute;
+              background-color: #f9f9f9;
+              min-width: 160px;
+              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+              z-index: 1;
+          }
+
+          .dropdown-content a {
+              float: none;
+              color: black;
+              padding: 12px 16px;
+              text-decoration: none;
+              display: block;
+              text-align: left;
+          }
+
+          .dropdown-content a:hover {
+              background-color: #ddd;
+          }
+
+          .show {
+              display: block;
+          }
+          </style>
+          </head>
+          <body>
+
+          <div class="navbar">
+            <a href="/ui/index/" class="btn-link"> <h2> <b> BTC Explorer</b></h2></a>
+            <a href="/ui/wallet/" class="btn-link">Wallet</a>
+            <a href="/ui/recent_hundred_data/"class="btn-link">Recent Blocks</a>
+            <a href="http://blockwala.io/" class="btn-link">Back To Site</a>
+            <!-- <a href="#" class="btn-link"style="margin-left:50em">Search</a> -->
+            <h1> <-- Search</h1>
+            <form style="margin-top:5px"action="/ui/mainSearch/" class="search_bar_top" method="get">
+                <input type="text" name="q" placeholder="Block Hash, Transaction Hash, Address, Block Height">
+
             </form>
 
 
+          </div>
 
-                </ul>
-</nav>
+
+          <script>
+          /* When the user clicks on the button,
+          toggle between hiding and showing the dropdown content */
+          function myFunction() {
+              document.getElementById("myDropdown").classList.toggle("show");
+          }
+
+          // Close the dropdown if the user clicks outside of it
+          window.onclick = function(e) {
+            if (!e.target.matches('.dropbtn')) {
+              var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                  myDropdown.classList.remove('show');
+                }
+            }
+          }
+          </script>
+
+
+
+
+
+
+
+
+
+
+
 <div class="container">
 {% block content %}
 {% endblock content %}
@@ -97,6 +204,7 @@
                     <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
                     <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
                     <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    <a href="#" class="github"> <i class="fa fa-github"></i> </a>
                 </div>
             </div>
         </div>

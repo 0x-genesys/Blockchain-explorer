@@ -19,7 +19,11 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BLOCK_DIR = os.path.join(BASE_DIR,'bitcoin_data_app/csv_files')
-
+TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
+ROOT_DIR = os.path.abspath(os.sep)
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
+#BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -28,7 +32,7 @@ BLOCK_DIR = os.path.join(BASE_DIR,'bitcoin_data_app/csv_files')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.42.91', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.42.91', '127.0.0.1','0.0.0.0']
 
 
 # Application definition
@@ -36,6 +40,7 @@ ALLOWED_HOSTS = ['192.168.42.91', '127.0.0.1']
 INSTALLED_APPS = [
     'bitcoin_data_app',
     'website_api',
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
 ]
-#SITE_ID = 1
+
+CRONJOBS = [
+('*/5 * * * *','bitcoin_data_handler.crom.my_scheduled_job')
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -62,7 +70,7 @@ ROOT_URLCONF = 'bitcoin_data_handler.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,5 +153,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-os.path.join(BASE_DIR,"website_api/static/qr_codes"),
+os.path.join(BASE_DIR,"website_api/static"),
 ]

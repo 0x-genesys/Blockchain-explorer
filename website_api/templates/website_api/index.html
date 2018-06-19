@@ -1,0 +1,83 @@
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<h1 style="font-size:30px">Latest Blocks</h1>
+<br>
+<div class="container_third_recent_data" >
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<table class = "table table-borderless">
+
+   <tr>
+   <th style="text-align:center;vertical-align:middle;">Block Height</th>
+   <th style="text-align:center;vertical-align:middle;">Block  Hash</th>
+   <th style="text-align:center;vertical-align:middle;">No of Transactions</th>
+   <th style="text-align:center;vertical-align:middle;">Block Size</th>
+   <th style="text-align:center;vertical-align:middle;">Timestamps</th>
+   </tr>
+
+<tr>
+  {% for i in output %}
+  <tr>
+    <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/ui/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
+    <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/ui/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
+    <td style="text-align:center;vertical-align:middle;">{{i.block_no_of_transactions}}</td>
+    <td style="text-align:center;vertical-align:middle;">&nbsp;&nbsp;{{i.block_size}}</td>
+    <td style="text-align:center;vertical-align:middle;">{{i.timestamp}}</td>
+  </tr>
+  {% endfor %}
+</tr>
+</table>
+</div>
+<div class="a">
+
+<a href="/ui/recent_hundred_data/" class="btn-link" align="right">Recent Blocks>></a>
+
+</div>
+<br>
+
+<div class="jumbotron">
+  <br>
+  <h2>SEARCH</h2>&nbsp;
+  <h3>You may enter a block height, address, block hash, transaction hash...</h3>
+  <br>
+  <div class="group inline mt-20 block-mobile">
+
+    <form action="/ui/mainSearch/" class="form-inline my-2 my-lg-0" method="get">
+    <font size="2" face="Helvetica">
+              <input class="form-control mr-sm-2" type="search" placeholder=" Block Hash, Transaction Hash, Address, Block Height"aria-label=" Block Hash, Transaction Hash, Address, Block Height" name="q">
+    </font>
+          <button class="btn btn-success" type="submit">Search</button>
+    </form>
+
+</div>
+</div>
+<style media="screen">
+  input[type=text_down]{
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 2px;
+    font-size: 16px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+  }
+</style>
+<br><br><br>
+
+<div class="bg-grey pv-55">
+  <h2>Graphs have to be here.</h2>
+  <div class="row-fluid row flex-row flex-column flex-column-reverse-mobile">
+    <h2>inner container</h2>
+    <div class="col-md-6 col-sm-6">
+      first
+    </div>
+    <div class="col-md-6 col-sm-6">
+      second
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

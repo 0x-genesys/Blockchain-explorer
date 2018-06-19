@@ -5,16 +5,12 @@ import json
 import threading
 from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table, Block_Table
 from django.http import JsonResponse
-
+from bitcoin_data_handler.settings import BLOCK_DIR, BLOCK_DATA_DIR
 #from .. import settings
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
-ROOT_DIR = os.path.abspath(os.sep)
-BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-#BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BLOCK_DIR = os.path.join(BASE_DIR,'bitcoin_data_app/csv_files')
+
 
 MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
@@ -24,7 +20,7 @@ def extract_input_output_main_from_blockchain(request):
         blockchain = Blockchain(BLOCK_DATA_DIR)
         print("blocks accessed")
         threads = []
-        #blockchain.
+
         for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index',start=0, end=210000):
             thread1 = myThread(block)
             thread1.start()
@@ -100,9 +96,9 @@ class myThread(threading.Thread):
                 'locktime':tx.locktime,
                 'version':tx.version,
                 'transaction_hash_size':tx.size,
-                #'raw_hex':tx.hash,
+
                 }
-        # print(record)
+
         tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
         if not tx_object:
             loader_main_table = Transaction_Table(**record)
@@ -113,7 +109,7 @@ class myThread(threading.Thread):
 
 
     def get_input_table(self, tx):
-        #temp_list = []
+        
         for _input in tx.inputs:
             record = {
                         'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),

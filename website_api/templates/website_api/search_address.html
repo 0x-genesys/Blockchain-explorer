@@ -1,31 +1,96 @@
 {% extends 'website_api/base.html' %}
 {% load staticfiles %}
 {% block content %}
-<div class="container_second">
 
-      <link rel="stylesheet" href="{% static 'css/style.css' %}">
-<h1>Address</h1>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="col-md-6 col-sm-6">
+<div class="blockContainer">
+
+
+      <font size="2" face="Helvetica" >
 <table class = "table table-borderless ">
-<tr  word-wrap: break-word;max-width: 150px; >
-  <td>Summary </td>
-</tr>
 
-    <tr class="success"> <td>Address</td>  <td> {{Address}} </td> </tr>
-    <tr class="active"><td>Transaction Hash </td> <td><a class="btn-link" href="/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
-    <tr class="info"><td>Output Number </td> <td>{{output_no}}</td></tr><br>
-    <tr class="warning"><td>Output Type </td> <td>{{output_type}}</td></tr><br>
-    <tr class="danger"><td>Output Value </td> <td>{{output_value}}</td></tr><br>
-    <tr class="success"><td>Size </td> <td>{{size}}</td></tr>
+<tbody>
 
+    <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
+    <tr><td>Address</td>  <td> {{Address}} </td> </tr>
+    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/ui/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
+    <tr><td>Output Number </td> <td>{{output_no}}</td></tr><br>
+    <tr><td>Output Type </td> <td>{{output_type}}</td></tr><br>
+    <tr><td>Output Value </td> <td>{{output_value}}</td></tr><br>
+    <tr><td>Size </td> <td>{{size}}</td></tr>
+
+</tbody>
 </table>
-<h2>Qr code for the address</h2>
-<img src="{{image}}" alt="qr_code" width="100" height="100">
+</div>
+</div>
+<div class="col-md-6 col-sm-6">
+    <img src='http://localhost:8000/static/images/image.jpg' alt="graph" width="400" height="400"style="margin-top:80px;margin-left:110px;">
+</div>
 
+<div class="container_second">
+<h2 style="padding-bottom:4px"> <b> <u> Qr code for the address</u> </b></h2>
+<img src="{{image}}" alt="qr_code" width="150" height="150">
+<br><br>
 <form class="" action="" method="post">
-  <button class="btn btn-outline-success my-2 my-sm-0"  type="submit"name="button">Donate</button>
-  <button class="btn btn-outline-success my-2 my-sm-0"  type="submit" name="button">Request Payment</button>
+  <button class="btn btn-success"  type="submit"name="button" style="margin-right:3em">Donate</button>
+  <button class="btn btn-danger"  type="submit" name="button">Request Payment</button>
 </form>
 <br>
-
 </div>
+
+<h2 align="center">&nbsp;&nbsp;&nbsp; <b> <u>General Information</u> </b></h2>
+<br>
+{% for index in transaction_hash_list %}
+<div class="compact"style="margin: 0; display: inline-block; float: left;">
+
+<div class="blockContainer">
+<table class="table table-border">
+<h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
+<tr>
+<td class="active"> <li> <a href="/ui/mainSearch/?q={{index.transaction_hash}}">{{index.transaction_hash}}</a></li> </td>
+</tr>
+<tr>
+      <td> <h3>Addresses</h3></td><tr>
+      </tr>
+      <tr>
+        <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
+        <td></td>
+        <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+        <td style="text-align:center;vertical-align:middle;">
+        {% if not input_addresses %}
+          <h3>No new inputs (newly generated coins)</h3>
+        {% endif %}
+            {% for index_input in i.input_address %}
+              <ul>
+                  <li> <a class="btn-link" href="/ui/mainSearch/?q={{index_input}}"> {{index_input}} </li></a>
+              </ul>
+
+            {% endfor %}
+      </td>
+<td> <img src='http://localhost:8000/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
+            {% for index in transaction_hash_list %}
+              <td align="right" style="text-align:center;vertical-align:middle;">
+                <ul>
+                  <li> {{Address}}</li>
+                </ul>
+              </td>
+            {% endfor %}
+    </tr>
+</table>
+</div>
+<br>
+</div>
+</font>
+{% endfor %}
+
+
+
 {% endblock %}
