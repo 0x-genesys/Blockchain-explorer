@@ -15,7 +15,7 @@ from bitcoin_data_handler.settings import BLOCK_DIR, BLOCK_DATA_DIR
 MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
-def extract_input_output_main_from_blockchain(request):
+def extract_input_output_main_from_blockchain():
 
         blockchain = Blockchain(BLOCK_DATA_DIR)
         print("blocks accessed")
@@ -109,7 +109,7 @@ class myThread(threading.Thread):
 
 
     def get_input_table(self, tx):
-        
+
         for _input in tx.inputs:
             record = {
                         'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
@@ -163,3 +163,6 @@ class myThread(threading.Thread):
 
                 loader_output_table = Output_Table(**record)
                 loader_output_table.save()
+
+if __name__ == '__main__':
+    extract_input_output_main_from_blockchain()

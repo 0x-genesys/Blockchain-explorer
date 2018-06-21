@@ -14,103 +14,7 @@
 
 
 
-          <style>
-          input[type=text] {
-              width: 200px;
-              float: right !important;
-
-              height:40px;
-              box-sizing: border-box;
-              border: 2px solid #ccc;
-              border-radius: 2px;
-              font-size: 16px;
-              background-color: white;
-              background-image: url('searchicon.png');
-              background-position: 10px 10px;
-              background-repeat: no-repeat;
-              padding: 12px 20px 12px 40px;
-              margin-right: 50px;
-              margin-bottom: 10px;
-
-              -webkit-transition: width 0.2s ease-in-out;
-              transition: width 0.2s ease-in-out;
-          }
-
-          input[type=text]:focus {
-              width: 50%;
-          }
-          </style>
-          <style>
-          .navbar {
-              overflow: hidden;
-              background-color: #00004d;
-              font-family: Arial, Helvetica, sans-serif;
-          }
-
-          .navbar a {
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-              float: left;
-              font-size: 16px;
-              color: white;
-              text-align: center;
-              padding: 14px 16px;
-              text-decoration: none;
-          }
-          .navbar h1 {
-            float:right;
-            color: white;
-            padding-right: 50px;
-            margin-right: 10px;
-          }
-
-          .dropdown {
-              float: left;
-              overflow: hidden;
-          }
-
-          .dropdown .dropbtn {
-              cursor: pointer;
-              font-size: 16px;
-              border: none;
-              outline: none;
-              color: white;
-              padding: 14px 16px;
-              background-color: inherit;
-              font-family: inherit;
-              margin: 0;
-          }
-
-          .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-              background-color: white;
-          }
-
-          .dropdown-content {
-              display: none;
-              position: absolute;
-              background-color: #f9f9f9;
-              min-width: 160px;
-              box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-              z-index: 1;
-          }
-
-          .dropdown-content a {
-              float: none;
-              color: black;
-              padding: 12px 16px;
-              text-decoration: none;
-              display: block;
-              text-align: left;
-          }
-
-          .dropdown-content a:hover {
-              background-color: #ddd;
-          }
-
-          .show {
-              display: block;
-          }
-          </style>
+          
           </head>
           <body>
 
@@ -120,11 +24,10 @@
             <a href="/ui/recent_hundred_data/"class="btn-link">Recent Blocks</a>
             <a href="http://blockwala.io/" class="btn-link">Back To Site</a>
             <!-- <a href="#" class="btn-link"style="margin-left:50em">Search</a> -->
-            <h1> <-- Search</h1>
-            <form style="margin-top:5px"action="/ui/mainSearch/" class="search_bar_top" method="get">
-                <input type="text" name="q" placeholder="Block Hash, Transaction Hash, Address, Block Height">
 
-            </form>
+            <form  action="/ui/mainSearch/" method="get">
+	             <input type="search" name="q" placeholder="Block Hash, Transaction Hash, Address, Block Height" style="margin-left:500px; margin-top:3px;">
+             </form>
 
 
           </div>

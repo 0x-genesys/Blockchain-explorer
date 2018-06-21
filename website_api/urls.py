@@ -1,9 +1,11 @@
 from django.conf.urls import url
 from bitcoin_data_handler import urls
 from website_api import views_ui_front
-
+"""
+API endpoints for accessing the website for Blockwala Bitcoin Explorer.
+"""
 urlpatterns = [
-url(r'^base_view/$',views_ui_front.base_view,name='base_view'),
+#url(r'^base_view/$',views_ui_front.base_view,name='base_view'),
 url(r'^index/$',views_ui_front.index,name='index'),
 #url(r'^recent_data/$',views_ui_front.recent_data,name='recent_data'),
 url(r'^search/$',views_ui_front.search_block_hash,name='search_block_hash'),

@@ -4,9 +4,11 @@
 
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<div class="col-md-6 col-sm-6">
-<div class="blockContainer">
+<div class="row">
 
+<div class="col-xs-6">
+<div class="blockContainer">
+<h1 style="font-size:30px;">Address</h1>
 
       <font size="2" face="Helvetica" >
 <table class = "table table-borderless ">
@@ -15,31 +17,60 @@
 
     <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
     <tr><td>Address</td>  <td> {{Address}} </td> </tr>
-    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/ui/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr><br>
-    <tr><td>Output Number </td> <td>{{output_no}}</td></tr><br>
-    <tr><td>Output Type </td> <td>{{output_type}}</td></tr><br>
-    <tr><td>Output Value </td> <td>{{output_value}}</td></tr><br>
+    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/ui/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr>
+    <tr><td>Output Number </td> <td>{{output_no}}</td></tr>
+    <tr><td>Output Type </td> <td>{{output_type}}</td></tr>
+    <tr><td>Output Value </td> <td>{{output_value}}</td></tr>
     <tr><td>Size </td> <td>{{size}}</td></tr>
 
 </tbody>
 </table>
 </div>
 </div>
-<div class="col-md-6 col-sm-6">
-    <img src='http://localhost:8000/static/images/image.jpg' alt="graph" width="400" height="400"style="margin-top:80px;margin-left:110px;">
-</div>
 
-<div class="container_second">
-<h2 style="padding-bottom:4px"> <b> <u> Qr code for the address</u> </b></h2>
-<img src="{{image}}" alt="qr_code" width="150" height="150">
-<br><br>
-<form class="" action="" method="post">
-  <button class="btn btn-success"  type="submit"name="button" style="margin-right:3em">Donate</button>
-  <button class="btn btn-danger"  type="submit" name="button">Request Payment</button>
-</form>
+<div class="col-xs-6">
+<div class="block" style="margin-left:60px;">
+  <div class="text">
+
+<h1 style="font-size:20px"> <b>QR code For The Address</b> </h1>
+
+</div>
 <br>
+<img src="{{image}}" alt="qr_code" width="250" height="250">
+</div>
+</div>
 </div>
 
+<br><br>
+<div class="container">
+
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" align="center">Donate</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content"style="height:500px;width:500px;">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Please Donate Here.</h4>
+        </div>
+        <div class="modal-body" align="center">
+          <img src="http://localhost:8000/static/images/frame.png" alt="code" width="300" height="300"></span>
+            <h2>1N6yY2iv6f8tAi5rAmMPpi5NYighrWNyLp</h2>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<br><br>
 <h2 align="center">&nbsp;&nbsp;&nbsp; <b> <u>General Information</u> </b></h2>
 <br>
 {% for index in transaction_hash_list %}
