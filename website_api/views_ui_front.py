@@ -4,17 +4,31 @@ from django.shortcuts import render,get_object_or_404,redirect
 from bitcoin_data_app.models import Block_Table, Transaction_Table, Output_Table, Input_Table
 from django.shortcuts import render_to_response
 from django.urls import reverse_lazy, reverse
-import qrcode
-from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-
-import os
-import re
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+import os
+import qrcode
+import re
 
+
+
+
+"""
+View to set the header and the footer through all the pages in the site
+"""
 def base_view(request):
     return render(request,'website_api/base.html')
+
+
+
+"""
+View to showcase the wallet developed for crypto currencies.
+"""
 def wallet(request):
     return render(request,'website_api/wallet.html')
+
+
+
 
 """
 View to call the introduction page of the Blockwala BTC Explorer
@@ -56,6 +70,9 @@ def recent_hundred_data(request):
                                                             'range':range(5)})
 
 
+
+
+
 """
 This View is important in a way that it decides what is searched and with the help of
 Regex in Python/Django. It gives the user to search from a single search bar like transaction hash, block hash, etc.
@@ -84,6 +101,9 @@ def main_search_bar(request):
             return redirect('/ui/searchBlockHeight/?q='+message)
         else:
             return render(request,'website_api/wrong_search.html')
+
+
+
 
 
 
@@ -149,6 +169,11 @@ def search_block_hash(request):
                                                                     'nonce':search_term[0].nonce,
                                                                     'final_list':final_list,
                                                                     'c':c,})
+
+
+
+
+
 
 
 

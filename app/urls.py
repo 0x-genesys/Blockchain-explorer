@@ -19,6 +19,7 @@ from django.contrib.auth import views
 from website_api import views_ui_front
 
 urlpatterns =[
+
     # url(r'^admin/',admin.site.urls),
     url(r'^core/', include('bitcoin_data_app.urls')),
     url(r'^ui/', include('website_api.urls')),

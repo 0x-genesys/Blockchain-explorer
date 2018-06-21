@@ -116,7 +116,7 @@ class myThread(threading.Thread):
 
 
     def get_input_table(self, tx):
-        
+
         for _input in tx.inputs:
             record = {
                         'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
@@ -169,3 +169,6 @@ class myThread(threading.Thread):
 
                 loader_output_table = Output_Table(**record)
                 loader_output_table.save()
+
+if __name__ == '__main__':
+    extract_input_output_main_from_blockchain()

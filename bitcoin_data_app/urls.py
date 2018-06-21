@@ -11,6 +11,4 @@ url(r'^get_block_details/$', views.get_block_details,name='get_block_details'),
 #url(r'^get_input_details/$',views.get_input_details,name='get_input_details'),
 #url(r'^get_output_details/$',views.get_output_details,name='get_output_details'),
 ################### ui ##################
-
-#url(r'^base_view/$',views_ui_front.base_view,name='base_view'),
 ]
