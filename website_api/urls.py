@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from bitcoin_data_handler import urls
+from app import urls
 from website_api import views_ui_front
 
 urlpatterns = [

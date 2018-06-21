@@ -5,37 +5,45 @@ import json
 import threading
 from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table, Block_Table
 from django.http import JsonResponse
-from bitcoin_data_handler.settings import BLOCK_DIR, BLOCK_DATA_DIR
+from app.settings import BLOCK_DATA_DIR
 #from .. import settings
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
 
-
 MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
-def extract_input_output_main_from_blockchain(request):
 
-        blockchain = Blockchain(BLOCK_DATA_DIR)
-        print("blocks accessed")
-        threads = []
+def extract_input_output_main_from_blockchain(request): 
 
-        for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index',start=0, end=210000):
-            thread1 = myThread(block)
-            thread1.start()
-            threads.append(thread1)
+    start = 0
+    stop = 0
 
-            for thread in threads:
-                thread.join()
+    if 'start' in  request.GET:
+        start = int(request.GET['start'])
+    if 'stop' in request.GET:
+        stop = int(request.GET['stop'])
 
-            count_thread = threading.active_count()
+    blockchain = Blockchain(BLOCK_DATA_DIR)
+    print("blocks accessed")
+    threads = []
 
-            while count_thread > MAX_NUM_OF_THREAD:
-                print("threading active_count >>>>>>>>>>>>"+str(count_thread))
-                continue
+    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=start, end=stop):
+        thread1 = myThread(block)
+        thread1.start()
+        threads.append(thread1)
 
-        return JsonResponse({"res":""}, status=200)
+        for thread in threads:
+            thread.join()
+
+        count_thread = threading.active_count()
+
+        while count_thread > MAX_NUM_OF_THREAD:
+            print("threading active_count >>>>>>>>>>>>"+str(count_thread))
+            continue
+
+    return JsonResponse({"res":""}, status=200)
 
 
 
@@ -96,7 +104,6 @@ class myThread(threading.Thread):
                 'locktime':tx.locktime,
                 'version':tx.version,
                 'transaction_hash_size':tx.size,
-
                 }
 
         tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
@@ -158,7 +165,6 @@ class myThread(threading.Thread):
                             'output_script_value': output.script.value,
                             'output_script_operations': output.script.operations
                           }
-
 
 
                 loader_output_table = Output_Table(**record)
