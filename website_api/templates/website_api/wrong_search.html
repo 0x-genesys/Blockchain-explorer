@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -8,3 +9,17 @@
     <h1>Sorry, You searched an invalid query</h1>
   </body>
 </html>
+=======
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div class="wrongQuery" align="center">
+
+    <h1 style="font-size:40px">Sorry, You searched an invalid query.</h1>
+    <div class="wrongQueryImage"style="margin-top:30px;margin-bottom:50px;">
+        <img src="/static/images/broken_bitcoin.png" alt="broken_bitcoin" width="150" height="150">
+    </div>
+    <a href="/ui/index/"> Return To Main Page</a>
+  </div>
+{% endblock %}
+>>>>>>> origin/praful

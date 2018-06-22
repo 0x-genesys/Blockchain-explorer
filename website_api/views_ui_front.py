@@ -10,6 +10,10 @@ from app.settings import BLOCK_DATA_DIR, BASE_DIR, STATICFILES_DIRS
 import os
 import qrcode
 import re
+<<<<<<< HEAD
+=======
+import matplotlib.pyplot as plt
+>>>>>>> origin/praful
 import io
 import urllib, base64
 from io import BytesIO
@@ -114,7 +118,10 @@ def main_search_bar(request):
 
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/praful
 """
 View to search for block hash from the database along with the included transactions of the block and their
 corresponding addresses. This function is called when the main search function redirects the control to this function.
@@ -122,6 +129,7 @@ corresponding addresses. This function is called when the main search function r
 def search_block_hash(request):
     if 'q' in request.GET:
         message = request.GET['q']
+<<<<<<< HEAD
         search_term = Block_Table.objects.filter(block_hash=message)
         transaction_list = []
         input_address_list_final = []
@@ -129,12 +137,23 @@ def search_block_hash(request):
         final_list = []
 
         counter = 0
+=======
+        #message = request
+        search_term = Block_Table.objects.filter(block_hash=message)
+        transaction_list = []
+
+        input_address_list_final = []
+        flag = []
+        final_list = []
+        flag_input = []
+>>>>>>> origin/praful
 
         if not search_term:
             return render(request,'website_api/wrong_search.html')
             print("block not present")
         else:
             print("whooo")
+<<<<<<< HEAD
 
         n_transactions = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
 
@@ -180,6 +199,50 @@ def search_block_hash(request):
                                                                         'nonce':search_term[0].nonce,
                                                                         'final_list':final_list,
                                                                         'c':counter
+=======
+        transaction_db = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
+        for transaction in transaction_db:
+            transaction_list.append(transaction.transaction_hash)
+            output_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+            input_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+
+            output_address_list = []
+            input_address_list = []
+            if not input_db:
+                print("NOT")
+            if output_db:
+
+                for add in output_db:
+                    output_address_list.append(add.address)
+                for add in input_db:
+                    input_address_list.append(add.input_address)
+            if all(x is None for x in input_address_list):
+                print("nothing")
+                input_address_list = []
+
+            record_output_address = {'transaction_hash':transaction.transaction_hash,
+                                      'output_address':output_address_list,
+                                      'input_address':input_address_list,
+                                      'flag_input':flag,
+                                      }
+            final_list.append(record_output_address)
+
+
+
+        return render(request,'website_api/search_block_hash.html',{'block_hash':search_term[0].block_hash,
+                                                                    'previous_block_hash':search_term[0].previous_block_hash,
+                                                                    'merkle_root':search_term[0].merkle_root,
+                                                                    'block_no_of_transactions':search_term[0].block_no_of_transactions,
+                                                                    'block_size':search_term[0].block_size,
+                                                                    'block_height':search_term[0].block_height,
+                                                                    'timestamp':search_term[0].timestamp,
+                                                                    'difficulty':search_term[0].difficulty,
+                                                                    'bits':search_term[0].bits,
+                                                                    'nonce':search_term[0].nonce,
+                                                                    'final_list':final_list,
+
+                                                                    'flag_input':flag_input,
+>>>>>>> origin/praful
                                                                     })
 
 
@@ -188,6 +251,10 @@ def search_block_hash(request):
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/praful
 """
 View to extract the transaction hash from the database and the corresponding addresses involved in it.
 It is called when the main search function redirects the control over here.
@@ -200,12 +267,17 @@ def search_transaction_hash(request):
         output_address_list = []
         input_address_list = []
         search_term = Transaction_Table.objects.filter(transaction_hash=message)
+<<<<<<< HEAD
         print(message)
+=======
+        #print(message)
+>>>>>>> origin/praful
         if not search_term:
             return render(request,'website_api/wrong_search.html')
             print("hash not present")
         else:
             print("present")
+<<<<<<< HEAD
         output_search_term = Output_Table.objects.filter(transaction_hash_id=message)
         input_search_term = Input_Table.objects.filter(transaction_hash_id=message)
         for add in output_search_term:
@@ -227,6 +299,38 @@ def search_transaction_hash(request):
                                                                             'transaction_hash_size':search_term[0].transaction_hash_size,
                                                                             'output_script':output_search_term[0].output_script_value,
                                                                             })
+=======
+            output_db = Output_Table.objects.filter(transaction_hash_id=search_term[0].transaction_hash)
+            input_db = Input_Table.objects.filter(transaction_hash_id=search_term[0].transaction_hash)
+
+            for add in output_db:
+                output_address_list.append(add.address)
+            if input_db:
+                for add in input_db:
+                    input_address_list.append(add.input_address)
+            if all(x is None for x in input_address_list):
+                print("nothing")
+                input_address_list = []
+
+            if not output_db[0].output_script_value:
+                var = 'Does not exist'
+            else:
+                var = output_db[0].output_script_value
+            return render(request,'website_api/search_transaction_hash.html',{'transaction_hash':search_term[0].transaction_hash,
+                                                                                'block_size':search_term[0].block_size,
+                                                                                'Number_of_inputs':search_term[0].V_in,
+                                                                                'Number_of_outputs':search_term[0].V_out,
+                                                                                'locktime':search_term[0].locktime,
+                                                                                'version':search_term[0].version,
+                                                                                'block_height':search_term[0].block_height,
+                                                                                'coinbase':search_term[0].is_CoinBase,
+                                                                                'output_addresses':output_address_list,
+                                                                                'input_addresses':input_address_list,
+                                                                                'transaction_hash_size':search_term[0].transaction_hash_size,
+                                                                                'output_script':var,
+                                                                                })
+
+>>>>>>> origin/praful
 
 
 
@@ -239,6 +343,7 @@ Creates Qr code for each address.
 """
 def search_address(request):
      if 'q' in request.GET:
+<<<<<<< HEAD
         message = request.GET['q']
 
 
@@ -300,6 +405,50 @@ def search_address(request):
 
 
 
+=======
+         message = request.GET['q']
+         flag = 0
+         transaction_list = []
+         output_db = Output_Table.objects.filter(address=message)
+         if not output_db:
+
+             input_db = Input_Table.objects.filter(input_address=message)
+             if not input_db:
+                 return render(request,'website_api/wrong_search.html')
+             else:
+                 flag = 1
+
+             search_term = input_db
+         else:
+
+             search_term = output_db
+
+         for i in search_term:
+             record_transaction = {'transaction_hash':i.transaction_hash}
+             transaction_list.append(record_transaction)
+
+             if flag == 1:
+                 print(transaction_list)
+                 return render(request, 'website_api/search_input_address.html',{'Address':message,
+                                                                                 'transaction_hash':search_term[0].transaction_hash,
+                                                                                 'transaction_index':search_term[0].transaction_index,
+                                                                                 'input_script':search_term[0].input_script,
+                                                                                 'input_sequence_number':search_term[0].input_sequence_number,
+                                                                                 'input_size':search_term[0].input_size,
+
+                                                                                 'transaction_hash_list':transaction_list,
+                                                                                 })
+             else:
+                 return render(request, 'website_api/search_address.html',{'Address':message,
+                                                                           'transaction_hash':search_term[0].transaction_hash,
+                                                                           'output_no':search_term[0].output_no,
+                                                                           'output_type':search_term[0].output_type,
+                                                                           'output_value':search_term[0].output_value,
+                                                                           'size':search_term[0].size,
+
+                                                                           'transaction_hash_list':transaction_list,
+                                                                           })
+>>>>>>> origin/praful
 
 
 """
@@ -319,6 +468,12 @@ def search_block_height(request):
             return redirect('/ui/search/?q='+block_search_term[0].block_hash)
 
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> origin/praful
 """
 This View is invoked whenever someone searches for a wrong hash or if the data is not present in the database
 """

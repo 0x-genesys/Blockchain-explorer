@@ -8,6 +8,7 @@
 
 <div class="col-xs-6">
 <div class="blockContainer">
+<<<<<<< HEAD
     <font size="2" face="Helvetica" >
     <table class = "table table-borderless ">
 
@@ -21,6 +22,25 @@
 
       </tbody>
     </table>
+=======
+<h1 style="font-size:30px;">Address</h1>
+
+      <font size="2" face="Helvetica" >
+<table class = "table table-borderless ">
+
+<tbody>
+
+    <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
+    <tr><td>Address</td>  <td> {{Address}} </td> </tr>
+    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/ui/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr>
+    <tr><td>Output Number </td> <td>{{output_no}}</td></tr>
+    <tr><td>Output Type </td> <td>{{output_type}}</td></tr>
+    <tr><td>Output Value </td> <td>{{output_value}}</td></tr>
+    <tr><td>Size </td> <td>{{size}}</td></tr>
+
+</tbody>
+</table>
+>>>>>>> origin/praful
 </div>
 </div>
 
@@ -28,6 +48,11 @@
 <div class="block" style="margin-left:60px;">
   <div class="text">
 
+<<<<<<< HEAD
+=======
+<h1 style="font-size:20px"> <b>QR code For The Address</b> </h1>
+
+>>>>>>> origin/praful
 </div>
 <br>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -40,6 +65,11 @@
     }
 </script>
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/praful
 <img id='barcode'
     src="https://api.qrserver.com/v1/create-qr-code/?data={{Address}}"
     alt="qr_code"
@@ -48,6 +78,7 @@
     height="250" />
 </div>
 </div>
+<<<<<<< HEAD
 <br><br>
 <br><br>
 <br><br>
@@ -62,6 +93,31 @@
     <h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
       <tr>
         <td class="active"> <li> <a href="/ui/mainSearch/?q={{index.transaction_hash}}">{{hash}}</a></li> </td>
+=======
+</div>
+
+<br><br>
+
+
+
+
+<br><br>
+
+<br><br>
+<h2 align="center">&nbsp;&nbsp;&nbsp; <b> <u>General Information</u> </b></h2>
+<br>
+{% for index in transaction_hash_list %}
+<div class="compact"style="margin: 0; display: inline-block; float: left;">
+
+<div class="blockContainer">
+<table class="table table-border">
+<h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
+<tr>
+<td class="active"> <li> <a href="/ui/mainSearch/?q={{index.transaction_hash}}">{{index.transaction_hash}}</a></li> </td>
+</tr>
+<tr>
+      <td> <h3>Addresses</h3></td><tr>
+>>>>>>> origin/praful
       </tr>
       <tr>
         <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
@@ -73,6 +129,7 @@
         <td></td>
         <td></td>
       </tr>
+<<<<<<< HEAD
       <td style="text-align:center;vertical-align:middle;">
 
        <!--  {% ifequal transaction.addresses.input 0 %}
@@ -98,13 +155,41 @@
             </ul>
           </td>
           {% endfor %}
+=======
+        <td style="text-align:center;vertical-align:middle;">
+        {% if not input_addresses %}
+          <h3>No new inputs (newly generated coins)</h3>
+        {% endif %}
+            {% for index_input in i.input_address %}
+              <ul>
+                  <li> <a class="btn-link" href="/ui/mainSearch/?q={{index_input}}"> {{index_input}} </li></a>
+              </ul>
+
+            {% endfor %}
+      </td>
+<td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
+
+              <td align="right" style="text-align:center;vertical-align:middle;">
+                <ul>
+                  <li> {{Address}}</li>
+                </ul>
+              </td>
+
+>>>>>>> origin/praful
     </tr>
 </table>
 </div>
 <br>
 </div>
 </font>
+<<<<<<< HEAD
 {% endwith %}
 {% endfor %}
 
+=======
+{% endfor %}
+
+
+
+>>>>>>> origin/praful
 {% endblock %}

@@ -14,7 +14,11 @@ from app.settings import BLOCK_DATA_DIR
 MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
+<<<<<<< HEAD
 def extract_input_output_main_from_blockchain(request): 
+=======
+def extract_input_output_main_from_blockchain(request):
+>>>>>>> origin/praful
 
     start = 0
     stop = 0
@@ -62,7 +66,11 @@ class myThread(threading.Thread):
             self.get_tx_table(tx, self.block)
             self.get_output_table(tx)
             self.get_input_table(tx)
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> origin/praful
 
         exit()
 
@@ -116,6 +124,10 @@ class myThread(threading.Thread):
 
 
     def get_input_table(self, tx):
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/praful
         for _input in tx.inputs:
             record = {
                         'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
@@ -123,7 +135,10 @@ class myThread(threading.Thread):
                         'input_sequence_number': _input.sequence_number,
                         'input_size': _input.size,
                         'input_address':None, #todo pointer to object, resolve this
+<<<<<<< HEAD
                         'input_value': None,
+=======
+>>>>>>> origin/praful
                         'input_script_type': None,
                         'input_script_value': _input.script.value,
                         'input_script_operations': _input.script.operations
@@ -137,7 +152,10 @@ class myThread(threading.Thread):
             for output in outputs:
                 print("output['address'] " + str(output))
                 record['input_address'] = output.address
+<<<<<<< HEAD
                 record['input_value'] = output.output_value
+=======
+>>>>>>> origin/praful
 
             script_type = None
 

@@ -8,6 +8,7 @@
   <h2 style="font-size:30px">&nbsp;&nbsp;BLOCK  #{{block_height}}</h2><br>
 
     <div class="col-md-6 col-sm-6">
+<<<<<<< HEAD
 <div class="blockContainer" >
 
 
@@ -55,12 +56,50 @@
 </font>
 <br><br><br><br>
 </div>
+=======
+        <div class="blockContainer" >
+            <font size="2" face="Helvetica" >
+                <table class = "table table borderless">
+                    <tbody>
+
+                        <tr >  <td class="active"> <b> SUMMARY </b></td> <td> </td>  </tr>
+
+
+                            <tr><td>Block Height </td> <td> {{block_height}}</td></tr>
+                            <tr><td>Block timestamps </td> <td> {{timestamp}}</td></tr>
+                            <tr><td>Difficulty  </td> <td>{{difficulty}}</td></tr>
+                            <tr><td>Number of transactions </td> <td> {{block_no_of_transactions}}</td></tr>
+                            <tr><td>Block Size  </td> <td>{{block_size}}</td></tr>
+                            <tr><td>Bits  </td> <td>{{bits}}</td></tr>
+                            <tr><td>Nonce  </td> <td>{{nonce}}</td></tr>
+
+                  </tbody>
+                </table>
+         </div>
+    </div>
+
+<div class="col-md-6 col-sm-6">
+      <div class="blockContainer" style="margin-left:10px;padding-bottom:0px">
+
+            <table class="table table-responsive">
+                <tbody>
+                          <tr ><td class="active"> <b>Hash</b></td> <td></td></tr>
+                          <tr><td>Block Hash </td> <td> {{block_hash}} </td></tr>
+                          <tr><td> Previous Block Hash</td><td><a class="btn-link" href="/ui/mainSearch/?q={{previous_block_hash}}">{{previous_block_hash}}</a></td></tr>
+                          <tr><td>Merkle Root</td> <td>{{merkle_root}}</td></tr>
+                </tbody>
+          </table>
+        </font>
+<br><br><br><br>
+      </div>
+>>>>>>> origin/praful
 
 </div>
 
 
 <br><br><br><br>
 
+<<<<<<< HEAD
 
 
 {% for i in final_list %}
@@ -112,6 +151,57 @@
 </table>
 
 </div>
+=======
+{% for data in final_list %}
+<br><br>
+<div class="compact"style="margin-top: 20px;margin-left: 12px;display: inline-block; float: left;">
+
+      <div class="blockContainer">
+          <font size="2" face="Helvetica" >
+              <table class="table table-borderless">
+                        <tr><h2 style="margin-top:1em">Transaction</h2> <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3><br></tr>
+                        <tr><td > <li> <a href="/ui/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}</a></li> </td></tr>
+                        <tr><td> <h3>Addresses</h3></td><tr></tr>
+                        <tr><td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
+                        <td></td>
+                        <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                       </tr>
+                       <td style="text-align:center;vertical-align:middle;">
+
+
+
+
+                          {% for index_input in data.input_address %}
+
+                              <ul>
+                                  <li> <a class="btn-link" href="/ui/mainSearch/?q={{index_input}}"> {{index_input}} </li></a>
+                              </ul>
+
+                              {% empty %}
+                              <div class="coinbase">
+
+                                   <b>(newly generated coins)</b><br>
+                                   <h1 >Coinbase Transactions</h1>
+                              </div>
+                          {% endfor %}
+                        </td>
+
+                            <td style="text-align:center;vertical-align:middle;"> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
+                            <td align="right" style="text-align:center;vertical-align:middle;">
+                                {% for index in data.output_address %}
+                                  <ul align="right">
+                                      <li><a class="btn-link" href="/ui/mainSearch/?q={{index}}"> {{index}}</a></li>
+                                  </ul>
+                                {% endfor %}
+                            </td>
+            </table>
+    </div>
+>>>>>>> origin/praful
 <br>
 </div>
 <br>
