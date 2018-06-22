@@ -6,10 +6,15 @@ from django.shortcuts import render_to_response
 from django.urls import reverse_lazy, reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from app.settings import BLOCK_DATA_DIR, BASE_DIR, STATICFILES_DIRS
 import os
 import qrcode
 import re
-
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
+from io import BytesIO
+from PIL import Image
 
 
 
@@ -262,11 +267,22 @@ def search_address(request):
              qr.add_data(message)
              qr.make(fit=True)
              img = qr.make_image()
-             img.save("/home/praful/bitcoin-sql-migrator/website_api/static/qr_codes/{0}.png".format(message),delimiter=",")
+
+             # img.save(buf)
+             # buf.seek(0)
+             # string = base64.b64encode(buf.read())
+             # uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+             # html = '<img src = "%s"/>' % uri
+             #img.save("/home/praful/bitcoin-sql-migrator/website_api/static/qr_codes/{0}.png".format(message),delimiter=",")
+
 
              print(flag)
-             url = 'http://localhost:8000/static/qr_codes/'+message+'.png'
+             #url = '/home/praful/bitcoin-sql-migrator/website_api/static/qr_codes/'+message+'.png'
 
+             #url = STATICFILES_DIRS+'/qr_codes/'+message+'.png'
+             #url = 'http://localhost:8000/static/qr_codes/'+message+'.png'
+             # image = Image.open(url)
+             # image.show()
              if flag == 1:
                  print(transaction_list)
                  return render(request, 'website_api/search_input_address.html',{'Address':message,
@@ -275,7 +291,7 @@ def search_address(request):
                                                                                  'input_script':search_term[0].input_script,
                                                                                  'input_sequence_number':search_term[0].input_sequence_number,
                                                                                  'input_size':search_term[0].input_size,
-                                                                                 'image':url,
+
                                                                                  'transaction_hash_list':transaction_list,
                                                                                  })
              else:
@@ -285,7 +301,7 @@ def search_address(request):
                                                                            'output_type':search_term[0].output_type,
                                                                            'output_value':search_term[0].output_value,
                                                                            'size':search_term[0].size,
-                                                                           'image':url,
+
                                                                            'transaction_hash_list':transaction_list,
                                                                            })
 

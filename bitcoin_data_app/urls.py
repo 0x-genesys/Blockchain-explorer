@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from bitcoin_data_handler import urls
+from app import urls
 from bitcoin_data_app import views
 from . import populate_sql
 

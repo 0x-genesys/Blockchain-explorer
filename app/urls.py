@@ -1,4 +1,4 @@
-"""bitcoin_data_handler URL Configuration
+"""app URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -20,7 +20,7 @@ from website_api import views_ui_front
 
 urlpatterns =[
     url(r'^admin/',admin.site.urls),
-    #url(r'^',include('bitcoin_data_app.urls')),
+    url(r'^core/',include('bitcoin_data_app.urls')),
     url(r'^ui/',include('website_api.urls')),
 
 ]

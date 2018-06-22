@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from bitcoin_data_handler import urls
+from app import urls
 from website_api import views_ui_front
 """
 API endpoints for accessing the website for Blockwala Bitcoin Explorer.
@@ -17,4 +17,6 @@ url(r'^searchBlockHeight/$',views_ui_front.search_block_height,name='search_bloc
 url(r'^wrongQuery/$',views_ui_front.wrong_query,name='wrong_query'),
 url(r'^mainSearch/$',views_ui_front.main_search_bar,name='main_search_bar'),
 url(r'^wallet/$',views_ui_front.wallet,name='wallet'),
+
+
 ]

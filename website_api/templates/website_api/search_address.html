@@ -36,10 +36,32 @@
 
 </div>
 <br>
-<img src="{{image}}" alt="qr_code" width="250" height="250">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript">
+    function generateBarCode()
+    {
+        var nric = $('#text').val();
+        var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
+        $('#barcode').attr('src', url);
+    }
+</script>
+
+
+
+<img id='barcode'
+    src="https://api.qrserver.com/v1/create-qr-code/?data={{Address}}"
+    alt="qr_code"
+    title="HELLO"
+    width="250"
+    height="250" />
 </div>
 </div>
 </div>
+
+<br><br>
+
+
+
 
 <br><br>
 <div class="container">
@@ -58,7 +80,7 @@
           <h4 class="modal-title">Please Donate Here.</h4>
         </div>
         <div class="modal-body" align="center">
-          <img src="http://localhost:8000/static/images/frame.png" alt="code" width="300" height="300"></span>
+          <img src="/static/images/frame.png" alt="code" width="300" height="300"></span>
             <h2>1N6yY2iv6f8tAi5rAmMPpi5NYighrWNyLp</h2>
         </div>
         <div class="modal-footer">
@@ -106,7 +128,7 @@
 
             {% endfor %}
       </td>
-<td> <img src='http://localhost:8000/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
+<td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
             {% for index in transaction_hash_list %}
               <td align="right" style="text-align:center;vertical-align:middle;">
                 <ul>
