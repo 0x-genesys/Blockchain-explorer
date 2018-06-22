@@ -4,27 +4,31 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-<h1 style="font-size:40px">Latest Blocks</h1>
+<h1 style="font-size:40px">LATEST BLOCKS</h1>
+<div class="wrongQuery">
+
 <div class="pagination">
     <span class="step-links">
         {% if output.has_previous %}
-            <a href="?page=1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&laquo; first</a>
-            <a href="?page={{ output.previous_page_number }}" style="padding-left:5em">&nbsp;previous</a>
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ output.previous_page_number }}" >&nbsp;previous</a>
         {% endif %}
 
-        <span class="current" style="padding-left:20em">
+        <span class="current" >
             Page {{ output.number }} of {{ output.paginator.num_pages }}.
         </span>
 
 
         {% if output.has_next %}
-            <a href="?page={{ output.next_page_number }}" style="padding-left:25em">Next</a>
-            <a href="?page={{ output.paginator.num_pages }}" style="padding-left:5em">Last &raquo;</a>
+            <a href="?page={{ output.next_page_number }}">Next</a>
+            <a href="?page={{ output.paginator.num_pages }}" >Last &raquo;</a>
+        {% else %}
         {% endif %}
 
     </span>
 </div>
 
+</div>
 <div class="container_third_recent_data">
 
 <table class="table table-striped">

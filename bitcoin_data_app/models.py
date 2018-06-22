@@ -27,7 +27,7 @@ class Block_Table(models.Model):
         return str(self.block_height)
 
 class Transaction_Table(models.Model):
-    transaction_hash = models.CharField(primary_key=True,max_length=200, null=False)
+    transaction_hash = models.CharField(primary_key=True, max_length=200, null=False)
     block_height = models.ForeignKey('Block_Table', null=True, blank=True, on_delete=models.CASCADE)
     block_size = models.IntegerField(null=True)
     is_CoinBase = models.BooleanField(default=True)
@@ -45,21 +45,21 @@ class Transaction_Table(models.Model):
         return str(self.transaction_hash)
 
 class Input_Table(models.Model):
-    transaction_hash = models.ForeignKey('Transaction_Table', blank=True, null=True, on_delete=models.CASCADE)
-    transaction_index = models.CharField(max_length=20,null=False)
+    transaction_hash = models.ForeignKey('Transaction_Table', max_length=200, blank=True, null=True, on_delete=models.CASCADE)
+    transaction_index = models.TextField(max_length=20,null=False)
     input_sequence_number = models.CharField(max_length=20, null=False)
     input_size = models.IntegerField(null=False)
-    input_address = models.CharField(max_length=100, null=True)
+    input_address = models.CharField(max_length=400, null=True)
 
     input_script_type = models.TextField(max_length=400, null=True)
     input_script_value = models.TextField(max_length=400, null=True)
     input_script_operations = models.TextField(max_length=400, null=True)
 
     def __str__(self):
-        return self.input_script
+        return self.input_address
 
 class Output_Table(models.Model):
-    transaction_hash = models.ForeignKey('Transaction_Table', on_delete=models.CASCADE)
+    transaction_hash = models.ForeignKey('Transaction_Table', max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     output_no = models.IntegerField(null=False)
     output_type = models.CharField(max_length=20, null=False)
     output_value = models.CharField(max_length=100,null=False)

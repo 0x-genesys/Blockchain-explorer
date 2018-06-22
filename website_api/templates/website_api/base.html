@@ -20,37 +20,48 @@
 
           <div class="navbar">
             <a href="/ui/index/" class="btn-link"> <h2> <b> BTC Explorer</b></h2></a>
-            <a href="/ui/wallet/" class="btn-link">Wallet</a>
-            <a href="/ui/recent_hundred_data/"class="btn-link">Recent Blocks</a>
-            <a href="http://blockwala.io/" class="btn-link">Back To Site</a>
-            <!-- <a href="#" class="btn-link"style="margin-left:50em">Search</a> -->
+            <a href="/ui/wallet/" class="btn-link">WALLET</a>
+            <a href="/ui/recent_hundred_data/"class="btn-link">RECENT BLOCKS</a>
+            <a href="http://blockwala.io/" class="btn-link">BACK TO SITE</a>
+                <!-- <a href="#myModal" type="button"  data-toggle="modal" class="btn-link" data-target="#myModal" align="left">DONATE</a> -->
 
             <form  action="/ui/mainSearch/" method="get">
-	             <input type="search" name="q" placeholder="Block Hash, Transaction Hash, Address, Block Height" style="margin-left:500px; margin-top:3px;">
+	             <input type="search" name="q" placeholder="Block Hash, Transaction Hash, Address, Block Height" style="margin-left:300px; margin-top:3px;">
              </form>
 
 
           </div>
 
 
-          <script>
-          /* When the user clicks on the button,
-          toggle between hiding and showing the dropdown content */
-          function myFunction() {
-              document.getElementById("myDropdown").classList.toggle("show");
-          }
 
-          // Close the dropdown if the user clicks outside of it
-          window.onclick = function(e) {
-            if (!e.target.matches('.dropbtn')) {
-              var myDropdown = document.getElementById("myDropdown");
-                if (myDropdown.classList.contains('show')) {
-                  myDropdown.classList.remove('show');
-                }
-            }
-          }
-          </script>
+          <div class="container">
 
+            <!-- Trigger the modal with a button -->
+
+          <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" align="left">Donate</button> -->
+            <!-- Modal -->
+            <div class="modal fade myModal" id="myModal" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content"style="height:500px;width:500px;">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Donate.</h4>
+                  </div>
+                  <div class="modal-body" align="center">
+                    <img src="/static/images/frame.png" alt="code" width="300" height="300"></span>
+                      <h2>1N6yY2iv6f8tAi5rAmMPpi5NYighrWNyLp</h2>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
 
 
 

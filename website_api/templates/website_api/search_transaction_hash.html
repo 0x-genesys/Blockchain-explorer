@@ -8,103 +8,101 @@
         <div class="compact"style="margin: 0; display: inline-block; float: left;">
           <div class="blockContainer">
 
-              <font size="2" face="Helvetica" >
-<table class="table table-borderless">
-  <tr>
-    <h2 style="margin-top:1em">Transaction</h2> <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3><br>
-  </tr>
-  <td class="warning">{{transaction_hash}}</td>
-<tr>
+            <font size="2" face="Helvetica" >
+              <table class="table table-borderless">
+                            <tr>
+                                    <h2 style="margin-top:1em">Transaction</h2> <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3><br>
+                            </tr>
+                                    <td class="warning">{{transaction_hash}}</td>
+                            <tr></tr>
+                            <tr>
+                                    <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
+                                    <td></td>
+                                    <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                            </tr>
+                                    <td style="text-align:center;vertical-align:middle;">
+                                              
 
-</tr>
-  <tr>
-    <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
-    <td></td>
-    <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-<td style="text-align:center;vertical-align:middle;">
-    {% if not input_addresses %}
-            <h3>No new inputs (newly generated coins)</h3>
-    {% endif %}
-  {% for index in input_addresses %}
-    <ul>
-      <li> <a href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
-    </ul>
-  {% endfor %}
-  </td>
-  <td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
-  <td align="right" style="text-align:center;vertical-align:middle;">
-  {% for index in output_addresses %}
-        <ul>
-          <li > <a class="btn-link" href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
-        </ul>
-      {% endfor %}
-      </td>
-</table>
-</div><br>
+                                              {% if input_addresses|length > 0 %}
+                                                    {% for index in input_addresses %}
+                                                    <ul>
+                                                      <li> <a href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
+                                                    </ul>
+                                                    {% endfor %}
+                                              {% else %}
+                                                      <div class="coinbase">
+                                                           <b>(newly generated coins)</b><br>
+                                                           <h1 >Coinbase Transactions</h1>
+                                                      </div>
+                                              {% endif %}
+
+
+                                    </td>
+                            <td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
+                            <td align="right" style="text-align:center;vertical-align:middle;">
+                                    {% for index in output_addresses %}
+                                          <ul>
+                                            <li > <a class="btn-link" href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
+                                          </ul>
+                                    {% endfor %}
+                            </td>
+              </table>
+            </div>
+            <br>
 </div>
 
 <div class="bg-grey pv-55">
-  <div class="row-fluid row flex-row flex-column flex-column-reverse-mobile">
-    <div class="col-md-6 col-sm-6">
-            <h1 style="font-size:30px;"><b> Transaction  in Block  <a class="btn-link" href="/ui/mainSearch/?q={{block_height}}">{{block_height}}</a> </b></h1>
-<br>
-<div class="blockContainer">
-    <table class = "table table-responsive">
-      <tbody>
+            <div class="row-fluid row flex-row flex-column flex-column-reverse-mobile">
+                      <div class="col-md-6 col-sm-6">
+                              <h1 style="font-size:30px;"><b> Transaction  in Block  <a class="btn-link" href="/ui/mainSearch/?q={{block_height}}">{{block_height}}</a> </b></h1>
+                  <br>
+                            <div class="blockContainer">
+                                <table class = "table table-responsive">
+                                        <tbody>
 
-    <tr >  <td class="active"> <b> SUMMARY </b></td> <td> </td>  </tr>
-    <tr ><td  width="80%">Block Size </td> <td width="100%">  {{block_size}}</td></tr>
-    <tr ><td  >Number of Inputs </td> <td> {{Number_of_inputs}} </td></tr>
-    <tr> <td >Size</td> <td> {{transaction_hash_size}} (bytes)</td> </tr>
-    <tr ><td >Number of Outputs </td> <td width="50%"> {{Number_of_outputs}}</td></tr>
-    <tr ><td >Locktime </td> <td> {{locktime}}</td></tr>
-    <tr><td >Version </td> <td> {{version}}</td></tr>
-    <tr><td >Block Height </td> <td> <a class="btn-link" href="/ui/mainSearch/?q={{block_height}}">{{block_height}}</a></td> </tr>
-    <tr > <td >Coinbase </td> <td>{{coinbase}}</td> </tr>
-    <tr > <td > Output Script </td> <td>  <a class = 'btn-link' id="script" onclick="showScript()" href="#"> Script</a></td> </tr>
-
-  </tbody>
-  </table>
-
-</div>
-
-</div>
-  <div class="col-md-6 col-sm-6">
-    <div class="jumbotron" style="margin-top:200px;">
-      <h1>Ad Space</h1>
-
-    </div>
-
-
-</div>
-</div>
+                                              <tr >  <td class="active"> <b> SUMMARY </b></td> <td> </td>  </tr>
+                                              <tr ><td  width="80%">Block Size </td> <td width="100%">  {{block_size}}</td></tr>
+                                              <tr ><td  >Number of Inputs </td> <td> {{Number_of_inputs}} </td></tr>
+                                              <tr> <td >Size</td> <td> {{transaction_hash_size}} (bytes)</td> </tr>
+                                              <tr ><td >Number of Outputs </td> <td width="50%"> {{Number_of_outputs}}</td></tr>
+                                              <tr ><td >Locktime </td> <td> {{locktime}}</td></tr>
+                                              <tr><td >Version </td> <td> {{version}}</td></tr>
+                                              <tr><td >Block Height </td> <td> <a class="btn-link" href="/ui/mainSearch/?q={{block_height}}">{{block_height}}</a></td> </tr>
+                                              <tr > <td >Coinbase </td> <td>{{coinbase}}</td> </tr>
+                                              <tr > <td > Output Script </td> <td>  <a class = 'btn-link' id="script" onclick="showScript()" href="#"> Script</a></td> </tr>
+                                    </tbody>
+                              </table>
+                            </div>
+                      </div>
+                  <div class="col-md-6 col-sm-6">
+                  </div>
+          </div>
 </div>
 <p>
-  <div id="myDIV">
-  <table class="table table-striped">
-    <tr>
-      <td> <h3>Output Scripts</h3></td>
-    </tr>
-    <td class="active">{{output_script}}</td>
-  </table>
-  </div>
+    <div id="myDIV">
+        <table class="table table-striped">
+              <tr>
+                  <td> <h3>Output Scripts</h3></td>
+              </tr>
+                  <td class="active">{{output_script}}</td>
+        </table>
+    </div>
 </p>
   <script type="text/javascript">
-  function showScript() {
-      var x = document.getElementById("myDIV");
-      if (x.style.display === "none") {
-          x.style.display = "block";
-      } else {
-          x.style.display = "none";
+      function showScript() {
+          var x = document.getElementById("myDIV");
+          if (x.style.display === "none") {
+              x.style.display = "block";
+          } else {
+              x.style.display = "none";
+          }
+          document.getElementById('hide').value = document.getElementById('script').value;
       }
-      document.getElementById('hide').value = document.getElementById('script').value;
-  }
   </script>
   </font>
     {% endblock %}

@@ -11,31 +11,38 @@ from app.settings import BLOCK_DATA_DIR
 #pass the path for the bitcoin-node data
 
 
-
 MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
 def extract_input_output_main_from_blockchain(request):
 
-        blockchain = Blockchain(BLOCK_DATA_DIR)
-        print("blocks accessed")
-        threads = []
+    start = 0
+    stop = 0
 
-        for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index',start=0, end=210000):
-            thread1 = myThread(block)
-            thread1.start()
-            threads.append(thread1)
+    if 'start' in  request.GET:
+        start = int(request.GET['start'])
+    if 'stop' in request.GET:
+        stop = int(request.GET['stop'])
 
-            for thread in threads:
-                thread.join()
+    blockchain = Blockchain(BLOCK_DATA_DIR)
+    print("blocks accessed")
+    threads = []
 
-            count_thread = threading.active_count()
+    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=start, end=stop):
+        thread1 = myThread(block)
+        thread1.start()
+        threads.append(thread1)
 
-            while count_thread > MAX_NUM_OF_THREAD:
-                print("threading active_count >>>>>>>>>>>>"+str(count_thread))
-                continue
+        for thread in threads:
+            thread.join()
 
-        return JsonResponse({"res":""}, status=200)
+        count_thread = threading.active_count()
+
+        while count_thread > MAX_NUM_OF_THREAD:
+            print("threading active_count >>>>>>>>>>>>"+str(count_thread))
+            continue
+
+    return JsonResponse({"res":""}, status=200)
 
 
 
@@ -53,8 +60,9 @@ class myThread(threading.Thread):
         for index, tx in enumerate(self.block.transactions):
             print("run tx "+str(tx.hash))
             self.get_tx_table(tx, self.block)
-            self.get_input_table(tx)
             self.get_output_table(tx)
+            self.get_input_table(tx)
+
 
         exit()
 
@@ -96,7 +104,6 @@ class myThread(threading.Thread):
                 'locktime':tx.locktime,
                 'version':tx.version,
                 'transaction_hash_size':tx.size,
-
                 }
 
         tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
@@ -121,7 +128,15 @@ class myThread(threading.Thread):
                         'input_script_value': _input.script.value,
                         'input_script_operations': _input.script.operations
                      }
+            print(">>" +tx.hash)
+            print(">>" +str(_input.transaction_index))
+            outputs = Output_Table.objects.filter(transaction_hash_id=tx.hash, output_no=int(_input.transaction_index))
 
+            print("outputs " + str(outputs))
+
+            for output in outputs:
+                print("output['address'] " + str(output))
+                record['input_address'] = output.address
 
             script_type = None
 
@@ -158,7 +173,6 @@ class myThread(threading.Thread):
                             'output_script_value': output.script.value,
                             'output_script_operations': output.script.operations
                           }
-
 
 
                 loader_output_table = Output_Table(**record)
