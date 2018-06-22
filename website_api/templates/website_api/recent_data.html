@@ -1,0 +1,44 @@
+{% extends 'website_api/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+<h1 style="font-size:40px">Latest Blocks</h1><br>
+<div class="container_third_recent_data" >
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<font size="2">
+<table class = "table table-borderless " style="padding-left:40px">
+
+   <tr>
+   <th style="vertical-align:middle;text-align:center;">Block Height</th>
+   <th style="vertical-align:middle;text-align:center;">Block Hash</th>
+   <th style="vertical-align:middle;text-align:center;">No of Transactions</th>
+   <th style="vertical-align:middle;text-align:center;">Block Size</th>
+
+   <th style="vertical-align:middle;text-align:center" >Timestamps</th>
+   </tr>
+
+<tr>
+  {% for i in output %}
+  <tr>
+    <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/ui/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
+    <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/ui/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
+    <td style="text-align:center;vertical-align:middle;">{{i.block_no_of_transactions}}</td>
+    <td style="text-align:center;vertical-align:middle;">{{i.block_size}}</td>
+    <td width="20%" style="text-align:center;vertical-align:middle;">{{i.timestamp}}</td>
+  </tr>
+  {% endfor %}
+</tr>
+</table>
+</font>
+</div>
+<div class="a">
+
+<a href="/ui/recent_hundred_data/" class="btn-link" align="right">Recent Blocks>></a>
+
+</div>
+
+
+
+{% endblock %}

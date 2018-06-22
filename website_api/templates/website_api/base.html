@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>BTC explorer</title>
+    <link rel="icon" type="image/png" href="/static/images/download.png" sizes="16*16">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+
+
+          </head>
+          <body>
+
+          <div class="navbar">
+            <a href="/ui/index/" class="btn-link"> <h2> <b> BTC Explorer</b></h2></a>
+            <a href="/ui/wallet/" class="btn-link">WALLET</a>
+            <a href="/ui/recent_hundred_data/"class="btn-link">RECENT BLOCKS</a>
+            <a href="http://blockwala.io/" class="btn-link">BACK TO SITE</a>
+                <!-- <a href="#myModal" type="button"  data-toggle="modal" class="btn-link" data-target="#myModal" align="left">DONATE</a> -->
+
+            <form  action="/ui/mainSearch/" method="get">
+	             <input type="search" name="q" placeholder="Block Hash, Transaction Hash, Address, Block Height" style="margin-left:300px; margin-top:3px;">
+             </form>
+
+
+          </div>
+
+
+
+          <div class="container">
+
+            <!-- Trigger the modal with a button -->
+
+          <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" align="left">Donate</button> -->
+            <!-- Modal -->
+            <div class="modal fade myModal" id="myModal" role="dialog">
+              <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content"style="height:500px;width:500px;">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Donate.</h4>
+                  </div>
+                  <div class="modal-body" align="center">
+                    <img src="/static/images/frame.png" alt="code" width="300" height="300"></span>
+                      <h2>1N6yY2iv6f8tAi5rAmMPpi5NYighrWNyLp</h2>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+{% block content %}
+{% endblock content %}
+</div>
+<div class="content">
+</div>
+    <footer id="myFooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h5>Get started</h5>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Sign up</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h5>About us</h5>
+                    <ul>
+                        <li><a href="http://blockwala.io/#team" target="blank">Company Information</a></li>
+                        <li><a href="http://blockwala.io/#contact" target="blank">Contact us</a></li>
+                        <!-- <li><a href="#">Reviews</a></li> -->
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <!-- <h5>Support</h5>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help desk</a></li>
+                        <li><a href="#">Forums</a></li>
+                    </ul> -->
+                </div>
+                <div class="col-sm-3 info">
+                    <h5>Information</h5>
+                    <p> Blockwala.io aims to be a leading provider of blockchain services, offering scalable solutions for businesses of all sizes.</p>
+                </div>
+            </div>
+        </div>
+        <div class="second-bar">
+           <div class="container">
+                <h2 class="logo" align="center"><a href="#"> © Blockwala 2018</a></h2>
+                <div class="social-icons">
+                    <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+                    <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="google"><i class="fa fa-google-plus"></i></a>
+                    <a href="#" class="github"> <i class="fa fa-github"></i> </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+  </body>
+</html>
