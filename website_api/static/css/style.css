@@ -1,0 +1,438 @@
+.navbar {
+    overflow: hidden;
+    background-color: #00004d;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar a {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    float: left;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.navbar h1 {
+  float:right;
+  color: white;
+  padding-right: 50px;
+  margin-right: 10px;
+}
+
+
+
+.navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+    background-color: white;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}
+
+
+
+
+.dropdown-menu{
+  margin-top: 50px;
+}
+
+  .search-form .form-group {
+    float: right !important;
+    transition: all 0.50s, border-radius 0s;
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+  }
+  .search-form .form-group input.form-control {
+    padding-right: 20px;
+    border: 0 none;
+    background: transparent;
+    box-shadow: none;
+    display:block;
+  }
+  .search-form .form-group input.form-control::-webkit-input-placeholder {
+    display: none;
+  }
+  .search-form .form-group input.form-control:-moz-placeholder {
+    /* Firefox 18- */
+    display: none;
+  }
+  .search-form .form-group input.form-control::-moz-placeholder {
+    /* Firefox 19+ */
+    display: none;
+  }
+  .search-form .form-group input.form-control:-ms-input-placeholder {
+    display: none;
+  }
+  .search-form .form-group:hover,
+  .search-form .form-group.hover {
+    width: 80%;
+    border-radius: 4px 25px 25px 4px;
+  }
+  .search-form .form-group span.form-control-feedback {
+    position: absolute;
+    top: -1px;
+    right: -2px;
+    z-index: 2;
+    display: block;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    color: #3596e0;
+    left: initial;
+    font-size: 14px;
+  }
+
+.first{
+  width : 1000px;
+  border:1px solid blue;
+  padding : 20px;
+  margin : 100px;
+
+}
+input {
+outline: none;
+}
+input[type=search] {
+-webkit-appearance: textfield;
+-webkit-box-sizing: content-box;
+font-family: inherit;
+font-size: 100%;
+}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button {
+display: none;
+}
+
+
+input[type=search] {
+background: #ededed url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 9px center;
+border: solid 1px #ccc;
+padding: 9px 10px 9px 32px;
+width: 55px;
+
+-webkit-border-radius: 10em;
+-moz-border-radius: 10em;
+border-radius: 10em;
+
+-webkit-transition: all .5s;
+-moz-transition: all .5s;
+transition: all .5s;
+}
+input[type=search]:focus {
+width: 350px;
+background-color: #fff;
+border-color: #66CC75;
+
+-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+box-shadow: 0 0 5px rgba(109,207,246,.5);
+}
+
+
+input:-moz-placeholder {
+color: #999;
+}
+input::-webkit-input-placeholder {
+color: #999;
+}
+
+
+  input[type=text_down]{
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 2px;
+    font-size: 16px;
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+  }
+
+
+
+
+#myDIV {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+.qr_code_link a{
+  color:#000000;
+  font-size: 15px;
+  background-color: #009900;
+  padding: 10px 30px;
+  text-align: center;
+  border-radius: 15px;
+  font-family: 'Varela Round', sans-serif;
+}
+div.blockContainer {
+    width:105%;
+    border-radius: 15px;
+    padding-top: 0;
+    padding-right: 20px;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding: 10px 20px 10px 10px;
+    margin-right: auto;
+    border: 1px solid #BFBFBF;
+    background-color: white;
+    box-shadow: 2px 2px 2px #aaaaaa;
+}
+
+
+h1 {
+  font-size: 1em;
+}
+h2 {
+  font-size: 1.3em;
+  margin-top: 0px;
+  margin-bottom: 0;
+}
+h3 {
+    display: block;
+    font-size: 0.9em;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.navbar navbar navbar-static-top{
+  background-color: EBF5FB;
+}
+ul{
+  list-style-type: none;
+}
+
+.container_second{
+    padding-bottom: 0em;
+    padding-top: 0em;
+     margin-bottom: 0;
+     margin-right: 600px;
+     margin-left: 10px;
+}
+
+  .container_first{
+
+      width: 600px;
+      border: 2px solid olive;
+      padding: 15px;
+      margin: 25px;
+
+
+  }
+
+  .container_third{
+    margin-left: 50px;
+    margin-right: 50px;
+  border-radius: 15px;
+  width: auto;
+  background-color: #FFFFFF;
+    box-shadow: 4px 4px 4px #aaaaaa;
+  }
+
+.container_third_recent_data{
+  width:fill-available;
+  background-color: #FFFFFF;
+  box-shadow: 4px 4px 4px 4px #aaaaaa;
+}
+
+
+
+
+
+
+  #myFooter {
+      background-color: #3a3f46;
+      color: white;
+  }
+
+  #myFooter .row {
+      margin-bottom: 6px;
+  }
+
+  #myFooter .info{
+      text-align: justify;
+      color: #afb0b1;
+  }
+
+  #myFooter ul {
+      list-style-type: none;
+      padding-left: 0;
+      line-height: 1.7;
+  }
+
+  #myFooter h5 {
+      font-size: 18px;
+      color: white;
+      font-weight: bold;
+      margin-top: 50px;
+  }
+
+  #myFooter .logo{
+      margin-top: 1px;
+  }
+
+  #myFooter .second-bar .logo a{
+      color:white;
+      font-size: 14px;
+      float: left;
+      font-weight: bold;
+      line-height: 25px;
+      margin: 0;
+      padding: 0;
+  }
+
+  #myFooter a {
+      color: #d2d1d1;
+      text-decoration: none;
+  }
+
+  #myFooter a:hover,
+  #myFooter a:focus {
+      text-decoration: none;
+      color: white;
+  }
+
+  #myFooter .second-bar {
+      text-align: center;
+      background-color: #33373e;
+      text-align: center;
+  }
+
+  #myFooter .second-bar a {
+      font-size: 22px;
+      color: #9fa3a9;
+      padding: 2px;
+      transition: 0.2s;
+      line-height: 25px;
+  }
+
+  #myFooter .second-bar a:hover {
+      text-decoration: none;
+  }
+
+  #myFooter .social-icons {
+      float:right;
+  }
+
+
+  #myFooter .facebook:hover {
+      color: #0077e2;
+  }
+
+  #myFooter .google:hover {
+      color: #ef1a1a;
+  }
+
+  #myFooter .twitter:hover {
+      color: #00aced;
+  }
+  #myFooter .github:hover{
+    color:#FFFFFF;
+  }
+
+
+  .box_1 {
+  transition: 1s ease;
+  }
+
+  .box_1 :hover{
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.06);
+  transition: 1s ease;
+  }
+
+  @media screen and (max-width: 767px) {
+      #myFooter {
+          text-align: center;
+      }
+
+      #myFooter .info{
+          text-align: center;
+      }
+  }
+
+
+  td {
+      padding: 10px;
+
+  }  /* CSS used for positioning the footers at the bottom of the page. */
+  /* You can remove this. */
+
+  div.a {
+      text-align: right;
+      font-size: 20px;
+      margin-right: 48px;
+  }
+  html {
+    height: 100%;
+}
+body{
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      display: flex;
+      display: -webkit-flex;
+      flex-direction: column;
+      -webkit-flex-direction: column;
+      height: 100%;
+      margin: 0;
+/*
+  background-color: #00004d; */
+  background-color: rgba(0, 0, 77, 0.2);
+      /* background-attachment:fixed;
+      background: linear-gradient(to bottom, #669999 0%, #ffffff 80%); */
+    }
+
+.introduction{
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  background-color: rgba(0, 0, 77, 0.5);
+  border-radius: 15px;
+  width: auto;
+}
+
+.content{
+     flex: 1 0 auto;
+     -webkit-flex: 1 0 auto;
+     min-height: 20px;
+  }
+
+  #myFooter{
+     flex: 0 0 auto;
+     -webkit-flex: 0 0 auto;
+  }
