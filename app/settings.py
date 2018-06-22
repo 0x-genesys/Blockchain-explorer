@@ -88,7 +88,8 @@ WSGI_APPLICATION = 'app.wsgi.application'
 #         'USER': 'mydbuser',
 #         'PASSWORD': 'Xperia@12',
 #         'HOST':'localhost',
-#         'PORT':'5432'
+#         'PORT':'5432',
+#         'CONN_MAX_AGE':30
 #         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
@@ -100,7 +101,8 @@ DATABASES = {
         'USER': 'karan',
         'PASSWORD': 'blockwala@123',
         'HOST':'localhost',
-        'PORT':'5432'
+        'PORT':'5432',
+        'CONN_MAX_AGE':30
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
@@ -142,5 +144,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-os.path.join(BASE_DIR, "website_api/static"),
+    os.path.join(BASE_DIR, "website_api/static"),
 ]

@@ -61,8 +61,9 @@ class myThread(threading.Thread):
         for index, tx in enumerate(self.block.transactions):
             print("run tx "+str(tx.hash))
             self.get_tx_table(tx, self.block)
-            self.get_input_table(tx)
             self.get_output_table(tx)
+            self.get_input_table(tx)
+            
 
         exit()
 
@@ -128,7 +129,15 @@ class myThread(threading.Thread):
                         'input_script_value': _input.script.value,
                         'input_script_operations': _input.script.operations
                      }
+            print(">>" +tx.hash)
+            print(">>" +str(_input.transaction_index))
+            outputs = Output_Table.objects.filter(transaction_hash_id=tx.hash, output_no=int(_input.transaction_index))
 
+            print("outputs " + str(outputs))
+
+            for output in outputs:
+                print("output['address'] " + str(output))
+                record['input_address'] = output.address
 
             script_type = None
 
