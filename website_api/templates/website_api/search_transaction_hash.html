@@ -10,10 +10,19 @@
             <font size="2" face="Helvetica" >
               <table class="table table-borderless">
                             <tr>
-                                    <h2 style="margin-top:1em">Transaction</h2> <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3><br>
-                            </tr>
+                                    <h2 style="margin-top:1em">Transaction</h2> 
+                                    <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3>
+                            </tr >
+                             <tr class="warning">
                                     <td class="warning">{{transaction_hash}}</td>
-                            <tr></tr>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                                    <td class="warning"></td>
+                           </tr>
                             <tr>
                                     <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
                                     <td></td>
@@ -88,7 +97,13 @@
               <tr>
                   <td> <h3>Output Scripts</h3></td>
               </tr>
-                  <td class="active">{{output_script}}</td>
+              <td class="active">
+              {% for script in output_script %}
+                    <ul>
+                     {{script}}
+                    </ul>
+              {% endfor %}
+              </td>
         </table>
     </div>
 </p>

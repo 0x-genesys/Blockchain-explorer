@@ -126,43 +126,39 @@ def search_block_hash(request):
         input_address_list_final = []
         flag = []
         final_list = []
-        flag_input = []
 
         if not search_term:
             return render(request,'website_api/wrong_search.html')
-            print("block not present")
-        else:
-            print("whooo")
+
         transaction_db = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
         for transaction in transaction_db:
             transaction_list.append(transaction.transaction_hash)
-            output_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
-            input_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+            outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+            inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
 
             output_address_list = []
             input_address_list = []
-            if not input_db:
-                print("NOT")
-            if output_db:
 
-                for add in output_db:
-                    output_address_list.append(add.address)
-                for add in input_db:
-                    input_address_list.append(add.input_address)
-            if all(x is None for x in input_address_list):
-                print("nothing")
-                input_address_list = []
+            if inputs_db and len(inputs_db) > 0:
+                for input_ in inputs_db:
+                    if input_.input_address:
+                        input_address_list.append(input_.input_address)
 
-            record_output_address = {'transaction_hash':transaction.transaction_hash,
+            if outputs_db and len(outputs_db) > 0:
+                for output in outputs_db:
+                        output_address_list.append(output.address)
+                
+
+            record_output_address = {
+                                      'transaction_hash':transaction.transaction_hash,
                                       'output_address':output_address_list,
-                                      'input_address':input_address_list,
-                                      'flag_input':flag,
+                                      'input_address':input_address_list
                                       }
             final_list.append(record_output_address)
 
 
-
-        return render(request,'website_api/search_block_hash.html',{'block_hash':search_term[0].block_hash,
+        return render(request,'website_api/search_block_hash.html',{
+                                                                    'block_hash':search_term[0].block_hash,
                                                                     'previous_block_hash':search_term[0].previous_block_hash,
                                                                     'merkle_root':search_term[0].merkle_root,
                                                                     'block_no_of_transactions':search_term[0].block_no_of_transactions,
@@ -173,8 +169,6 @@ def search_block_hash(request):
                                                                     'bits':search_term[0].bits,
                                                                     'nonce':search_term[0].nonce,
                                                                     'final_list':final_list,
-
-                                                                    'flag_input':flag_input,
                                                                     })
 
 
@@ -193,30 +187,26 @@ def search_transaction_hash(request):
         #message = request
         output_address_list = []
         input_address_list = []
+        output_scripts = []
         search_term = Transaction_Table.objects.filter(transaction_hash=message)
         #print(message)
         if not search_term:
             return render(request,'website_api/wrong_search.html')
-            print("hash not present")
         else:
-            print("present")
             output_db = Output_Table.objects.filter(transaction_hash_id=search_term[0].transaction_hash)
             input_db = Input_Table.objects.filter(transaction_hash_id=search_term[0].transaction_hash)
 
-            for add in output_db:
-                output_address_list.append(add.address)
-            if input_db:
-                for add in input_db:
-                    input_address_list.append(add.input_address)
-            if all(x is None for x in input_address_list):
-                print("nothing")
-                input_address_list = []
+            for output in output_db:
+                if output.address:
+                    output_address_list.append(output.address)
+                if output.output_script_value:
+                    output_scripts.append(output.output_script_value)
 
-            if not output_db[0].output_script_value:
-                var = 'Does not exist'
-            else:
-                var = output_db[0].output_script_value
-            return render(request,'website_api/search_transaction_hash.html',{'transaction_hash':search_term[0].transaction_hash,
+            for input_ in input_db:
+                if input_.input_address:
+                    input_address_list.append(input_.input_address)
+
+            return render(request,'website_api/search_transaction_hash.html', {'transaction_hash':search_term[0].transaction_hash,
                                                                                 'block_size':search_term[0].block_size,
                                                                                 'Number_of_inputs':search_term[0].V_in,
                                                                                 'Number_of_outputs':search_term[0].V_out,
@@ -227,8 +217,9 @@ def search_transaction_hash(request):
                                                                                 'output_addresses':output_address_list,
                                                                                 'input_addresses':input_address_list,
                                                                                 'transaction_hash_size':search_term[0].transaction_hash_size,
-                                                                                'output_script':var,
+                                                                                'output_script':output_scripts,
                                                                                 })
+
 
 
 

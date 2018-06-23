@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.postgres.indexes import GinIndex
 #import djngo.contrib.postgres.search as pg_search
 class Block_Table(models.Model):
-    block_hash = models.CharField(max_length=200)
+    block_hash = models.CharField(db_index=True, max_length=200)
     block_header = models.CharField(max_length=200)
     block_no_of_transactions = models.IntegerField()
     block_size = models.IntegerField()
@@ -27,8 +27,8 @@ class Block_Table(models.Model):
         return str(self.block_height)
 
 class Transaction_Table(models.Model):
-    transaction_hash = models.CharField(primary_key=True, max_length=200, null=False)
-    block_height = models.ForeignKey('Block_Table', null=True, blank=True, on_delete=models.CASCADE)
+    transaction_hash = models.CharField(primary_key=True, db_index=True, max_length=200, null=False)
+    block_height = models.ForeignKey('Block_Table', db_index=True, null=True, blank=True, on_delete=models.CASCADE)
     block_size = models.IntegerField(null=True)
     is_CoinBase = models.BooleanField(default=True)
     V_in = models.IntegerField(default=0)
