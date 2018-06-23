@@ -17,9 +17,4 @@ url(r'^searchBlockHeight/$',views_ui_front.search_block_height,name='search_bloc
 url(r'^wrongQuery/$',views_ui_front.wrong_query,name='wrong_query'),
 url(r'^mainSearch/$',views_ui_front.main_search_bar,name='main_search_bar'),
 url(r'^wallet/$',views_ui_front.wallet,name='wallet'),
-
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/praful
 ]

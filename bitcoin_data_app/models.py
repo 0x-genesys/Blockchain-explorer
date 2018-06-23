@@ -5,19 +5,11 @@ from django.db import models
 from django.contrib.postgres.indexes import GinIndex
 #import djngo.contrib.postgres.search as pg_search
 class Block_Table(models.Model):
-<<<<<<< HEAD
-    block_hash = models.CharField(db_index=True, max_length=200)
-    block_header = models.CharField(max_length=200)
-    block_no_of_transactions = models.IntegerField()
-    block_size = models.IntegerField()
-    block_height = models.IntegerField(db_index=True, primary_key=True, blank=True, null=False)
-=======
     block_hash = models.CharField(max_length=200)
     block_header = models.CharField(max_length=200)
     block_no_of_transactions = models.IntegerField()
     block_size = models.IntegerField()
     block_height = models.IntegerField(primary_key=True, blank=True, null=False)
->>>>>>> origin/praful
 
 #############################  Block header contents ####################
     block_header_version = models.CharField(max_length=10)
@@ -35,13 +27,8 @@ class Block_Table(models.Model):
         return str(self.block_height)
 
 class Transaction_Table(models.Model):
-<<<<<<< HEAD
-    transaction_hash = models.CharField(db_index=True, primary_key=True, max_length=200, null=False)
-    block_height = models.ForeignKey('Block_Table', db_index=True, null=True, blank=True, on_delete=models.CASCADE)
-=======
     transaction_hash = models.CharField(primary_key=True, max_length=200, null=False)
     block_height = models.ForeignKey('Block_Table', null=True, blank=True, on_delete=models.CASCADE)
->>>>>>> origin/praful
     block_size = models.IntegerField(null=True)
     is_CoinBase = models.BooleanField(default=True)
     V_in = models.IntegerField(default=0)
@@ -58,46 +45,26 @@ class Transaction_Table(models.Model):
         return str(self.transaction_hash)
 
 class Input_Table(models.Model):
-<<<<<<< HEAD
     transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     transaction_index = models.TextField(max_length=20,null=False)
     input_sequence_number = models.CharField(max_length=20, null=False)
     input_size = models.IntegerField(null=False)
     input_address = models.CharField(db_index=True, max_length=400, null=True)
     input_value = models.CharField(max_length=100,null=True)
-=======
-    transaction_hash = models.ForeignKey('Transaction_Table', max_length=200, blank=True, null=True, on_delete=models.CASCADE)
-    transaction_index = models.TextField(max_length=20,null=False)
-    input_sequence_number = models.CharField(max_length=20, null=False)
-    input_size = models.IntegerField(null=False)
-    input_address = models.CharField(max_length=400, null=True)
-
->>>>>>> origin/praful
     input_script_type = models.TextField(max_length=400, null=True)
     input_script_value = models.TextField(max_length=400, null=True)
     input_script_operations = models.TextField(max_length=400, null=True)
 
     def __str__(self):
-<<<<<<< HEAD
-        return self.input_script
-
-class Output_Table(models.Model):
-    transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
-=======
         return self.input_address
 
 class Output_Table(models.Model):
-    transaction_hash = models.ForeignKey('Transaction_Table', max_length=200, blank=True, null=True, on_delete=models.CASCADE)
->>>>>>> origin/praful
+    transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     output_no = models.IntegerField(null=False)
     output_type = models.CharField(max_length=20, null=False)
     output_value = models.CharField(max_length=100,null=False)
     size = models.IntegerField(null=False)
-<<<<<<< HEAD
     address = models.CharField(db_index=True, max_length=400, null=False)
-=======
-    address = models.CharField(max_length=400, null=False)
->>>>>>> origin/praful
 
     #output_script_type = models.TextField(max_length=400, null=True)
     output_script_value = models.TextField(max_length=400, null=True)

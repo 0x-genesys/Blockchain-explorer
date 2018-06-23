@@ -19,7 +19,6 @@ from django.contrib.auth import views
 from website_api import views_ui_front
 
 urlpatterns =[
-<<<<<<< HEAD
     # url(r'^admin/',admin.site.urls),
     url(r'^core/', include('bitcoin_data_app.urls')),
     url(r'^ui/', include('website_api.urls')),
@@ -33,10 +32,4 @@ urlpatterns =[
     # url(r'^wrongQuery/$',views_ui_front.wrong_query,name='wrong_query'),
     #
     # url(r'^mainSearch/$',views_ui_front.main_search_bar,name='main_search_bar'),
-=======
-    url(r'^admin/',admin.site.urls),
-    url(r'^core/',include('bitcoin_data_app.urls')),
-    url(r'^ui/',include('website_api.urls')),
-
->>>>>>> origin/praful
 ]
