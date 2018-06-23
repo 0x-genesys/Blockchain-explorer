@@ -62,8 +62,6 @@ class myThread(threading.Thread):
             self.get_tx_table(tx, self.block)
             self.get_output_table(tx)
             self.get_input_table(tx)
-
-
         exit()
 
     def get_block(self, block):
@@ -116,7 +114,6 @@ class myThread(threading.Thread):
 
 
     def get_input_table(self, tx):
-
         for _input in tx.inputs:
             record = {
                         'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
@@ -124,6 +121,7 @@ class myThread(threading.Thread):
                         'input_sequence_number': _input.sequence_number,
                         'input_size': _input.size,
                         'input_address':None, #todo pointer to object, resolve this
+                        'input_value': None,
                         'input_script_type': None,
                         'input_script_value': _input.script.value,
                         'input_script_operations': _input.script.operations
@@ -137,6 +135,7 @@ class myThread(threading.Thread):
             for output in outputs:
                 print("output['address'] " + str(output))
                 record['input_address'] = output.address
+                record['input_value'] = output.output_value
 
             script_type = None
 

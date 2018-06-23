@@ -10,7 +10,6 @@ from app.settings import BLOCK_DATA_DIR, BASE_DIR, STATICFILES_DIRS
 import os
 import qrcode
 import re
-import matplotlib.pyplot as plt
 import io
 import urllib, base64
 from io import BytesIO
@@ -113,8 +112,6 @@ def main_search_bar(request):
 
 
 
-
-
 """
 View to search for block hash from the database along with the included transactions of the block and their
 corresponding addresses. This function is called when the main search function redirects the control to this function.
@@ -185,8 +182,6 @@ def search_block_hash(request):
 
 
 
-
-
 """
 View to extract the transaction hash from the database and the corresponding addresses involved in it.
 It is called when the main search function redirects the control over here.
@@ -239,7 +234,6 @@ def search_transaction_hash(request):
 
 
 
-
 """
 View to search for addresses whether it is an input address or an output address.
 It is called when redirected from main search function.
@@ -247,48 +241,64 @@ Creates Qr code for each address.
 """
 def search_address(request):
      if 'q' in request.GET:
-         message = request.GET['q']
-         flag = 0
-         transaction_list = []
-         output_db = Output_Table.objects.filter(address=message)
-         if not output_db:
+        message = request.GET['q']
 
-             input_db = Input_Table.objects.filter(input_address=message)
-             if not input_db:
-                 return render(request,'website_api/wrong_search.html')
-             else:
-                 flag = 1
 
-             search_term = input_db
-         else:
+        n_outputs = Output_Table.objects.filter(address=message)
+        n_inputs = Input_Table.objects.filter(input_address=message)
 
-             search_term = output_db
+        input_transaction_hashes = []
+        output_transaction_hashes = []
+        input_addresses = []
+        output_addresses = []
+        addresses = {"input" : input_addresses, "output": output_addresses}
+        tx_addresses = {}
 
-         for i in search_term:
-             record_transaction = {'transaction_hash':i.transaction_hash}
-             transaction_list.append(record_transaction)
+        for input_entry in n_inputs:
+            tx_hash = input_entry.transaction_hash_id
+            input_transaction_hashes.append(tx_hash)
 
-             if flag == 1:
-                 print(transaction_list)
-                 return render(request, 'website_api/search_input_address.html',{'Address':message,
-                                                                                 'transaction_hash':search_term[0].transaction_hash,
-                                                                                 'transaction_index':search_term[0].transaction_index,
-                                                                                 'input_script':search_term[0].input_script,
-                                                                                 'input_sequence_number':search_term[0].input_sequence_number,
-                                                                                 'input_size':search_term[0].input_size,
+            if tx_hash not in tx_addresses:
+                tx_addresses[tx_hash] = {}
 
-                                                                                 'transaction_hash_list':transaction_list,
-                                                                                 })
-             else:
-                 return render(request, 'website_api/search_address.html',{'Address':message,
-                                                                           'transaction_hash':search_term[0].transaction_hash,
-                                                                           'output_no':search_term[0].output_no,
-                                                                           'output_type':search_term[0].output_type,
-                                                                           'output_value':search_term[0].output_value,
-                                                                           'size':search_term[0].size,
+            tx_addresses[tx_hash]["input"] = []
+            tx_addresses[tx_hash]["input"].append(input_entry.input_address)
 
-                                                                           'transaction_hash_list':transaction_list,
-                                                                           })
+
+
+        for output_entry in n_outputs:
+            tx_hash = output_entry.transaction_hash_id
+            output_transaction_hashes.append(tx_hash)
+
+            if tx_hash not in tx_addresses:
+                tx_addresses[tx_hash] = {}
+
+            tx_addresses[tx_hash]["output"] = []
+            tx_addresses[tx_hash]["output"].append(output_entry.address)
+
+
+        transaction_hashes = list(set(input_transaction_hashes + output_transaction_hashes))
+
+        transaction_entries = []
+
+        for transaction_id in transaction_hashes:
+            print("transaction_id" + transaction_id)
+            tx_entries = Transaction_Table.objects.filter(transaction_hash=transaction_id)
+            for tx_entry in tx_entries:
+                tx_final_entry = {}
+                tx_final_entry['tx_entry'] = tx_entry
+                tx_final_entry['addresses'] = {}
+                if transaction_id in tx_addresses:
+                    tx_final_entry['addresses'] = tx_addresses[transaction_id]
+                transaction_entries.append(tx_final_entry)
+
+        return render(request, 'website_api/search_address.html', {
+                                                                'Address':message,
+                                                               'transaction_list':transaction_entries,
+                                                               'balance': 0.0,
+                                                               'total_tx': 0.0,
+                                                               'tx_count': len(transaction_hashes)
+                                                               })
 
 
 """

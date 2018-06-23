@@ -8,23 +8,19 @@
 
 <div class="col-xs-6">
 <div class="blockContainer">
-<h1 style="font-size:30px;">Address</h1>
+    <font size="2" face="Helvetica" >
+    <table class = "table table-borderless ">
 
-      <font size="2" face="Helvetica" >
-<table class = "table table-borderless ">
+      <tbody>
 
-<tbody>
+          <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
+          <tr><td>Address</td>  <td> {{Address}} </td> </tr>
+          <tr><td>Balance</td>  <td> {{balance}} </td> </tr>
+          <tr><td>Total Received</td>  <td> {{total_received}} </td> </tr>
+          <tr><td>Transaction Count</td>  <td> {{tx_count}} </td> </tr>
 
-    <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
-    <tr><td>Address</td>  <td> {{Address}} </td> </tr>
-    <tr><td>Transaction Hash </td> <td><a class="btn-link" href="/ui/searchTransaction/?q={{transaction_hash}}">{{transaction_hash}}</a></td></tr>
-    <tr><td>Output Number </td> <td>{{output_no}}</td></tr>
-    <tr><td>Output Type </td> <td>{{output_type}}</td></tr>
-    <tr><td>Output Value </td> <td>{{output_value}}</td></tr>
-    <tr><td>Size </td> <td>{{size}}</td></tr>
-
-</tbody>
-</table>
+      </tbody>
+    </table>
 </div>
 </div>
 
@@ -32,7 +28,7 @@
 <div class="block" style="margin-left:60px;">
   <div class="text">
 
-<h1 style="font-size:20px"> <b>QR code For The Address</b> </h1>
+<!-- <h1 style="font-size:20px"> <b>QR code For The Address</b> </h1> -->
 
 </div>
 <br>
@@ -56,29 +52,22 @@
     height="250" />
 </div>
 </div>
-</div>
 
 <br><br>
-
-
-
-
 <br><br>
-
 <br><br>
-<h2 align="center">&nbsp;&nbsp;&nbsp; <b> <u>General Information</u> </b></h2>
+<h2 align="left">&nbsp;&nbsp;&nbsp; <b> <u>Transactions</u> </b></h2>
 <br>
-{% for index in transaction_hash_list %}
+{% for transaction in transaction_list %}
+{% with hash=transaction.tx_entry.transaction_hash%}
 <div class="compact"style="margin: 0; display: inline-block; float: left;">
 
 <div class="blockContainer">
-<table class="table table-border">
-<h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
-<tr>
-<td class="active"> <li> <a href="/ui/mainSearch/?q={{index.transaction_hash}}">{{index.transaction_hash}}</a></li> </td>
-</tr>
-<tr>
-      <td> <h3>Addresses</h3></td><tr>
+  <table class="table table-border">
+    <h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
+      <tr>
+        <td class="active"> <li> <a href="/ui/mainSearch/?q={{index.transaction_hash}}">{{hash}}</a></li> </td>
+
       </tr>
       <tr>
         <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
@@ -90,33 +79,38 @@
         <td></td>
         <td></td>
       </tr>
-        <td style="text-align:center;vertical-align:middle;">
-        {% if not input_addresses %}
+
+      <td style="text-align:center;vertical-align:middle;">
+
+       <!--  {% ifequal transaction.addresses.input 0 %}
+          <h3>No new inputs (newly generated coins)</h3>
+        {% endifequal %} -->
+
+        {% if transaction.addresses.input == None %}
           <h3>No new inputs (newly generated coins)</h3>
         {% endif %}
-            {% for index_input in i.input_address %}
-              <ul>
-                  <li> <a class="btn-link" href="/ui/mainSearch/?q={{index_input}}"> {{index_input}} </li></a>
-              </ul>
 
-            {% endfor %}
+        {% for input_address in transaction.addresses.input %}
+          <ul>
+              <li> <a class="btn-link" href="/ui/mainSearch/?q={{input_address}}"> {{input_address}} </li></a>
+          </ul>
+        {% endfor %}
+
       </td>
-<td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
-
-              <td align="right" style="text-align:center;vertical-align:middle;">
-                <ul>
-                  <li> {{Address}}</li>
-                </ul>
-              </td>
-
+      <td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
+        {% for output_address in transaction.addresses.output %}
+          <td align="right" style="text-align:center;vertical-align:middle;">
+            <ul>
+              <li> <a class="btn-link" href="/ui/mainSearch/?q={{output_address}}"> {{output_address}} </li></a>
+            </ul>
+          </td>
+          {% endfor %}
     </tr>
 </table>
 </div>
 <br>
 </div>
 </font>
+{% endwith %}
 {% endfor %}
-
-
-
 {% endblock %}

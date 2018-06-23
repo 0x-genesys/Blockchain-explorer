@@ -17,11 +17,10 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 ROOT_DIR = os.path.abspath(os.sep)
-BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-#BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+# BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -39,7 +38,6 @@ ALLOWED_HOSTS = ['192.168.42.212', '127.0.0.1','0.0.0.0']
 INSTALLED_APPS = [
     'bitcoin_data_app',
     'website_api',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,8 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
 ]
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,36 +77,34 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'app.wsgi.application'
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myprojectdb',
-        'USER': 'mydbuser',
-        'PASSWORD': 'Xperia@12',
-        'HOST':'localhost',
-        'PORT':'5432',
-        'CONN_MAX_AGE':30
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'bitcoin',
-#         'USER': 'karan',
-#         'PASSWORD': 'blockwala@123',
+#         'NAME': 'myprojectdb',
+#         'USER': 'mydbuser',
+#         'PASSWORD': 'Xperia@12',
 #         'HOST':'localhost',
 #         'PORT':'5432',
 #         'CONN_MAX_AGE':30
-#         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bitcoin',
+        'USER': 'karan',
+        'PASSWORD': 'blockwala@123',
+        'HOST':'localhost',
+        'PORT':'5432',
+        'CONN_MAX_AGE':30
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 

@@ -37,7 +37,6 @@ class Transaction_Table(models.Model):
     version = models.CharField(max_length=10)
     transaction_hash_size = models.IntegerField(default=0)
 
-
     def __str__(self):
         return str(self.transaction_hash)
 
@@ -45,12 +44,12 @@ class Transaction_Table(models.Model):
         return str(self.transaction_hash)
 
 class Input_Table(models.Model):
-    transaction_hash = models.ForeignKey('Transaction_Table', max_length=200, blank=True, null=True, on_delete=models.CASCADE)
+    transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     transaction_index = models.TextField(max_length=20,null=False)
     input_sequence_number = models.CharField(max_length=20, null=False)
     input_size = models.IntegerField(null=False)
-    input_address = models.CharField(max_length=400, null=True)
-
+    input_address = models.CharField(db_index=True, max_length=400, null=True)
+    input_value = models.CharField(max_length=100,null=True)
     input_script_type = models.TextField(max_length=400, null=True)
     input_script_value = models.TextField(max_length=400, null=True)
     input_script_operations = models.TextField(max_length=400, null=True)
@@ -59,13 +58,12 @@ class Input_Table(models.Model):
         return self.input_address
 
 class Output_Table(models.Model):
-    transaction_hash = models.ForeignKey('Transaction_Table', max_length=200, blank=True, null=True, on_delete=models.CASCADE)
+    transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     output_no = models.IntegerField(null=False)
     output_type = models.CharField(max_length=20, null=False)
     output_value = models.CharField(max_length=100,null=False)
     size = models.IntegerField(null=False)
-    address = models.CharField(max_length=400, null=False)
-
+    address = models.CharField(db_index=True, max_length=400, null=False)
     #output_script_type = models.TextField(max_length=400, null=True)
     output_script_value = models.TextField(max_length=400, null=True)
     output_script_operations = models.TextField(max_length=400, null=True)
