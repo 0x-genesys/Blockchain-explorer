@@ -28,8 +28,8 @@
 <div class="block" style="margin-left:60px;">
   <div class="text">
 
-<!-- <h1 style="font-size:20px"> <b>QR code For The Address</b> </h1> -->
 
+<!-- <h1 style="font-size:20px"> <b>QR code For The Address</b> </h1> -->
 </div>
 <br>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -52,7 +52,7 @@
     height="250" />
 </div>
 </div>
-
+</div>
 <br><br>
 <br><br>
 <br><br>
@@ -87,7 +87,10 @@
         {% endifequal %} -->
 
         {% if transaction.addresses.input == None %}
-          <h3>No new inputs (newly generated coins)</h3>
+        <div class="coinbase">
+             <b>(newly generated coins)</b><br>
+             <h1 >Coinbase Transactions</h1>
+        </div>
         {% endif %}
 
         {% for input_address in transaction.addresses.input %}
