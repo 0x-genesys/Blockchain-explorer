@@ -1,21 +1,26 @@
 import math
 import sys
 import urllib.request
-from bitcoinrpc.authproxy import AuthServiceProxy
 
-api = "http://127.0.0.1:8000/core/run/?"
+api = "http://54.169.180.30/core/run/?"
 
 def main():
 	print("Hello World!")
-	start =  sys.argv[0]
-	end =  sys.argv[1]
-
+	start =  sys.argv[1]
+	end =  sys.argv[2]
+	print(start)
+	print(end)
 	bucket_size = 20000
-	buckets = int(end)/bucket_size
-	buckets = math.ceil(buckets)
-	print("\n+buckets "+str(buckets))
 
-	for i in range(buckets):
+	bucket_start = int(start)/bucket_size
+	bucket_start = int(math.ceil(bucket_start))
+	
+	bucket_end = int(end)/bucket_size
+	buckets_end = int(math.ceil(bucket_end))
+	
+	print("\n+buckets "+str(bucket_start)+" to "+str(buckets_end))
+
+	for i in range(bucket_start, buckets_end):
 		print("\n\n\n ..... "+str(i))
 		start = i * bucket_size
 		end = (i+1) * bucket_size
