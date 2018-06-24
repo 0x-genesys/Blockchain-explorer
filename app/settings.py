@@ -19,7 +19,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 ROOT_DIR = os.path.abspath(os.sep)
- BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/data/bitcoin/blocks')
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/data/bitcoin/blocks')
 # BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
 #BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
