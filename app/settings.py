@@ -31,7 +31,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['192.168.42.212', '127.0.0.1','0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-
 ]
 
 MIDDLEWARE = [
