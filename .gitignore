@@ -17,3 +17,7 @@ tests/report/
 *.pyc
 __pycache__/
 app/__pycache__/*.*
+bitcoinenv/
+scripts/nohup.out
+nohup.out
+static/
