@@ -10,7 +10,7 @@ def main():
 	end =  sys.argv[2]
 	print(start)
 	print(end)
-	bucket_size = 20000
+	bucket_size = 2000
 
 	bucket_start = int(start)/bucket_size
 	bucket_start = int(math.ceil(bucket_start))
