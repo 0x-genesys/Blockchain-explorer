@@ -114,8 +114,11 @@ class myThread(threading.Thread):
 
     def get_input_table(self, tx):
         for _input in tx.inputs:
+            if _input.transaction_hash is None or Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists() is False:
+                return
+            print("_input.transaction_hash. "+str(_input.transaction_hash))
             record = {
-                        'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                        'transaction_hash':Transaction_Table.objects.get(transaction_hash=_input.transaction_hash),
                         'transaction_index': _input.transaction_index,
                         'input_sequence_number': _input.sequence_number,
                         'input_size': _input.size,
@@ -125,9 +128,9 @@ class myThread(threading.Thread):
                         'input_script_value': _input.script.value,
                         'input_script_operations': _input.script.operations
                      }
-            print(">>" +tx.hash)
+            print(">>" +_input.transaction_hash)
             print(">>" +str(_input.transaction_index))
-            outputs = Output_Table.objects.filter(transaction_hash_id=tx.hash, output_no=int(_input.transaction_index))
+            outputs = Output_Table.objects.filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
 
             print("outputs " + str(outputs))
 
