@@ -1,3 +1,4 @@
+import sys
 import urllib.request
 from bitcoinrpc.authproxy import AuthServiceProxy
 
@@ -11,7 +12,7 @@ def main():
 		print "Problems connecting to bitcoin wallet:"
 		end = 550000 #5.5 lakh
 
-	print("Hello World!")
+	print("end is "+str(end))
 	start = 0
 
 	bucket_size = 20000
