@@ -2,7 +2,7 @@ import math
 import sys
 import urllib.request
 
-api = "http://54.169.180.30/core/run/?"
+api = "http://explorer.blockwala.io/core/run/?"
 
 def main():
 	print("Hello World!")
