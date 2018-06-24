@@ -10,8 +10,7 @@ from app.settings import BLOCK_DATA_DIR
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
-
-MAX_NUM_OF_THREAD = 300
+MAX_NUM_OF_THREAD = 100
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
 def extract_input_output_main_from_blockchain(request):
