@@ -9,8 +9,11 @@ from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from app.settings import BLOCK_DATA_DIR, BASE_DIR, STATICFILES_DIRS
 import os
 import qrcode
+import time
+import calendar
 import re
 import io
+from .calaculate_amount import calculate_amount_tx, calculate_amount_address, calculate_amount_received
 import urllib, base64
 from io import BytesIO
 from PIL import Image
@@ -154,8 +157,10 @@ def search_block_hash(request):
                                       'output_address':output_address_list,
                                       'input_address':input_address_list
                                       }
+
             final_list.append(record_output_address)
 
+            balance = calculate_amount_received(outputs_db)
 
         return render(request,'website_api/search_block_hash.html',{
                                                                     'block_hash':search_term[0].block_hash,
@@ -169,6 +174,7 @@ def search_block_hash(request):
                                                                     'bits':search_term[0].bits,
                                                                     'nonce':search_term[0].nonce,
                                                                     'final_list':final_list,
+                                                                    'balance': balance
                                                                     })
 
 
@@ -186,9 +192,11 @@ def search_transaction_hash(request):
         message = request.GET['q']
         #message = request
         output_address_list = []
+        output_address_price = []
         input_address_list = []
         output_scripts = []
-        search_term = Transaction_Table.objects.filter(transaction_hash=message)
+        input_scripts = []
+        search_term = Transaction_Table.objects.filter(transaction_hash=message).order_by('-timestamp')
         #print(message)
         if not search_term:
             return render(request,'website_api/wrong_search.html')
@@ -205,8 +213,16 @@ def search_transaction_hash(request):
             for input_ in input_db:
                 if input_.input_address:
                     input_address_list.append(input_.input_address)
+                if input_.input_script_value:
+                    input_scripts.append(input_.input_script_value)
+                if input_.input_value:
+                    print(str(int(input_.input_value)/100000000))
+                    output_address_price.append(str(int(input_.input_value)/100000000))
 
-            return render(request,'website_api/search_transaction_hash.html', {'transaction_hash':search_term[0].transaction_hash,
+            balance = calculate_amount_received(output_db)
+
+            return render(request,'website_api/search_transaction_hash.html', {
+                                                                                'transaction_hash':search_term[0].transaction_hash,
                                                                                 'block_size':search_term[0].block_size,
                                                                                 'Number_of_inputs':search_term[0].V_in,
                                                                                 'Number_of_outputs':search_term[0].V_out,
@@ -215,9 +231,13 @@ def search_transaction_hash(request):
                                                                                 'block_height':search_term[0].block_height,
                                                                                 'coinbase':search_term[0].is_CoinBase,
                                                                                 'output_addresses':output_address_list,
+                                                                                'output_address_price': output_address_price,
                                                                                 'input_addresses':input_address_list,
                                                                                 'transaction_hash_size':search_term[0].transaction_hash_size,
                                                                                 'output_script':output_scripts,
+                                                                                'input_scripts':input_scripts,
+                                                                                'timestamp': search_term[0].timestamp,
+                                                                                'balance': balance,
                                                                                 })
 
 
@@ -231,65 +251,80 @@ It is called when redirected from main search function.
 Creates Qr code for each address.
 """
 def search_address(request):
-     if 'q' in request.GET:
+    if 'q' in request.GET:
         message = request.GET['q']
-
 
         n_outputs = Output_Table.objects.filter(address=message)
         n_inputs = Input_Table.objects.filter(input_address=message)
 
         input_transaction_hashes = []
         output_transaction_hashes = []
-        input_addresses = []
-        output_addresses = []
-        addresses = {"input" : input_addresses, "output": output_addresses}
         tx_addresses = {}
 
         for input_entry in n_inputs:
             tx_hash = input_entry.transaction_hash_id
+            print(input_entry.input_value)
             input_transaction_hashes.append(tx_hash)
-
-            if tx_hash not in tx_addresses:
-                tx_addresses[tx_hash] = {}
-
-            tx_addresses[tx_hash]["input"] = []
-            tx_addresses[tx_hash]["input"].append(input_entry.input_address)
-
-
 
         for output_entry in n_outputs:
             tx_hash = output_entry.transaction_hash_id
             output_transaction_hashes.append(tx_hash)
 
-            if tx_hash not in tx_addresses:
-                tx_addresses[tx_hash] = {}
-
-            tx_addresses[tx_hash]["output"] = []
-            tx_addresses[tx_hash]["output"].append(output_entry.address)
+        balance = calculate_amount_address(n_inputs, n_outputs)
+        total_received = calculate_amount_received(n_outputs)
 
 
+
+        #get unique hashes
         transaction_hashes = list(set(input_transaction_hashes + output_transaction_hashes))
 
         transaction_entries = []
 
-        for transaction_id in transaction_hashes:
-            print("transaction_id" + transaction_id)
-            tx_entries = Transaction_Table.objects.filter(transaction_hash=transaction_id)
-            for tx_entry in tx_entries:
-                tx_final_entry = {}
-                tx_final_entry['tx_entry'] = tx_entry
-                tx_final_entry['addresses'] = {}
-                if transaction_id in tx_addresses:
-                    tx_final_entry['addresses'] = tx_addresses[transaction_id]
-                transaction_entries.append(tx_final_entry)
+        for transaction_hash in transaction_hashes:
+            tx_entries = Transaction_Table.objects.filter(transaction_hash=transaction_hash)
+            tx_inputs_db = Input_Table.objects.filter(transaction_hash=transaction_hash)
+            tx_outputs_db = Output_Table.objects.filter(transaction_hash=transaction_hash)
+            tx_inputs = []
+            tx_outputs = []
 
+            #construct the inputs
+            for _input in tx_inputs_db:
+                tx_inputs.append(_input.input_address)
+
+            for _output in tx_outputs_db:
+                tx_outputs.append(_output.address)
+
+            net_value = calculate_amount_received(tx_outputs_db)
+
+            tx_entry = tx_entries[0]
+            tx_final_entry = {}
+            tx_final_entry['tx_entry'] = tx_entry
+            tx_final_entry['addresses'] = {}
+            tx_final_entry['value'] = net_value
+            tx_final_entry['addresses'] = {}
+            tx_final_entry['addresses']['input'] = tx_inputs
+            tx_final_entry['addresses']['output'] = tx_outputs
+
+            transaction_entries.append(tx_final_entry)
+
+        transaction_entries.sort(key=extract_time, reverse=True)
         return render(request, 'website_api/search_address.html', {
                                                                 'Address':message,
-                                                               'transaction_list':transaction_entries,
-                                                               'balance': 0.0,
-                                                               'total_tx': 0.0,
-                                                               'tx_count': len(transaction_hashes)
+                                                                'transaction_list':transaction_entries,
+                                                                'balance': balance,
+                                                                'total_received': total_received,
+                                                                'tx_count': len(transaction_hashes)
                                                                })
+
+def extract_time(json):
+    try:
+        # Also convert to int since update_time will be string.  When comparing
+        # strings, "10" is smaller than "2".
+        mysql_time_struct = time.strptime(str(json['tx_entry'].timestamp), "%Y-%m-%d %H:%M:%S")
+        mysql_time_epoch = calendar.timegm(mysql_time_struct)
+        return int(mysql_time_epoch)
+    except KeyError:
+        return 0
 
 
 """

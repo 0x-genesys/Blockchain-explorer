@@ -15,30 +15,39 @@ import os
 # import django
 # django.setup()
 
+
+###END POINT####
+
+# API = "http://explorer.blockwala.io"
+
+API = "http://localhost:8000"
+
+###DATA PATH####
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 ROOT_DIR = os.path.abspath(os.sep)
 BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/data/bitcoin/blocks')
 # BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-#BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*','127.0.0.1']
-
 
 # Application definition
 
 INSTALLED_APPS = [
     'bitcoin_data_app',
     'website_api',
+    'scripts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [

@@ -2,67 +2,109 @@
 {% load staticfiles %}
 {% block content %}
 
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <div class="compact"style="margin: 0; display: inline-block; float: left;">
           <div class="blockContainer">
             <font size="2" face="Helvetica" >
               <table class="table table-borderless">
+
                             <tr>
-                                    <h2 style="margin-top:1em">Transaction</h2> 
-                                    <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3>
+                                <h2 style="margin-top:1em">Transaction</h2> 
+                                <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3>
+                                <br/>
+                                <br/>
                             </tr >
+
                              <tr class="warning">
-                                    <td class="warning">{{transaction_hash}}</td>
-                                    <td class="warning"></td>
-                                    <td class="warning"></td>
-                                    <td class="warning"></td>
-                                    <td class="warning"></td>
-                                    <td class="warning"></td>
-                                    <td class="warning"></td>
-                                    <td class="warning"></td>
+                                <td class="warning">{{transaction_hash}}</td>
+                                <td class="warning"></td>
+                                <td class="warning"></td>
+                                <td class="warning"></td>
+                                <td class="warning"></td>
+                                <td class="warning"></td>
+                                <td class="warning"></td>
+                                <td class="warning"></td>
                            </tr>
+
+
+
                             <tr>
-                                    <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
-                                    <td></td>
-                                    <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                              <td text-align:center;vertical-align:middle;">
+                                <b>
+                                  Accepted on {{timestamp}}
+                                </b>
+                              </td>
+
+                              <td style="text-align:center;vertical-align:middle;">
+                                <div style="height:100%; width:100%; background-color:#fff; color:#0ac546; position:relative;" >
+                                  <b>
+                                  {{balance}} BTC
+                                </b>
+                                </div>
+                              </td>
                             </tr>
-                                    <td style="text-align:center;vertical-align:middle;">
-                                              
 
-                                              {% if input_addresses|length > 0 %}
-                                                    {% for index in input_addresses %}
-                                                    <ul>
-                                                      <li> <a href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
-                                                    </ul>
-                                                    {% endfor %}
-                                              {% else %}
-                                                      <div class="coinbase">
-                                                           <b>(newly generated coins)</b><br>
-                                                           <h1 >Coinbase Transactions</h1>
-                                                      </div>
-                                              {% endif %}
+                            <tr>
+                              <td style="text-align:center;vertical-align:middle;"> 
+                                <b>Inputs</b> 
+                              </td>
+                              <td></td>
+                              <td style="text-align:center;vertical-align:middle;">
+                                <b>Outputs</b> 
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                            </tr>
 
+                            <tr>
 
-                                    </td>
-                            <td> <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> </td>
-                            <td align="right" style="text-align:center;vertical-align:middle;">
-                                    {% for index in output_addresses %}
-                                          <ul>
-                                            <li > <a class="btn-link" href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
-                                          </ul>
-                                    {% endfor %}
+                            <td style="text-align:center;vertical-align:middle;">
+                              {% if input_addresses|length > 0 %}
+                                  {% for index in input_addresses %}
+                                    <ul>
+                                      <li> <a href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
+                                    </ul>
+                                  {% endfor %}
+                              {% else %}
+                                <div class="coinbase">
+                                     <b>(newly generated coins)</b><br>
+                                     <h1 >Coinbase Transactions</h1>
+                                </div>
+                              {% endif %}
                             </td>
+
+                           <td style="text-align:left;vertical-align:left; color:#0ac546;">
+                            {% if output_address_price|length > 0 %}
+                                  {% for price in output_address_price %}
+                                    <ul>
+                                      <p>{{price}} BTC</p>
+                                    </ul>
+                                  {% endfor %}
+                              {% endif %}
+                            </td>
+
+
+                            <td style="text-align:center;vertical-align:middle;">
+                                <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> 
+                            </td>
+
+
+                            <td align="right" style="text-align:center;vertical-align:middle;">
+                                {% for index in output_addresses %}
+                                      <ul>
+                                        <li > <a class="btn-link" href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
+                                      </ul>
+                                {% endfor %}
+                            </td>
+
+                          </tr>
+
               </table>
             </div>
-            <br>
-</div>
+          </div>
 
 <div class="bg-grey pv-55">
             <div class="row-fluid row flex-row flex-column flex-column-reverse-mobile">
@@ -91,6 +133,25 @@
                   </div>
           </div>
 </div>
+
+<p>
+    <div id="myDIV">
+        <table class="table table-striped">
+              <tr>
+                  <td> <h3>Input Scripts</h3></td>
+              </tr>
+              <td class="active">
+              {% for script in input_scripts %}
+                    <ul>
+                     {{script}}
+                    </ul>
+              {% endfor %}
+              </td>
+        </table>
+    </div>
+</p>
+
+
 <p>
     <div id="myDIV">
         <table class="table table-striped">

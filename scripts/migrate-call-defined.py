@@ -2,15 +2,21 @@ import math
 import sys
 import urllib.request
 
-api = "http://explorer.blockwala.io/core/run/?"
+# API = "http://explorer.blockwala.io"
+
+API = "http://localhost:8000"
+
+api = base_api + "/core/run/?"
 
 def main():
 	print("Hello World!")
 	start =  sys.argv[1]
 	end =  sys.argv[2]
+
 	print(start)
 	print(end)
-	bucket_size = 2000
+
+	bucket_size = 100
 
 	bucket_start = int(start)/bucket_size
 	bucket_start = int(math.ceil(bucket_start))
@@ -35,4 +41,4 @@ def main():
 
 
 if __name__== "__main__":
-  main()
+	main()

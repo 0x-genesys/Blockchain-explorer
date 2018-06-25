@@ -55,21 +55,41 @@
                 <table class="table-container table table-borderless">
                           <tr>
                             <h2 style="margin-top:1em">Transaction</h2> 
-                            <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction)</h3>
+                            <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction) </h3>
+                            <br/>
+                            <br/>
                           </tr>
 
                           <tr>
                             <td >
                               <li> 
-                                <a href="/ui/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}></a>
+                                <a href="/ui/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}</a>
                               </li> 
                             </td>
+                          </tr>
+
+                          <tr>
+                            <td text-align:center;vertical-align:middle;">
+                              <b>
+                                Accepted on {{timestamp}}
+                              </b>
+                            </td>
+
+                            <td >
+                                <div style="color:#0ac546; " >
+                                  <b>
+                                  {{balance}} BTC
+                                </b>
+                                </div>
+                              </td>
+
                           </tr>
 
                           <tr>
                             <td> 
                               <h3>Addresses</h3>
                             </td>
+                            <td/>
                           </tr>
 
                           <tr>
@@ -87,13 +107,12 @@
                           <td></td>
                          </tr>
 
-
                          <td style="text-align:center;vertical-align:middle;">
                             {% for index_input in data.input_address %}
                                 <ul>
                                     <li>
                                       <a class="btn-link" href="/ui/mainSearch/?q={{index_input}}"> {{index_input}}</a>
-                                    </li>  
+                                    </li>
                                 </ul>
 
                                 {% empty %}
