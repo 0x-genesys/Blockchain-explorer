@@ -24,7 +24,7 @@ def extract_input_output_main_from_blockchain(request):
         stop = int(request.GET['stop'])
 
     blockchain = Blockchain(BLOCK_DATA_DIR)
-    print("blocks accessed")
+    print("BLOCKS accessed")
     threads = []
 
     for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=start, end=stop):
@@ -38,7 +38,6 @@ def extract_input_output_main_from_blockchain(request):
         count_thread = threading.active_count()
 
         while count_thread > MAX_NUM_OF_THREAD:
-            print("threading active_count >>>>>>>>>>>>"+str(count_thread))
             continue
 
     return JsonResponse({"res":""}, status=200)
@@ -54,7 +53,6 @@ class myThread(threading.Thread):
     def run(self):
         print("run block "+str(self.block.height))
         self.get_block(self.block)
-        print("len of tx "+str(len(self.block.transactions)))
 
         for index, tx in enumerate(self.block.transactions):
             print("run tx "+str(tx.hash))
@@ -114,6 +112,7 @@ class myThread(threading.Thread):
 
     def get_input_table(self, tx):
         for _input in tx.inputs:
+            print("input exists "+str(Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists()))
             if _input.transaction_hash is None or Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists() is False:
                 return
             print("_input.transaction_hash. "+str(_input.transaction_hash))
@@ -158,7 +157,6 @@ class myThread(threading.Thread):
 
             loader_input_table = Input_Table(**record)
             loader_input_table.save()
-
 
 
     def get_output_table(self, tx):
