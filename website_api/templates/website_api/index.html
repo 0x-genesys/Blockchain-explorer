@@ -3,42 +3,44 @@
 
 {% block content %}
 
-<h1 style="font-size:30px">LATEST BLOCKS</h1>
-<br>
-<div class="container_third_recent_data" >
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<table class = "table table-borderless">
 
-   <tr>
-   <th style="text-align:center;vertical-align:middle;">Block Height</th>
-   <th style="text-align:center;vertical-align:middle;">Block  Hash</th>
-   <th style="text-align:center;vertical-align:middle;">No of Transactions</th>
-   <th style="text-align:center;vertical-align:middle;">Block Size</th>
-   <th style="text-align:center;vertical-align:middle;">Timestamps</th>
-   </tr>
+<div style="width: 100%">
+  <h1 style="font-size:30px">LATEST BLOCKS</h1>
+  <br>
 
-<tr>
-  {% for i in output %}
-  <tr>
-    <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/ui/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
-    <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/ui/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
-    <td style="text-align:center;vertical-align:middle;">{{i.block_no_of_transactions}}</td>
-    <td style="text-align:center;vertical-align:middle;">&nbsp;&nbsp;{{i.block_size}}</td>
-    <td style="text-align:center;vertical-align:middle;">{{i.timestamp}}</td>
-  </tr>
-  {% endfor %}
-</tr>
-</table>
+  <div class="container_third_recent_data" >
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <table class = "table table-borderless">
 
-</div>
-<br><br>
-<div class="wrongQuery"align="right">
+     <tr>
+     <th style="text-align:center;vertical-align:middle;">Block Height</th>
+     <th style="text-align:center;vertical-align:middle;">Block  Hash</th>
+     <th style="text-align:center;vertical-align:middle;">No of Transactions</th>
+     <th style="text-align:center;vertical-align:middle;">Block Size</th>
+     <th style="text-align:center;vertical-align:middle;">Timestamps</th>
+     </tr>
 
-<a href="/ui/recent_hundred_data/" class="btn-link" align="right">SEE MORE</a>
+    <tr>
+    {% for i in output %}
+    <tr>
+      <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/ui/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
+      <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/ui/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
+      <td style="text-align:center;vertical-align:middle;">{{i.block_no_of_transactions}}</td>
+      <td style="text-align:center;vertical-align:middle;">&nbsp;&nbsp;{{i.block_size}}</td>
+      <td style="text-align:center;vertical-align:middle;">{{i.timestamp}}</td>
+    </tr>
+    {% endfor %}
+    </tr>
+    </table>
+  </div>
+  <br><br>
 
-</div>
-<br><br><br>
-<div class="container">
+  <div class="wrongQuery"align="right">
+  <a href="/ui/recent_hundred_data/" class="btn-link" align="right">SEE MORE</a>
+  </div>
+
+  <br><br><br>
+  <div class="container">
     <div class="row">
         <div class="col-xs-6">
           <div class="jumbotron">
@@ -67,17 +69,15 @@
           </div>
         </div>
     </div>
-</div>
+  </div>
 
-
-
-<div class="container_third_recent_data">
-
-    <div class="graph" style="width:30px;">
+  <div class="container_third_recent_data">
+    <div style="table-layout:fixed;width: 100%; overflow-x: auto;">
       <!-- TradingView Widget BEGIN -->
-      <div class="tradingview-widget-container">
+      <div class="container_third_recent_data">
         <div id="tv-medium-widget"></div>
-        <div class="tradingview-widget-copyright"><a href="https://in.tradingview.com/symbols/COINBASE-BTCUSD/" rel="noopener" target="_blank"><span class="blue-text">Bitcoin Quotes</span></a> by TradingView</div>
+        <div class="tradingview-widget-copyright">
+          <a href="https://in.tradingview.com/symbols/COINBASE-BTCUSD/" rel="noopener" target="_blank"><span class="blue-text">Bitcoin Quotes</span></a> by TradingView</div>
         <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
         <script type="text/javascript">
         new TradingView.MediumWidget(
@@ -102,11 +102,10 @@
         );
         </script>
       </div>
-
-<!-- TradingView Widget END -->
+  <!-- TradingView Widget END -->
     </div>
-
-
   </div>
+
+</div>
 
 {% endblock %}
