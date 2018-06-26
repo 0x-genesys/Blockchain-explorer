@@ -133,6 +133,7 @@ def search_block_hash(request):
             return render(request,'website_api/wrong_search.html')
 
         transaction_db = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
+        print(len(transaction_db))
         for transaction in transaction_db:
             transaction_list.append(transaction.transaction_hash)
             outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
@@ -150,18 +151,19 @@ def search_block_hash(request):
                 for output in outputs_db:
                         output_address_list.append(output.address)
                 
+            balance = calculate_amount_received(outputs_db)    
 
             record_output_address = {
                                       'transaction_hash':transaction.transaction_hash,
                                       'output_address':output_address_list,
-                                      'input_address':input_address_list
+                                      'input_address':input_address_list,
+                                      'balance': balance
                                       }
 
             final_list.append(record_output_address)
+            
 
-            balance = calculate_amount_received(outputs_db)
-
-        return render(request,'website_api/search_block_hash.html',{
+        return render(request,'website_api/search_block_hash.html', {
                                                                     'block_hash':search_term[0].block_hash,
                                                                     'previous_block_hash':search_term[0].previous_block_hash,
                                                                     'merkle_root':search_term[0].merkle_root,
@@ -172,8 +174,7 @@ def search_block_hash(request):
                                                                     'difficulty':search_term[0].difficulty,
                                                                     'bits':search_term[0].bits,
                                                                     'nonce':search_term[0].nonce,
-                                                                    'final_list':final_list,
-                                                                    'balance': balance
+                                                                    'final_list':final_list
                                                                     })
 
 
