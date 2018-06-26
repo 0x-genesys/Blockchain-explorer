@@ -5,11 +5,11 @@ from django.db import models
 from django.contrib.postgres.indexes import GinIndex
 #import djngo.contrib.postgres.search as pg_search
 class Block_Table(models.Model):
-    block_hash = models.CharField(db_index=True, max_length=200)
+    block_hash = models.CharField(primary_key=True, db_index=True, max_length=200)
     block_header = models.CharField(max_length=200)
     block_no_of_transactions = models.IntegerField()
     block_size = models.IntegerField()
-    block_height = models.IntegerField(primary_key=True, blank=True, null=False)
+    block_height = models.IntegerField( blank=True, null=False)
 
 #############################  Block header contents ####################
     block_header_version = models.CharField(max_length=10)

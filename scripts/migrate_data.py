@@ -5,6 +5,7 @@ import json
 import threading
 from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table, Block_Table
 from django.http import JsonResponse
+from django.db import connection
 from app.settings import BLOCK_DATA_DIR
 #from .. import settings
 ############### Location of directories ####################
@@ -34,7 +35,7 @@ def extract_input_output_main_from_blockchain(start, stop):
         while count_thread > MAX_NUM_OF_THREAD:
             continue
 
-    return JsonResponse({"res":""}, status=200)
+    print("DONE....")
 
 
 
@@ -53,6 +54,8 @@ class myThread(threading.Thread):
             self.get_tx_table(tx, self.block)
             self.get_output_table(tx)
             self.get_input_table(tx)
+
+        connection.close()
         exit()
 
     def get_block(self, block):
@@ -73,12 +76,12 @@ class myThread(threading.Thread):
         }
 
         # print(record)
-        block_object = Block_Table.objects.filter(block_hash=block.hash)
-        if not block_object:
-            loader_block_table = Block_Table(**record)
-            loader_block_table.save()
-        else:
-            print("Entry is already present")
+        # block_object = Block_Table.objects.filter(block_hash=block.hash)
+        # if not block_object:
+        loader_block_table = Block_Table(**record)
+        loader_block_table.save()
+        # else:
+        #     print("Entry is already present")
 
 
 
@@ -96,12 +99,12 @@ class myThread(threading.Thread):
                     'transaction_hash_size':tx.size
                 }
 
-        tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
-        if not tx_object:
-            loader_main_table = Transaction_Table(**record)
-            loader_main_table.save()
-        else:
-            print("Entry is already present")
+        # tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
+        # if not tx_object:
+        loader_main_table = Transaction_Table(**record)
+        loader_main_table.save()
+        # else:
+        #     print("Entry is already present")
 
 
     def get_input_table(self, tx):
