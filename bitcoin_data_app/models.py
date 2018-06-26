@@ -9,7 +9,7 @@ class Block_Table(models.Model):
     block_header = models.CharField(max_length=200)
     block_no_of_transactions = models.IntegerField()
     block_size = models.IntegerField()
-    block_height = models.IntegerField( blank=True, null=False)
+    block_height = models.IntegerField( blank=True, null=False, unique=True)
 
 #############################  Block header contents ####################
     block_header_version = models.CharField(max_length=10)
@@ -28,7 +28,7 @@ class Block_Table(models.Model):
 
 class Transaction_Table(models.Model):
     transaction_hash = models.CharField(primary_key=True, db_index=True, max_length=200, null=False)
-    block_height = models.ForeignKey('Block_Table', db_index=True, null=True, blank=True, on_delete=models.CASCADE)
+    block_height = models.ForeignKey('Block_Table', to_field="block_height", db_index=True, null=True, blank=True, on_delete=models.CASCADE)
     timestamp =  models.DateTimeField(null=False)
     block_size = models.IntegerField(null=True)
     is_CoinBase = models.BooleanField(default=True)
