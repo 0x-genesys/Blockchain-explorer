@@ -107,18 +107,15 @@
        <!--  {% ifequal transaction.addresses.input 0 %}
           <h3>No new inputs (newly generated coins)</h3>
         {% endifequal %} -->
-
-        {% if transaction.addresses.input == None %}
-        <div class="coinbase">
-             <b>(newly generated coins)</b><br>
-             <h1 >Coinbase Transactions</h1>
-        </div>
-        {% endif %}
-
         {% for input_address in transaction.addresses.input %}
           <ul>
               <li> <a class="btn-link" href="/ui/mainSearch/?q={{input_address}}"> {{input_address}} </li></a>
           </ul>
+          {% empty %}
+            <div class="coinbase">
+               <b>(newly generated coins)</b><br>
+               <h1 >Coinbase Transactions</h1>
+            </div>
           {% endfor %}
         </td>
 

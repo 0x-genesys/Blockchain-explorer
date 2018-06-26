@@ -67,7 +67,6 @@ View to call all the block entries along with their details and show them in
 a set of 100/page. Query is made more repsponsive by indexing.
 """
 def recent_hundred_data(request):
-
     display_object = Block_Table.objects.all().order_by('-block_height')
     paginator = Paginator(display_object,100)
 
@@ -289,7 +288,8 @@ def search_address(request):
 
             #construct the inputs
             for _input in tx_inputs_db:
-                tx_inputs.append(_input.input_address)
+                if _input.input_address is not None:
+                    tx_inputs.append(_input.input_address)
 
             for _output in tx_outputs_db:
                 tx_outputs.append(_output.address)
