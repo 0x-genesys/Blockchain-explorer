@@ -132,7 +132,7 @@ def search_block_hash(request):
         if not search_term:
             return render(request,'website_api/wrong_search.html')
 
-        transaction_db = Transaction_Table.objects.filter(block_height = search_term[0].block_height)
+        transaction_db = Transaction_Table.objects.filter(block_height_id = search_term[0].block_height)
         print(len(transaction_db))
         for transaction in transaction_db:
             transaction_list.append(transaction.transaction_hash)
@@ -282,8 +282,8 @@ def search_address(request):
 
         for transaction_hash in transaction_hashes:
             tx_entries = Transaction_Table.objects.filter(transaction_hash=transaction_hash)
-            tx_inputs_db = Input_Table.objects.filter(transaction_hash=transaction_hash)
-            tx_outputs_db = Output_Table.objects.filter(transaction_hash=transaction_hash)
+            tx_inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction_hash)
+            tx_outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction_hash)
             tx_inputs = []
             tx_outputs = []
 
