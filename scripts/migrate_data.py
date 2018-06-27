@@ -12,7 +12,6 @@ from app.settings import BLOCK_DATA_DIR
 #pass the path for the bitcoin-node data
 
 MAX_NUM_OF_THREAD = 70
-threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
 def extract_input_output_main_from_blockchain(start, stop):
 
@@ -108,6 +107,7 @@ class myThread(threading.Thread):
 
 
     def get_input_table(self, tx):
+        inputs_to_insert = []
         for _input in tx.inputs:
 
 
@@ -160,11 +160,18 @@ class myThread(threading.Thread):
 
             record['input_script_type'] = script_type
 
-            loader_input_table = Input_Table(**record)
-            loader_input_table.save()
+            inputs_to_insert.append(record)
+
+        # loader_input_table = Input_Table(**record)
+        # loader_input_table.save()
+
+        Input_Table.objects.bulk_create([
+                Input_Table(**record) for record in inputs_to_insert
+            ])
 
 
     def get_output_table(self, tx):
+        output_to_create = []
         for number, output in enumerate(tx.outputs):
             for _address in output.addresses:
                 record = {
@@ -178,9 +185,14 @@ class myThread(threading.Thread):
                             'output_script_operations': output.script.operations
                           }
 
+                output_to_create.append(record)
 
-                loader_output_table = Output_Table(**record)
-                loader_output_table.save()
+        # loader_output_table = Output_Table(**record)
+        # loader_output_table.save()
+
+        Output_Table.objects.bulk_create([
+                Output_Table(**record) for record in output_to_create
+            ])
 
 def run(*args):
     print(args)
