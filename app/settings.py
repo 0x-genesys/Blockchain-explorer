@@ -111,7 +111,7 @@ DATABASES = {
         'PASSWORD': 'blockwala@123',
         'HOST':'localhost',
         'PORT':'5432',
-        'CONN_MAX_AGE':30
+        'CONN_MAX_AGE':50
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
