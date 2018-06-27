@@ -52,7 +52,7 @@ class myThread(threading.Thread):
             print("run tx "+str(tx.hash))
             self.get_tx_table(tx, self.block)
             self.get_output_table(tx)
-            self.get_input_table(tx)
+            # self.get_input_table(tx)
 
         connection.close()
         exit()
@@ -109,7 +109,6 @@ class myThread(threading.Thread):
     def get_input_table(self, tx):
         inputs_to_insert = []
         for _input in tx.inputs:
-
 
             #CHECK IF PREVIOUS TRANSACION HASH EXISTS
             if _input.transaction_hash is None or Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists() is False:
