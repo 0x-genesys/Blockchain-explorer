@@ -5,13 +5,13 @@ import json
 import threading
 from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table, Block_Table
 from django.http import JsonResponse
-# from django.db import connection
+from django.db import connection
 from app.settings import BLOCK_DATA_DIR
 #from .. import settings
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
-MAX_NUM_OF_THREAD = 10
+MAX_NUM_OF_THREAD = 70
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
 def extract_input_output_main_from_blockchain(start, stop):
@@ -55,7 +55,7 @@ class myThread(threading.Thread):
             self.get_output_table(tx)
             self.get_input_table(tx)
 
-        # connection.close()
+        connection.close()
         exit()
 
     def get_block(self, block):
@@ -110,8 +110,8 @@ class myThread(threading.Thread):
     def get_input_table(self, tx):
         for _input in tx.inputs:
 
-            print("input exists "+str(Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists()))
 
+            #CHECK IF PREVIOUS TRANSACION HASH EXISTS
             if _input.transaction_hash is None or Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists() is False:
                 return
 
