@@ -9,7 +9,7 @@ class Block_Table(models.Model):
     block_header = models.CharField(max_length=200)
     block_no_of_transactions = models.IntegerField()
     block_size = models.IntegerField()
-    block_height = models.IntegerField( blank=True, null=False, unique=True)
+    block_height = models.IntegerField( db_index=True, blank=True, null=False, unique=True)
 
 #############################  Block header contents ####################
     block_header_version = models.CharField(max_length=10)
