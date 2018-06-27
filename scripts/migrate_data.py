@@ -11,7 +11,7 @@ from app.settings import BLOCK_DATA_DIR
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
-MAX_NUM_OF_THREAD = 100
+MAX_NUM_OF_THREAD = 300
 threadLimiter = threading.BoundedSemaphore(MAX_NUM_OF_THREAD)
 
 def extract_input_output_main_from_blockchain(start, stop):
@@ -134,7 +134,7 @@ class myThread(threading.Thread):
             print(">>" +_input.transaction_hash)
             print(">>" +str(_input.transaction_index))
             #We take out address from previous transaction hash and output no.
-            outputs = Output_Table.objects.filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
+            outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
 
             print("outputs " + str(outputs))
 
