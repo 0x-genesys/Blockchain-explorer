@@ -87,7 +87,8 @@ class myThread(threading.Thread):
     def get_tx_table(self, tx, block):
         record = {
                     'transaction_hash':tx.hash,
-                    'block_height' : Block_Table.objects.get(block_height=block.height),
+                    # 'block_height' : Block_Table.objects.get(block_height=block.height),
+                    'block_height' : block.height,
                     'timestamp': block.header.timestamp,
                     'block_size': block.size,
                     'is_CoinBase':'True',
@@ -174,7 +175,8 @@ class myThread(threading.Thread):
         for number, output in enumerate(tx.outputs):
             for _address in output.addresses:
                 record = {
-                            'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                            # 'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                            'transaction_hash': tx.hash,
                             'output_no':number,
                             'output_type':output.type,
                             'output_value':output.value,
