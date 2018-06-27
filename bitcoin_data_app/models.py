@@ -5,7 +5,8 @@ from django.db import models
 from django.contrib.postgres.indexes import GinIndex
 #import djngo.contrib.postgres.search as pg_search
 class Block_Table(models.Model):
-    block_hash = models.CharField(primary_key=True, db_index=True, max_length=200)
+    # block_hash = models.CharField(primary_key=True, db_index=True, max_length=200)
+    block_hash = models.CharField(db_index=True, max_length=200)
     block_header = models.CharField(max_length=200)
     block_no_of_transactions = models.IntegerField()
     block_size = models.IntegerField()
@@ -27,8 +28,9 @@ class Block_Table(models.Model):
         return str(self.block_height)
 
 class Transaction_Table(models.Model):
-    transaction_hash = models.CharField(primary_key=True, db_index=True, max_length=200, null=False)
+    # transaction_hash = models.CharField(primary_key=True, db_index=True, max_length=200, null=False)
     # block_height = models.ForeignKey('Block_Table', to_field="block_height", db_index=True, null=True, blank=True, on_delete=models.CASCADE)
+    transaction_hash = models.CharField(db_index=True, max_length=200, null=False)
     block_height_id = models.IntegerField(db_index=True, blank=True, null=False, unique=True)
     timestamp =  models.DateTimeField(null=False)
     block_size = models.IntegerField(null=True)
@@ -63,7 +65,7 @@ class Input_Table(models.Model):
 
 class Output_Table(models.Model):
     # transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
-    transaction_hash_id = models.CharField(primary_key=True, db_index=True, max_length=200, null=False)
+    transaction_hash_id = models.CharField(db_index=True, max_length=200, null=False)
     output_no = models.IntegerField(null=False)
     output_type = models.CharField(max_length=20, null=False)
     output_value = models.CharField(max_length=100,null=False)
