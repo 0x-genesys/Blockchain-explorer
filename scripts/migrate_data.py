@@ -52,7 +52,7 @@ class myThread(threading.Thread):
             print("run tx "+str(tx.hash))
             self.get_tx_table(tx, self.block)
             self.get_output_table(tx)
-            self.get_input_table(tx)
+            # self.get_input_table(tx)
 
         connection.close()
         exit()
@@ -87,7 +87,8 @@ class myThread(threading.Thread):
     def get_tx_table(self, tx, block):
         record = {
                     'transaction_hash':tx.hash,
-                    'block_height' : Block_Table.objects.get(block_height=block.height),
+                    # 'block_height' : Block_Table.objects.get(block_height=block.height),
+                    'block_height' : block.height,
                     'timestamp': block.header.timestamp,
                     'block_size': block.size,
                     'is_CoinBase':'True',
@@ -109,7 +110,6 @@ class myThread(threading.Thread):
     def get_input_table(self, tx):
         inputs_to_insert = []
         for _input in tx.inputs:
-
 
             #CHECK IF PREVIOUS TRANSACION HASH EXISTS
             if _input.transaction_hash is None or Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists() is False:
@@ -175,7 +175,8 @@ class myThread(threading.Thread):
         for number, output in enumerate(tx.outputs):
             for _address in output.addresses:
                 record = {
-                            'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                            # 'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
+                            'transaction_hash': tx.hash,
                             'output_no':number,
                             'output_type':output.type,
                             'output_value':output.value,
