@@ -11,7 +11,7 @@ from app.settings import BLOCK_DATA_DIR
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
-MAX_NUM_OF_THREAD = 70
+MAX_NUM_OF_THREAD = 100
 
 def extract_input_output_main_from_blockchain(start, stop):
 
