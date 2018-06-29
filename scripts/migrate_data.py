@@ -1,5 +1,6 @@
 from blockchain_parser.blockchain import Blockchain
 import os
+import gc
 import csv
 import json
 import threading
@@ -11,7 +12,7 @@ from app.settings import BLOCK_DATA_DIR
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
-MAX_NUM_OF_THREAD = 400
+MAX_NUM_OF_THREAD = 1
 
 def extract_input_output_main_from_blockchain(start, stop):
 
@@ -45,15 +46,16 @@ class myThread(threading.Thread):
         self.block = block
 
     def run(self):
-        print("run block "+str(self.block.height))
+	
+        print("--------------run block "+str(self.block.height))
         self.get_block(self.block)
 
         for index, tx in enumerate(self.block.transactions):
-            print("run tx "+str(tx.hash))
             self.get_tx_table(tx, self.block)
             self.get_output_table(tx)
             # self.get_input_table(tx)
-
+        print("---------------stop block "+str(self.block.height))	
+        gc.collect()
         connection.close()
         exit()
 
