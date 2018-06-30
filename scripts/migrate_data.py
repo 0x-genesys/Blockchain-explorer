@@ -49,11 +49,6 @@ class myThread(threading.Thread):
 	
         print("--------------run block "+str(self.block.height))
         self.get_block(self.block)
-
-        for index, tx in enumerate(self.block.transactions):
-            self.get_tx_table(tx, self.block)
-            self.get_output_table(tx)
-            # self.get_input_table(tx)
         print("---------------stop block "+str(self.block.height))	
         gc.collect()
         connection.close()
@@ -87,26 +82,35 @@ class myThread(threading.Thread):
 
 
     def get_tx_table(self, tx, block):
-        record = {
-                    'transaction_hash':tx.hash,
-                    # 'block_height' : Block_Table.objects.get(block_height=block.height),
-                    'block_height_id' : block.height,
-                    'timestamp': block.header.timestamp,
-                    'block_size': block.size,
-                    'is_CoinBase':'True',
-                    'V_in':tx.n_inputs,
-                    'V_out':tx.n_outputs,
-                    'locktime':tx.locktime,
-                    'version':tx.version,
-                    'transaction_hash_size':tx.size
-                }
+        transaction_hash_array = []
+        for index, tx in enumerate(self.block.transactions):
+            record = {
+                        'transaction_hash':tx.hash,
+                        # 'block_height' : Block_Table.objects.get(block_height=block.height),
+                        'block_height_id' : block.height,
+                        'timestamp': block.header.timestamp,
+                        'block_size': block.size,
+                        'is_CoinBase':'True',
+                        'V_in':tx.n_inputs,
+                        'V_out':tx.n_outputs,
+                        'locktime':tx.locktime,
+                        'version':tx.version,
+                        'transaction_hash_size':tx.size
+                    }
 
-        # tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
-        # if not tx_object:
-        loader_main_table = Transaction_Table(**record)
-        loader_main_table.save()
-        # else:
-        #     print("Entry is already present")
+            # tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
+            # if not tx_object:
+            # loader_main_table = Transaction_Table(**record)
+            # loader_main_table.save()
+            # else:
+            #     print("Entry is already present")
+            transaction_hash_array.append(record)
+            self.get_output_table(tx)
+            # self.get_input_table(tx)
+
+        Transaction_Table.objects.bulk_create([
+                Transaction_Table(**record) for record in transaction_hash_array
+            ])
 
 
     def get_input_table(self, tx):
