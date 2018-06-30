@@ -132,7 +132,7 @@ def search_block_hash(request):
         if not search_term:
             return render(request,'website_api/wrong_search.html')
 
-        transaction_db = Transaction_Table.objects.filter(block_height_id = search_term[0].block_height)
+        transaction_db = Transaction_Table.objects.filter(block_hash_id = search_term[0].block_hash)
         print(len(transaction_db))
         for transaction in transaction_db:
             transaction_list.append(transaction.transaction_hash)
@@ -197,6 +197,7 @@ def search_transaction_hash(request):
         output_scripts = []
         input_scripts = []
         search_term = Transaction_Table.objects.filter(transaction_hash=message).order_by('-timestamp')
+        block = Block_Table.objects.filter(block_hash=search_term[0].block_hash_id)
         #print(message)
         if not search_term:
             return render(request,'website_api/wrong_search.html')
@@ -228,7 +229,7 @@ def search_transaction_hash(request):
                                                                                 'Number_of_outputs':search_term[0].V_out,
                                                                                 'locktime':search_term[0].locktime,
                                                                                 'version':search_term[0].version,
-                                                                                'block_height':search_term[0].block_height,
+                                                                                'block_height':block[0].block_height,
                                                                                 'coinbase':search_term[0].is_CoinBase,
                                                                                 'output_addresses':output_address_list,
                                                                                 'output_address_price': output_address_price,

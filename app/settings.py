@@ -28,9 +28,9 @@ API = "http://explorer.blockwala.io"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 ROOT_DIR = os.path.abspath(os.sep)
-# BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/data/bitcoin/blocks')
+BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/data/bitcoin/blocks')
 # BLOCK_DATA_DIR = os.path.join(ROOT_DIR,'/home/praful/Bitcoin_data/blocks')
-BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
+# BLOCK_DATA_DIR = os.path.join(ROOT_DIR, '/Users/karanahuja/Library/Application Support/Bitcoin/blocks/')
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -149,7 +149,8 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
 
 STATIC_URL = '/static/'

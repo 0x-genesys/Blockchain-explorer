@@ -46,7 +46,6 @@ class myThread(threading.Thread):
         self.block = block
 
     def run(self):
-	
         print("--------------run block "+str(self.block.height))
         self.get_block(self.block)
         print("---------------stop block "+str(self.block.height))	
@@ -55,7 +54,6 @@ class myThread(threading.Thread):
         exit()
 
     def get_block(self, block):
-
         record = {
             'block_hash':block.hash,
             'block_header':block.header.previous_block_hash,
@@ -79,9 +77,11 @@ class myThread(threading.Thread):
         # else:
         #     print("Entry is already present")
 
+        self.get_tx_table(block)
 
 
-    def get_tx_table(self, tx, block):
+
+    def get_tx_table(self, block):
         transaction_hash_array = []
         for index, tx in enumerate(self.block.transactions):
             record = {
@@ -108,6 +108,7 @@ class myThread(threading.Thread):
             self.get_output_table(tx)
             # self.get_input_table(tx)
 
+        print("transaction_hash_array>>>>>> " + str(len(transaction_hash_array)))
         Transaction_Table.objects.bulk_create([
                 Transaction_Table(**record) for record in transaction_hash_array
             ])
@@ -148,23 +149,7 @@ class myThread(threading.Thread):
                 print("output['address'] " + str(output))
                 record['input_address'] = output.address
                 record['input_value'] = output.output_value
-
-            script_type = None
-
-            if _input.script.is_return is True:
-                script_type = 'return'
-            elif _input.script.is_p2sh is True:
-                script_type = 'p2sh'
-            elif _input.script.is_pubkey is True:
-                script_type = 'pubkey'
-            elif _input.script.is_pubkeyhash is True:
-                script_type = 'pubkeyhash'
-            elif _input.script.is_multisig is True:
-                script_type = 'multisig'
-            elif _input.script.is_unknown is True:
-                script_type = 'unknown'
-
-            record['input_script_type'] = script_type
+                record['input_script_type'] = output.output_type
 
             inputs_to_insert.append(record)
 
