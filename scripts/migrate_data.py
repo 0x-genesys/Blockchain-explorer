@@ -8,7 +8,6 @@ from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table
 from django.http import JsonResponse
 from django.db import connection
 from app.settings import BLOCK_DATA_DIR
-#from .. import settings
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
@@ -86,8 +85,7 @@ class myThread(threading.Thread):
         for index, tx in enumerate(self.block.transactions):
             record = {
                         'transaction_hash':tx.hash,
-                        # 'block_height' : Block_Table.objects.get(block_height=block.height),
-                        'block_height_id' : block.height,
+                        'block_hash_id' : block.hash,
                         'timestamp': block.header.timestamp,
                         'block_size': block.size,
                         'is_CoinBase':'True',
@@ -97,18 +95,10 @@ class myThread(threading.Thread):
                         'version':tx.version,
                         'transaction_hash_size':tx.size
                     }
-
-            # tx_object = Transaction_Table.objects.filter(transaction_hash=tx.hash)
-            # if not tx_object:
-            # loader_main_table = Transaction_Table(**record)
-            # loader_main_table.save()
-            # else:
-            #     print("Entry is already present")
             transaction_hash_array.append(record)
             self.get_output_table(tx)
-            # self.get_input_table(tx)
+            self.get_input_table(tx)
 
-        print("transaction_hash_array>>>>>> " + str(len(transaction_hash_array)))
         Transaction_Table.objects.bulk_create([
                 Transaction_Table(**record) for record in transaction_hash_array
             ])
@@ -118,19 +108,15 @@ class myThread(threading.Thread):
         inputs_to_insert = []
         for _input in tx.inputs:
 
-            #CHECK IF PREVIOUS TRANSACION HASH EXISTS
-            if _input.transaction_hash is None or Transaction_Table.objects.filter(transaction_hash=_input.transaction_hash).exists() is False:
-                return
-
             print("_input.transaction_hash. "+str(_input.transaction_hash))
 
             record = {
-                        'transaction_hash': Transaction_Table.objects.get(transaction_hash=tx.hash),
+                        'transaction_hash_id': tx.hash,
                         'previous_transaction_hash':  _input.transaction_hash,
                         'transaction_index': _input.transaction_index,
                         'input_sequence_number': _input.sequence_number,
                         'input_size': _input.size,
-                        'input_address':None, #todo pointer to object, resolve this
+                        'input_address':None,
                         'input_value': None,
                         'input_script_type': None,
                         'input_script_value': _input.script.value,
@@ -152,9 +138,6 @@ class myThread(threading.Thread):
                 record['input_script_type'] = output.output_type
 
             inputs_to_insert.append(record)
-
-        # loader_input_table = Input_Table(**record)
-        # loader_input_table.save()
 
         Input_Table.objects.bulk_create([
                 Input_Table(**record) for record in inputs_to_insert
@@ -178,9 +161,6 @@ class myThread(threading.Thread):
                           }
 
                 output_to_create.append(record)
-
-        # loader_output_table = Output_Table(**record)
-        # loader_output_table.save()
 
         Output_Table.objects.bulk_create([
                 Output_Table(**record) for record in output_to_create

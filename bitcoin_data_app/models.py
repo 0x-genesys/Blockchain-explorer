@@ -20,8 +20,7 @@ class Block_Table(models.Model):
     timestamp = models.DateTimeField(db_index=False,null=False)
     bits = models.CharField(db_index=False,max_length=50)
     nonce = models.CharField(db_index=False,max_length=50)
-    difficulty = models.IntegerField(db_index=False)
-
+    difficulty = models.TextField(db_index=False)
 
     def __str__(self):
         return str(self.block_height)
