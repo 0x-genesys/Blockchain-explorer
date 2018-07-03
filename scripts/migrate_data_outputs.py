@@ -44,3 +44,8 @@ def get_output_table(tx):
     Output_Table.objects.bulk_create([
             Output_Table(**record) for record in output_to_create
         ])
+
+
+
+def run(*args):
+    get_blocks()
