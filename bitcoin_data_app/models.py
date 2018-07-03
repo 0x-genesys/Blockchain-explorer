@@ -35,11 +35,11 @@ class Transaction_Table(models.Model):
     timestamp =  models.DateTimeField(db_index=False,null=False)
     block_size = models.IntegerField(db_index=False,null=True)
     is_CoinBase = models.BooleanField(db_index=False,default=True)
-    V_in = models.IntegerField(db_index=False,default=0)
-    V_out = models.IntegerField(db_index=False,default=0)
+    V_in = models.TextField(db_index=False,default=0)
+    V_out = models.TextField(db_index=False,default=0)
     locktime = models.IntegerField( db_index=False,null=False)
     version = models.CharField(db_index=False,max_length=10)
-    transaction_hash_size = models.IntegerField(db_index=False,default=0)
+    transaction_hash_size = models.TextField(db_index=False,default=0)
 
     def __str__(self):
         return str(self.transaction_hash)
