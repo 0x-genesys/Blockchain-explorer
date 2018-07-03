@@ -9,9 +9,9 @@ class Block_Table(models.Model):
     # block_hash = models.CharField(primary_key=True, db_index=True, max_length=200)
     block_hash = models.CharField(db_index=False, max_length=200)
     block_header = models.CharField(db_index=False, max_length=200)
-    block_no_of_transactions = models.IntegerField(db_index=False,)
-    block_size = models.IntegerField(db_index=False)
-    block_height = models.IntegerField(db_index=False,blank=True, null=False)
+    block_no_of_transactions = models.TextField(db_index=False,)
+    block_size = models.TextField(db_index=False)
+    block_height = models.TextField(db_index=False,blank=True, null=False)
 
 #############################  Block header contents ####################
     block_header_version = models.CharField(db_index=False,max_length=10)
@@ -33,11 +33,11 @@ class Transaction_Table(models.Model):
     block_hash_id = models.CharField(db_index=False, max_length=200)
     transaction_hash = models.CharField(db_index=False,max_length=200, null=False)
     timestamp =  models.DateTimeField(db_index=False,null=False)
-    block_size = models.IntegerField(db_index=False,null=True)
+    block_size = models.TextField(db_index=False,null=True)
     is_CoinBase = models.BooleanField(db_index=False,default=True)
     V_in = models.TextField(db_index=False,default=0)
     V_out = models.TextField(db_index=False,default=0)
-    locktime = models.IntegerField( db_index=False,null=False)
+    locktime = models.TextField( db_index=False,null=False)
     version = models.CharField(db_index=False,max_length=10)
     transaction_hash_size = models.TextField(db_index=False,default=0)
 
