@@ -45,9 +45,8 @@ class myThread(threading.Thread):
         self.block = block
 
     def run(self):
-        print("--------------run block "+str(self.block.height))
-        self.get_block(self.block)
-        print("---------------stop block "+str(self.block.height))	
+        # self.get_block(self.block)
+        self.get_tx_table(self.block)
         gc.collect()
         connection.close()
         exit()
@@ -96,8 +95,8 @@ class myThread(threading.Thread):
                         'transaction_hash_size':tx.size
                     }
             transaction_hash_array.append(record)
-            self.get_output_table(tx)
-            self.get_input_table(tx)
+            # self.get_output_table(tx)
+            # self.get_input_table(tx)
 
         Transaction_Table.objects.bulk_create([
                 Transaction_Table(**record) for record in transaction_hash_array
