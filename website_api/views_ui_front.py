@@ -43,7 +43,7 @@ Showing latest 5 blocks and enables the user to search for any kind of hash, Add
 Height etc
 """
 def index(request):
-    display_object = Block_Table.objects.all().order_by('-block_height')[:5]
+    display_object = Block_Table.objects.all().order_by('-timestamp')[:5]
 
     if not display_object:
         print("nothing")
@@ -67,7 +67,7 @@ View to call all the block entries along with their details and show them in
 a set of 100/page. Query is made more repsponsive by indexing.
 """
 def recent_hundred_data(request):
-    display_object = Block_Table.objects.all().order_by('-block_height')
+    display_object = Block_Table.objects.all().order_by('-timestamp')
     paginator = Paginator(display_object,100)
 
     page = request.GET.get('page')
