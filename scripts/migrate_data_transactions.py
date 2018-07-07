@@ -16,7 +16,6 @@ from app.settings import BLOCK_DATA_DIR
 def get_blocks():
     blockchain = Blockchain(BLOCK_DATA_DIR)
     for block in blockchain.get_unordered_blocks():
-	print(">>>> "+str(block))
         get_tx_table(block)
 
 def get_tx_table(block):

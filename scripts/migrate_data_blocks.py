@@ -38,7 +38,7 @@ def extract_input_output_main_from_blockchain(start, stop):
         }
         print(str(block.height))
         blocks.append(record)
-        if count % 50 == 0:
+        if count % 10 == 0:
             Block_Table.objects.bulk_create([
                 Block_Table(**record) for record in blocks
             ])
