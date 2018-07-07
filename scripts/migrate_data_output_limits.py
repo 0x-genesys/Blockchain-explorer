@@ -13,9 +13,13 @@ from app.settings import BLOCK_DATA_DIR
 #pass the path for the bitcoin-node data
 
 
-def get_blocks():
+def get_blocks(start, stop):
     blockchain = Blockchain(BLOCK_DATA_DIR)
-    for block in blockchain.get_unordered_blocks():
+    print("BLOCKS accessed")
+    print("start "+str(start))
+    print("stop "+str(stop))
+
+    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
         get_tx_table(block)
 
 
@@ -51,4 +55,4 @@ def get_output_table(tx):
 
 
 def run(*args):
-    get_blocks()
+    get_blocks(args[0], args[1])
