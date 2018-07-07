@@ -22,10 +22,10 @@ import django
 def start(start, stop):
     extract_input_output_main_from_blockchain(start, stop)
     get_blocks_for_transactions()
-    get_blocks_for_outputs()
-    create_pre_indexes()
-    get_blocks_for_inputs()
-    create_post_indexes()
+    #get_blocks_for_outputs()
+    #create_pre_indexes()
+    #get_blocks_for_inputs()
+    #create_post_indexes()
     #Call inputs manually after making index on output's tx id else super slow
 
 
