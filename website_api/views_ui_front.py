@@ -93,18 +93,18 @@ def main_search_bar(request):
         pattern_height = re.compile("^[+]?\d+$")
         if pattern_block_hash.match(message):
             print("block")
-            return redirect('/ui/search/?q='+message)
+            return redirect('/btc/search/?q='+message)
         elif pattern_transaction_hash.match(message):
             print("transaction")
-            return redirect('/ui/searchTransaction/?q='+message)
+            return redirect('/btc/searchTransaction/?q='+message)
         elif pattern_address.match(message):
             print(message)
             print("TRUE")
             #return redirect(search_address,message)
-            return redirect('/ui/searchAddress/?q='+message)
+            return redirect('/btc/searchAddress/?q='+message)
 
         elif pattern_height.match(message):
-            return redirect('/ui/searchBlockHeight/?q='+message)
+            return redirect('/btc/searchBlockHeight/?q='+message)
         else:
             return render(request,'website_api/wrong_search.html')
 
@@ -343,7 +343,7 @@ def search_block_height(request):
         if not block_search_term:
             return render(request,'website_api/wrong_search.html')
         else:
-            return redirect('/ui/search/?q='+block_search_term[0].block_hash)
+            return redirect('/btc/search/?q='+block_search_term[0].block_hash)
 
 
 

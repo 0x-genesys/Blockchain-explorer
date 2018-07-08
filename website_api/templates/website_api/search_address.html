@@ -73,7 +73,7 @@
   <table class="table table-border">
     <h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
       <tr>
-        <td class="active"> <li> <a href="/ui/mainSearch/?q={{hash}}">{{hash}}</a></li> </td>
+        <td class="active"> <li> <a href="/btc/mainSearch/?q={{hash}}">{{hash}}</a></li> </td>
       </tr>
 
       <tr>
@@ -109,7 +109,7 @@
         {% endifequal %} -->
         {% for input_address in transaction.addresses.input %}
           <ul>
-              <li> <a class="btn-link" href="/ui/mainSearch/?q={{input_address}}"> {{input_address}} </li></a>
+              <li> <a class="btn-link" href="/btc/mainSearch/?q={{input_address}}"> {{input_address}} </li></a>
           </ul>
           {% empty %}
             <div class="coinbase">
@@ -126,7 +126,7 @@
         <td align="right" style="text-align:center;vertical-align:middle;">
           {% for output_address in transaction.addresses.output %}
           <ul>
-            <li> <a class="btn-link" href="/ui/mainSearch/?q={{output_address}}"> {{output_address}} </li></a>
+            <li> <a class="btn-link" href="/btc/mainSearch/?q={{output_address}}"> {{output_address}} </li></a>
           </ul>
            {% endfor %}
         </td>

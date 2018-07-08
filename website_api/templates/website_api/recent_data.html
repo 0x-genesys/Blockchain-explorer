@@ -22,8 +22,8 @@
 <tr>
   {% for i in output %}
   <tr>
-    <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/ui/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
-    <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/ui/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
+    <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/btc/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
+    <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/btc/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
     <td style="text-align:center;vertical-align:middle;">{{i.block_no_of_transactions}}</td>
     <td style="text-align:center;vertical-align:middle;">{{i.block_size}}</td>
     <td width="20%" style="text-align:center;vertical-align:middle;">{{i.timestamp}}</td>
@@ -35,7 +35,7 @@
 </div>
 <div class="a">
 
-<a href="/ui/recent_hundred_data/" class="btn-link" align="right">Recent Blocks>></a>
+<a href="/btc/recent_hundred_data/" class="btn-link" align="right">Recent Blocks>></a>
 
 </div>
 

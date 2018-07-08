@@ -21,7 +21,7 @@ from website_api import views_ui_front
 urlpatterns =[
     # url(r'^admin/',admin.site.urls),
     url(r'^core/', include('bitcoin_data_app.urls')),
-    url(r'^ui/', include('website_api.urls')),
+    url(r'^btc/', include('website_api.urls')),
     #
     # url(r'^search/$',views_ui_front.search_block_hash,name='search_block_hash'),
     # url(r'^searchTransaction/$',views_ui_front.search_transaction_hash,name='search_transaction_hash'),

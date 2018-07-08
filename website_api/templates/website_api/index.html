@@ -23,8 +23,8 @@
     <tr>
     {% for i in output %}
     <tr>
-      <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/ui/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
-      <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/ui/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
+      <td height="80"style="text-align:center;vertical-align:middle;"> <a class="btn-link" href="/btc/mainSearch/?q={{i.block_height}}">{{i.block_height}}</a></td>
+      <td style="text-align:center;vertical-align:middle;"><a class="btn-link" href="/btc/mainSearch/?q={{i.block_hash}}">{{i.block_hash}}</a></td>
       <td style="text-align:center;vertical-align:middle;">{{i.block_no_of_transactions}}</td>
       <td style="text-align:center;vertical-align:middle;">&nbsp;&nbsp;{{i.block_size}}</td>
       <td style="text-align:center;vertical-align:middle;">{{i.timestamp}}</td>
@@ -36,7 +36,7 @@
   <br><br>
 
   <div class="wrongQuery"align="right">
-  <a href="/ui/recent_hundred_data/" class="btn-link" align="right">SEE MORE</a>
+  <a href="/btc/recent_hundred_data/" class="btn-link" align="right">SEE MORE</a>
   </div>
 
   <br><br><br>
@@ -58,7 +58,7 @@
             <br>
             <div class="group inline mt-20 block-mobile">
 
-              <form action="/ui/mainSearch/" class="form-inline my-2 my-lg-0" method="get">
+              <form action="/btc/mainSearch/" class="form-inline my-2 my-lg-0" method="get">
               <font size="2" face="Helvetica">
                         <input type="input_down" class="form-control mr-sm-2" type="search" placeholder=" Block Hash, Transaction Hash, Address, Block Height"aria-label=" Block Hash, Transaction Hash, Address, Block Height" name="q">
               </font>

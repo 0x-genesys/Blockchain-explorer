@@ -35,7 +35,7 @@
                     <tbody>
                           <tr><td class="active highlight"> <b>Hash</b></td> <td  class="active highlight"></tr>
                           <tr><td>Block Hash </td> <td> {{block_hash}} </td></tr>
-                          <tr><td> Previous Block Hash</td><td><a class="btn-link" href="/ui/mainSearch/?q={{previous_block_hash}}">{{previous_block_hash}}</a></td></tr>
+                          <tr><td> Previous Block Hash</td><td><a class="btn-link" href="/btc/mainSearch/?q={{previous_block_hash}}">{{previous_block_hash}}</a></td></tr>
                           <tr><td>Merkle Root</td> <td>{{merkle_root}}</td></tr>
                     </tbody>
 
@@ -63,7 +63,7 @@
                           <tr>
                             <td >
                               <li> 
-                                <a href="/ui/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}</a>
+                                <a href="/btc/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}</a>
                               </li> 
                             </td>
                           </tr>
@@ -111,7 +111,7 @@
                             {% for index_input in data.input_address %}
                                 <ul>
                                     <li>
-                                      <a class="btn-link" href="/ui/mainSearch/?q={{index_input}}"> {{index_input}}</a>
+                                      <a class="btn-link" href="/btc/mainSearch/?q={{index_input}}"> {{index_input}}</a>
                                     </li>
                                 </ul>
 
@@ -132,7 +132,7 @@
                               {% for index in data.output_address %}
                                 <ul align="right">
                                     <li>
-                                      <a class="btn-link" href="/ui/mainSearch/?q={{index}}"> {{index}} </a>
+                                      <a class="btn-link" href="/btc/mainSearch/?q={{index}}"> {{index}} </a>
                                     </li>
                                 </ul>
                               {% endfor %}

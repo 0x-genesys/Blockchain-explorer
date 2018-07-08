@@ -65,7 +65,7 @@
                               {% if input_addresses|length > 0 %}
                                   {% for index in input_addresses %}
                                     <ul>
-                                      <li> <a href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
+                                      <li> <a href="/btc/mainSearch/?q={{index}}">{{index}}</a> </li>
                                     </ul>
                                   {% endfor %}
                               {% else %}
@@ -95,7 +95,7 @@
                             <td align="right" style="text-align:center;vertical-align:middle;">
                                 {% for index in output_addresses %}
                                       <ul>
-                                        <li > <a class="btn-link" href="/ui/mainSearch/?q={{index}}">{{index}}</a> </li>
+                                        <li > <a class="btn-link" href="/btc/mainSearch/?q={{index}}">{{index}}</a> </li>
                                       </ul>
                                 {% endfor %}
                             </td>
@@ -109,7 +109,7 @@
 <div class="bg-grey pv-55">
             <div class="row-fluid row flex-row flex-column flex-column-reverse-mobile">
                       <div class="col-md-6 col-sm-6">
-                              <h1 style="font-size:30px;"><b> Transaction  in Block  <a class="btn-link" href="/ui/mainSearch/?q={{block_height}}">{{block_height}}</a> </b></h1>
+                              <h1 style="font-size:30px;"><b> Transaction  in Block  <a class="btn-link" href="/btc/mainSearch/?q={{block_height}}">{{block_height}}</a> </b></h1>
                   <br>
                             <div class="blockContainer">
                                 <table class = "table table-responsive">
@@ -122,7 +122,7 @@
                                               <tr ><td >Number of Outputs </td> <td width="50%"> {{Number_of_outputs}}</td></tr>
                                               <tr ><td >Locktime </td> <td> {{locktime}}</td></tr>
                                               <tr><td >Version </td> <td> {{version}}</td></tr>
-                                              <tr><td >Block Height </td> <td> <a class="btn-link" href="/ui/mainSearch/?q={{block_height}}">{{block_height}}</a></td> </tr>
+                                              <tr><td >Block Height </td> <td> <a class="btn-link" href="/btc/mainSearch/?q={{block_height}}">{{block_height}}</a></td> </tr>
                                               <tr > <td >Coinbase </td> <td>{{coinbase}}</td> </tr>
                                               <tr > <td > Output Script </td> <td>  <a class = 'btn-link' id="script" onclick="showScript()" href="#"> Script</a></td> </tr>
                                     </tbody>
