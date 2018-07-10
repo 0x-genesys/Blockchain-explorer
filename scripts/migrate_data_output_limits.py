@@ -23,6 +23,7 @@ def get_blocks(start, stop):
         outputs = get_tx_table(block)
 
         print("WRITING " + str(len(outputs)))
+        print("For block "+ str(block.height))
         Output_Table.objects.bulk_create([
             Output_Table(**record) for record in outputs
         ])
@@ -44,7 +45,6 @@ def get_output_table(tx):
     for number, output in enumerate(tx.outputs):
         try:
             for _address in output.addresses:
-                print("Output for "+ tx.hash)
                 record = {
                             'transaction_hash_id': tx.hash,
                             'output_no':number,
