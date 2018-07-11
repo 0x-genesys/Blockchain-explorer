@@ -20,20 +20,15 @@ def get_blocks(start, stop):
     print("stop "+str(stop))
 
     for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
-        outputs = get_tx_table(block)
+        get_tx_table(block)
 
         print("WRITING " + str(len(outputs)))
         print("For block "+ str(block.height))
-        Output_Table.objects.bulk_create([
-            Output_Table(**record) for record in outputs
-        ])
 
 
 def get_tx_table(block):
-    outputs = []
-
     for tx in block.transactions:
-        outputs = outputs + get_output_table(tx)
+        get_output_table(tx)
 
     return outputs
 
@@ -41,7 +36,7 @@ def get_tx_table(block):
 
 
 def get_output_table(tx):
-    output_to_create = []
+    outputs = []
     for number, output in enumerate(tx.outputs):
         try:
             output_type = output.type
@@ -60,11 +55,13 @@ def get_output_table(tx):
                             'output_script_value': script_value,
                             'output_script_operations': script_operations
                         }
-                output_to_create.append(record)
+                outputs.append(record)
         except:
             continue
 
-    return output_to_create
+    Output_Table.objects.bulk_create([
+            Output_Table(**record) for record in outputs
+        ])
 
     
 def run(*args):
