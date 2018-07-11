@@ -21,16 +21,12 @@ def get_blocks(start, stop):
 
     for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
         get_tx_table(block)
-
-        print("WRITING " + str(len(outputs)))
         print("For block "+ str(block.height))
 
 
 def get_tx_table(block):
     for tx in block.transactions:
         get_output_table(tx)
-
-    return outputs
 
         
 
