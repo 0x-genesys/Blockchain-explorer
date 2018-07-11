@@ -43,17 +43,22 @@ def get_tx_table(block):
 def get_output_table(tx):
     output_to_create = []
     for number, output in enumerate(tx.outputs):
+        output_type = output.type
+        output_value = output.value
+        output_size = output.size
+        script_value = output.script.value
+        script_operations = output.script.operations
         try:
             for _address in output.addresses:
                 record = {
                             'transaction_hash_id': tx.hash,
                             'output_no':number,
-                            'output_type':output.type,
-                            'output_value':output.value,
-                            'size':output.size,
+                            'output_type':output_type,
+                            'output_value':output_value,
+                            'size':output_size,
                             'address':_address.address,
-                            'output_script_value': output.script.value,
-                            'output_script_operations': output.script.operations
+                            'output_script_value': script_value,
+                            'output_script_operations': script_operations
                         }
                 output_to_create.append(record)
         except:
