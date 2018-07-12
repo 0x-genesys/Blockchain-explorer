@@ -13,13 +13,18 @@ from app.settings import BLOCK_DATA_DIR
 #pass the path for the bitcoin-node data
 
 
+'''
+**NOTE**: You must manually/programmatically delete the cache file in order to rebuild the cache.
+ Don't forget to do this each time you would like to re-parse the blockchain with a higher block height 
+ than the first time you saved the cache file as the new blocks will not be included in the cache.
+'''
 def get_blocks(start, stop):
     blockchain = Blockchain(BLOCK_DATA_DIR)
     print("BLOCKS accessed")
     print("start "+str(start))
     print("stop "+str(stop))
 
-    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
+    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', int(start), int(stop), 'index-cache.pickle'):
         get_tx_table(block)
         print("For block "+ str(block.height))
 
@@ -27,8 +32,6 @@ def get_blocks(start, stop):
 def get_tx_table(block):
     for tx in block.transactions:
         get_output_table(tx)
-
-        
 
 
 def get_output_table(tx):
