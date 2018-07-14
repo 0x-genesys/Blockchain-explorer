@@ -25,7 +25,7 @@ def get_blocks(start, stop):
     stop = int(stop)
     net = stop - start
     bucket = 20000
-    limit = math.ceil(net / bucket)
+    limit = math.floor(net / bucket)
 
     for i in range(limit):
         local_start = start + (i*bucket)
