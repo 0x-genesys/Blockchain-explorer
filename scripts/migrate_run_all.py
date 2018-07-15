@@ -20,12 +20,12 @@ import django
 #output and input are syncd entirely
 #to sync per block use migrate_data
 def start(start, stop):
-    extract_input_output_main_from_blockchain(start, stop)
-    get_blocks_for_transactions()
+    # extract_input_output_main_from_blockchain(start, stop)
+    # get_blocks_for_transactions()
     #get_blocks_for_outputs()
-    #create_pre_indexes()
+    create_pre_indexes()
     #get_blocks_for_inputs()
-    #create_post_indexes()
+    create_post_indexes()
     #create_input_indexes()
     #Call inputs manually after making index on output's tx id else super slow
 
@@ -34,6 +34,7 @@ def create_pre_indexes():
 	cursor = connection.cursor()
 
 	try:
+		print("create bitcoin_data_app_output_table index")
 		cursor.execute('''create index output_tx_hash_output_no on bitcoin_data_app_output_table(transaction_hash_id, output_no)''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
@@ -46,21 +47,25 @@ def create_post_indexes():
 	cursor = connection.cursor()
 
 	try:
+		print("create bitcoin_data_app_transaction_table index")
 		cursor.execute('''create index transaction_block_hash_id on bitcoin_data_app_transaction_table(block_hash_id)''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
 	try:
+		print("create bitcoin_data_app_transaction_table index")
 		cursor.execute('''create index transaction_tx_hash on bitcoin_data_app_transaction_table(transaction_hash)''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
 	try:
+		print("create bitcoin_data_app_output_table index")
 		cursor.execute('''create index input_address_index on bitcoin_data_app_output_table(address)''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
 	try:
+		print("create bitcoin_data_app_block_table index")
 		cursor.execute('''create index block_height_index on bitcoin_data_app_block_table(block_height)''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
