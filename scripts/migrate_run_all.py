@@ -70,6 +70,21 @@ def create_post_indexes():
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
+
+	try:
+		print("create bitcoin_data_app_block_table block_hash")
+		cursor.execute('''create index block_hash_index on bitcoin_data_app_block_table(block_hash)''')
+	except (django.db.utils.ProgrammingError) as err:
+		print("Already exists")
+
+
+	try:
+		print("create bitcoin_data_app_block_table timestamp")
+		cursor.execute('''create index block_timestamp_index on bitcoin_data_app_block_table(timestamp)''')
+	except (django.db.utils.ProgrammingError) as err:
+		print("Already exists")
+
+
 	cursor.close()
 
 
