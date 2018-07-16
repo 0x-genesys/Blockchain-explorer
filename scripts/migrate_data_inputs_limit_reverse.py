@@ -18,7 +18,7 @@ def get_blocks(start, stop):
     stop = int(stop)
     net = stop - start
 
-    bucket = 50000
+    bucket = 100000
     limit = math.ceil(net / bucket)
 
     print("Limit value is "+ str(limit))
@@ -81,17 +81,16 @@ class Mythread(threading.Thread):
                                 'input_script_value': _input.script.value,
                                 'input_script_operations': _input.script.operations
                              }
-                             
-                    #We take out address from previous transaction hash and output no.
-                    outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
+                    if previous_transaction_hash != '':
+                      #We take out address from previous transaction hash and output no.
+                      outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=str(previous_transaction_hash), output_no=str(_input.transaction_index))
 
-                    for output in outputs:
-                        # print("output['address'] " + str(output))
-                        record['input_address'] = output.address
-                        record['input_value'] = output.output_value
-                        record['input_script_type'] = output.output_type
-
-                    inputs_to_insert.append(record)
+                      for output in outputs[0]:
+                          # print("output['address'] " + str(output))
+                          record['input_address'] = output.address
+                          record['input_value'] = output.output_value
+                          record['input_script_type'] = output.output_type
+                      inputs_to_insert.append(record)
                 except:
                     continue
 
