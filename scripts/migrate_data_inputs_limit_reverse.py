@@ -60,11 +60,10 @@ class Mythread(threading.Thread):
     def get_input_table(self, tx):
             inputs_to_insert = []
             for _input in tx.inputs:
-                try:
                     previous_transaction_hash = ''
 
-                    if(_input.transaction_hash != '0000000000000000000000000000000000000000000000000000000000000000'):
-                        previous_transaction_hash  = _input.transaction_hash
+                    if(str(_input.transaction_hash) != '0000000000000000000000000000000000000000000000000000000000000000'):
+                        previous_transaction_hash  = str(_input.transaction_hash)
 
 
                     print("previous_transaction_hash "+str(previous_transaction_hash))
@@ -81,18 +80,19 @@ class Mythread(threading.Thread):
                                 'input_script_value': _input.script.value,
                                 'input_script_operations': _input.script.operations
                              }
-                    if previous_transaction_hash != '':
+                    if str(previous_transaction_hash) != '':
                       #We take out address from previous transaction hash and output no.
                       outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=str(previous_transaction_hash), output_no=str(_input.transaction_index))
-
-                      for output in outputs[0]:
-                          # print("output['address'] " + str(output))
-                          record['input_address'] = output.address
-                          record['input_value'] = output.output_value
-                          record['input_script_type'] = output.output_type
-                      inputs_to_insert.append(record)
-                except:
-                    continue
+                      print(outputs)
+                      if len(outputs) > 0:
+                        print("output['address'] " + str(outputs[0].address))
+                        print("output['address'] " + str(outputs[0].output_value))
+                        print("output['address'] " + str(outputs[0].output_type))
+                        record['input_address'] = outputs[0].address
+                        record['input_value'] = outputs[0].output_value
+                        record['input_script_type'] = outputs[0].output_type
+                    print(record)
+                    inputs_to_insert.append(record)
 
             Input_Table.objects.bulk_create([
                     Input_Table(**record) for record in inputs_to_insert
