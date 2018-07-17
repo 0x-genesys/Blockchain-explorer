@@ -4,7 +4,7 @@ import gc
 import csv
 import json
 import threading
-from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table, Block_Table
+from bitcoin_data_app.models import Transaction_Table, Input_Table_Temp, Output_Table, Block_Table
 from django.http import JsonResponse
 from django.db import connection
 import math
@@ -18,7 +18,7 @@ def get_blocks(start, stop):
     stop = int(stop)
     net = stop - start
 
-    bucket = 29290
+    bucket = 100000
     limit = math.ceil(net / bucket)
 
     print("Limit value is "+ str(limit))
@@ -99,8 +99,8 @@ class Mythread(threading.Thread):
                             _input['input_address'] = output.address
                             _input['input_value'] = output.output_value
                             _input['input_script_type'] = output.output_type
-            Input_Table.objects.bulk_create([
-                    Input_Table(**record) for record in inputs_to_insert
+            Input_Table_Temp.objects.bulk_create([
+                    Input_Table_Temp(**record) for record in inputs_to_insert
                 ])
 
 def run(*args):
