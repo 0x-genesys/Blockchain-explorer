@@ -18,7 +18,7 @@ def get_blocks(start, stop):
     stop = int(stop)
     net = stop - start
 
-    bucket = 50000
+    bucket = 25000
     limit = math.ceil(net / bucket)
 
     print("Limit value is "+ str(limit))
@@ -59,20 +59,21 @@ class Mythread(threading.Thread):
 
     def get_input_table(self, tx):
             inputs_to_insert = []
+            previous_transactions = []
             for _input in tx.inputs:
                try:
                     previous_transaction_hash = ''
 
                     if(str(_input.transaction_hash) != '0000000000000000000000000000000000000000000000000000000000000000'):
                         previous_transaction_hash  = str(_input.transaction_hash)
-
+                        previous_transactions.append(previous_transaction_hash)
 
                     print("previous_transaction_hash "+str(previous_transaction_hash))
 
                     record_data = {
                                 'transaction_hash_id': tx.hash,
                                 'previous_transaction_hash':  previous_transaction_hash,
-                                'transaction_index': _input.transaction_index,
+                                'transaction_index': str(_input.transaction_index),
                                 'input_sequence_number': _input.sequence_number,
                                 'input_size': _input.size,
                                 'input_address':None,
@@ -81,17 +82,23 @@ class Mythread(threading.Thread):
                                 'input_script_value': _input.script.value,
                                 'input_script_operations': _input.script.operations
                              }
-                    if str(previous_transaction_hash) != '':
-                      #We take out address from previous transaction hash and output no.
-                      outputs = Output_Table.objects.only('address', 'output_value','output_type').filter(transaction_hash_id=str(previous_transaction_hash), output_no=str(_input.transaction_index))
-                      print(outputs)
-                      if len(outputs) > 0:
-                        record_data['input_address'] = outputs[0].address
-                        record_data['input_value'] = outputs[0].output_value
-                        record_data['input_script_type'] = outputs[0].output_type
                     inputs_to_insert.append(record_data)
                except:
-                  continue     
+                  continue
+
+            if len(previous_transactions) > 0:
+                outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=previous_transactions)
+                for output in outputs:
+                    for _input in inputs_to_insert:
+                        # print(_input['previous_transaction_hash'] + "  " + output.transaction_hash_id )
+                        # print(_input['transaction_index'] + "  " + output.output_no)
+                        if _input['previous_transaction_hash'] == output.transaction_hash_id and output.output_no == _input['transaction_index']:
+                            # print("inserting inputs")
+                            # print("\n_input >>> " + str(_input))
+                            # print("\noutput >>> " + str(output))
+                            _input['input_address'] = output.address
+                            _input['input_value'] = output.output_value
+                            _input['input_script_type'] = output.output_type
             Input_Table.objects.bulk_create([
                     Input_Table(**record) for record in inputs_to_insert
                 ])
