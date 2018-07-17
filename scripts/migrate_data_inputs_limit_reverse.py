@@ -18,7 +18,7 @@ def get_blocks(start, stop):
     stop = int(stop)
     net = stop - start
 
-    bucket = 100000
+    bucket = 50000
     limit = math.ceil(net / bucket)
 
     print("Limit value is "+ str(limit))
@@ -47,7 +47,7 @@ class Mythread(threading.Thread):
 
         for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', int(self.start_local), int(self.stop_local), 'index-cache.pickle'):
             self.get_tx_table(block)
-            print("For block "+ str(block.height))
+            print("\n\n\nFor block "+ str(block.height))
             time.sleep(0.1)
 
 
@@ -60,6 +60,7 @@ class Mythread(threading.Thread):
     def get_input_table(self, tx):
             inputs_to_insert = []
             for _input in tx.inputs:
+               try:
                     previous_transaction_hash = ''
 
                     if(str(_input.transaction_hash) != '0000000000000000000000000000000000000000000000000000000000000000'):
@@ -68,7 +69,7 @@ class Mythread(threading.Thread):
 
                     print("previous_transaction_hash "+str(previous_transaction_hash))
 
-                    record = {
+                    record_data = {
                                 'transaction_hash_id': tx.hash,
                                 'previous_transaction_hash':  previous_transaction_hash,
                                 'transaction_index': _input.transaction_index,
@@ -82,18 +83,15 @@ class Mythread(threading.Thread):
                              }
                     if str(previous_transaction_hash) != '':
                       #We take out address from previous transaction hash and output no.
-                      outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=str(previous_transaction_hash), output_no=str(_input.transaction_index))
+                      outputs = Output_Table.objects.only('address', 'output_value','output_type').filter(transaction_hash_id=str(previous_transaction_hash), output_no=str(_input.transaction_index))
                       print(outputs)
                       if len(outputs) > 0:
-                        print("output['address'] " + str(outputs[0].address))
-                        print("output['address'] " + str(outputs[0].output_value))
-                        print("output['address'] " + str(outputs[0].output_type))
-                        record['input_address'] = outputs[0].address
-                        record['input_value'] = outputs[0].output_value
-                        record['input_script_type'] = outputs[0].output_type
-                    print(record)
-                    inputs_to_insert.append(record)
-
+                        record_data['input_address'] = outputs[0].address
+                        record_data['input_value'] = outputs[0].output_value
+                        record_data['input_script_type'] = outputs[0].output_type
+                    inputs_to_insert.append(record_data)
+               except:
+                  continue     
             Input_Table.objects.bulk_create([
                     Input_Table(**record) for record in inputs_to_insert
                 ])
