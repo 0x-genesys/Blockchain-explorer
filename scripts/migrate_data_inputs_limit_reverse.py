@@ -18,7 +18,7 @@ def get_blocks(start, stop):
     stop = int(stop)
     net = stop - start
 
-    bucket = 29290
+    bucket = 100000
     limit = math.ceil(net / bucket)
 
     print("Limit value is "+ str(limit))
@@ -59,14 +59,15 @@ class Mythread(threading.Thread):
 
     def get_input_table(self, tx):
             inputs_to_insert = []
-            previous_transactions = []
+            # previous_transactions = []
             for _input in tx.inputs:
                try:
-                    previous_transaction_hash = ''
-
+                    previous_transaction_hash = None
+                    print("\n _input.transaction_hash " + str(_input.transaction_hash))
+                    print("for transaction_hash_id " + str(tx.hash))
                     if(str(_input.transaction_hash) != '0000000000000000000000000000000000000000000000000000000000000000'):
                         previous_transaction_hash  = str(_input.transaction_hash)
-                        previous_transactions.append(previous_transaction_hash)
+                        # previous_transactions.append(previous_transaction_hash)
 
                     print("previous_transaction_hash "+str(previous_transaction_hash))
 
@@ -82,23 +83,25 @@ class Mythread(threading.Thread):
                                 'input_script_value': _input.script.value,
                                 'input_script_operations': _input.script.operations
                              }
+                    print("writing previous_transaction_hash " + str(record_data['previous_transaction_hash']))
                     inputs_to_insert.append(record_data)
-               except:
+               except Exception as e:
+                  print("error >>>>>>>>>>>>>. "+str(e) )
                   continue
 
-            if len(previous_transactions) > 0:
-                outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=previous_transactions)
-                for output in outputs:
-                    for _input in inputs_to_insert:
-                        # print(_input['previous_transaction_hash'] + "  " + output.transaction_hash_id )
-                        # print(_input['transaction_index'] + "  " + output.output_no)
-                        if _input['previous_transaction_hash'] == output.transaction_hash_id and output.output_no == _input['transaction_index']:
-                            # print("inserting inputs")
-                            # print("\n_input >>> " + str(_input))
-                            # print("\noutput >>> " + str(output))
-                            _input['input_address'] = output.address
-                            _input['input_value'] = output.output_value
-                            _input['input_script_type'] = output.output_type
+            # if len(previous_transactions) > 0:
+            #     outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=previous_transactions)
+            #     for output in outputs:
+            #         for _input in inputs_to_insert:
+            #             # print(_input['previous_transaction_hash'] + "  " + output.transaction_hash_id )
+            #             # print(_input['transaction_index'] + "  " + output.output_no)
+            #             if _input['previous_transaction_hash'] == output.transaction_hash_id and output.output_no == _input['transaction_index']:
+            #                 # print("inserting inputs")
+            #                 # print("\n_input >>> " + str(_input))
+            #                 # print("\noutput >>> " + str(output))
+            #                 _input['input_address'] = output.address
+            #                 _input['input_value'] = output.output_value
+            #                 _input['input_script_type'] = output.output_type
             Input_Table.objects.bulk_create([
                     Input_Table(**record) for record in inputs_to_insert
                 ])
