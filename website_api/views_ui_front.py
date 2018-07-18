@@ -142,6 +142,9 @@ def search_block_hash(request):
             output_address_list = []
             input_address_list = []
 
+            #query inputs from outputs
+            input_ = get_all_input_data(inputs_db)
+
             if inputs_db and len(inputs_db) > 0:
                 for input_ in inputs_db:
                     if input_.input_address:
@@ -210,6 +213,8 @@ def search_transaction_hash(request):
                     output_address_list.append(output.address)
                 if output.output_script_value:
                     output_scripts.append(output.output_script_value)
+
+            input_db =  get_all_input_data(input_db)
 
             for input_ in input_db:
                 if input_.input_address:
@@ -288,6 +293,8 @@ def search_address(request):
             tx_inputs = []
             tx_outputs = []
 
+            tx_inputs_db = get_all_input_data(tx_inputs_db)
+
             #construct the inputs
             for _input in tx_inputs_db:
                 if _input.input_address is not None:
@@ -346,7 +353,22 @@ def search_block_height(request):
             return redirect('/btc/search/?q='+block_search_term[0].block_hash)
 
 
-
+def get_all_input_data(inputs_db):
+    tx_hashes = []
+    for input_ in inputs_db:
+        tx_hashes.append(input_.previous_transaction_hash)
+    print(">>>>>>>")
+    if len(tx_hashes) > 0:
+        outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=tx_hashes)
+        for output in outputs:
+            for _input in inputs_db:
+                print(_input.previous_transaction_hash + "  " + output.transaction_hash_id )
+                print(_input.transaction_index + "  " + output.output_no)
+                if _input.previous_transaction_hash == output.transaction_hash_id and output.output_no == _input.transaction_index:
+                    _input.input_address = output.address
+                    _input.input_value = output.output_value
+                    _input.input_script_type = output.output_type
+    return inputs_db
 
 
 """

@@ -86,19 +86,19 @@ class Mythread(threading.Thread):
                except:
                   continue
 
-            if len(previous_transactions) > 0:
-                outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=previous_transactions)
-                for output in outputs:
-                    for _input in inputs_to_insert:
-                        # print(_input['previous_transaction_hash'] + "  " + output.transaction_hash_id )
-                        # print(_input['transaction_index'] + "  " + output.output_no)
-                        if _input['previous_transaction_hash'] == output.transaction_hash_id and output.output_no == _input['transaction_index']:
-                            # print("inserting inputs")
-                            # print("\n_input >>> " + str(_input))
-                            # print("\noutput >>> " + str(output))
-                            _input['input_address'] = output.address
-                            _input['input_value'] = output.output_value
-                            _input['input_script_type'] = output.output_type
+            # if len(previous_transactions) > 0:
+            #     outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=previous_transactions)
+            #     for output in outputs:
+            #         for _input in inputs_to_insert:
+            #             # print(_input['previous_transaction_hash'] + "  " + output.transaction_hash_id )
+            #             # print(_input['transaction_index'] + "  " + output.output_no)
+            #             if _input['previous_transaction_hash'] == output.transaction_hash_id and output.output_no == _input['transaction_index']:
+            #                 # print("inserting inputs")
+            #                 # print("\n_input >>> " + str(_input))
+            #                 # print("\noutput >>> " + str(output))
+            #                 _input['input_address'] = output.address
+            #                 _input['input_value'] = output.output_value
+            #                 _input['input_script_type'] = output.output_type
             Input_Table_Temp.objects.bulk_create([
                     Input_Table_Temp(**record) for record in inputs_to_insert
                 ])
