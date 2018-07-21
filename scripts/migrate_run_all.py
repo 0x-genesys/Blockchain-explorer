@@ -94,6 +94,11 @@ def create_input_indexes():
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
+	try:
+		cursor.execute('''create index input_address_index on bitcoin_data_app_input_table(input_address)''')
+	except (django.db.utils.ProgrammingError) as err:
+		print("Already exists")
+
 	# try:
 	# 	cursor.execute('''create index output_address_index on bitcoin_data_app_input_table(input_address)''')
 	# except (django.db.utils.ProgrammingError) as err:
