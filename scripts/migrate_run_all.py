@@ -26,7 +26,7 @@ def start(start, stop):
     # create_pre_indexes()
     #get_blocks_for_inputs()
     # create_post_indexes()
-    #create_input_indexes()
+    create_input_indexes()
     #Call inputs manually after making index on output's tx id else super slow
 
 
