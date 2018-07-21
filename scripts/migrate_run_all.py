@@ -26,7 +26,7 @@ def start(start, stop):
     # create_pre_indexes()
     #get_blocks_for_inputs()
     # create_post_indexes()
-    #create_input_indexes()
+    create_input_indexes()
     #Call inputs manually after making index on output's tx id else super slow
 
 
@@ -91,6 +91,11 @@ def create_post_indexes():
 def create_input_indexes():
 	try:
 		cursor.execute('''create index input_tx_hash on bitcoin_data_app_input_table(transaction_hash_id)''')
+	except (django.db.utils.ProgrammingError) as err:
+		print("Already exists")
+
+	try:
+		cursor.execute('''create index input_address_index on bitcoin_data_app_input_table(input_address)''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
