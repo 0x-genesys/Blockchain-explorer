@@ -362,8 +362,6 @@ def get_all_input_data(inputs_db):
         outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=tx_hashes)
         for output in outputs:
             for _input in inputs_db:
-                print(_input.previous_transaction_hash + "  " + output.transaction_hash_id )
-                print(_input.transaction_index + "  " + output.output_no)
                 if _input.previous_transaction_hash == output.transaction_hash_id and output.output_no == _input.transaction_index:
                     _input.input_address = output.address
                     _input.input_value = output.output_value
