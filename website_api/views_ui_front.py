@@ -143,25 +143,25 @@ def search_block_hash(request):
             input_address_list = []
 
             #query inputs from outputs
-            input_ = get_all_input_data(inputs_db)
+            # input_ = get_all_input_data(inputs_db)
 
-            if inputs_db and len(inputs_db) > 0:
-                for input_ in inputs_db:
-                    if input_.input_address:
-                        input_address_list.append(input_.input_address)
+            # if inputs_db and len(inputs_db) > 0:
+            #     for input_ in inputs_db:
+            #         if input_.input_address:
+            #             input_address_list.append(input_.input_address)
 
-            if outputs_db and len(outputs_db) > 0:
-                for output in outputs_db:
-                        output_address_list.append(output.address)
+            # if outputs_db and len(outputs_db) > 0:
+            #     for output in outputs_db:
+            #             output_address_list.append(output.address)
                 
-            balance = calculate_amount_received(outputs_db)    
+            # balance = calculate_amount_received(outputs_db)    
 
             record_output_address = {
                                       'transaction_hash':transaction.transaction_hash,
-                                      'output_address':output_address_list,
-                                      'input_address':input_address_list,
-                                      'balance': balance
-                                      }
+                                      # 'output_address':output_address_list,
+                                      # 'input_address':input_address_list,
+                                      # 'balance': balance
+                                    }
 
             final_list.append(record_output_address)
             
