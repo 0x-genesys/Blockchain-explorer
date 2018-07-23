@@ -14,8 +14,8 @@ from app.settings import BLOCK_DATA_DIR
 
 #start > stop (reverse)
 def get_blocks(start, stop):
-    start = int(start)
-    stop = int()
+    start = start
+    stop = stop
     thread1 = Mythread(start, stop)
     thread1.start()
     # net = stop - start
