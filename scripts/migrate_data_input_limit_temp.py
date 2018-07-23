@@ -15,21 +15,23 @@ from app.settings import BLOCK_DATA_DIR
 #start > stop (reverse)
 def get_blocks(start, stop):
     start = int(start)
-    stop = int(stop)
-    net = stop - start
+    stop = int()
+    thread1 = Mythread(start, stop)
+    thread1.start()
+    # net = stop - start
 
-    bucket = 100000
-    limit = math.ceil(net / bucket)
+    # bucket = 100000
+    # limit = math.ceil(net / bucket)
 
-    print("Limit value is "+ str(limit))
+    # print("Limit value is "+ str(limit))
 
-    for i in range(limit):
-        local_start = start + (i*bucket)
-        local_stop = local_start + bucket
-        local_start = str(local_start)
-        local_stop = str(local_stop)
-        thread1 = Mythread(local_start, local_stop)
-        thread1.start()
+    # for i in range(limit):
+    #     local_start = start + (i*bucket)
+    #     local_stop = local_start + bucket
+    #     local_start = str(local_start)
+    #     local_stop = str(local_stop)
+    #     thread1 = Mythread(local_start, local_stop)
+    #     thread1.start()
 
 
 class Mythread(threading.Thread):
@@ -59,14 +61,15 @@ class Mythread(threading.Thread):
 
     def get_input_table(self, tx):
             inputs_to_insert = []
-            previous_transactions = []
+            # previous_transactions = []
             for _input in tx.inputs:
                try:
-                    previous_transaction_hash = ''
-
+                    previous_transaction_hash = None
+                    print("\n _input.transaction_hash " + str(_input.transaction_hash))
+                    print("for transaction_hash_id " + str(tx.hash))
                     if(str(_input.transaction_hash) != '0000000000000000000000000000000000000000000000000000000000000000'):
                         previous_transaction_hash  = str(_input.transaction_hash)
-                        previous_transactions.append(previous_transaction_hash)
+                        # previous_transactions.append(previous_transaction_hash)
 
                     print("previous_transaction_hash "+str(previous_transaction_hash))
 
@@ -82,8 +85,10 @@ class Mythread(threading.Thread):
                                 'input_script_value': _input.script.value,
                                 'input_script_operations': _input.script.operations
                              }
+                    print("writing previous_transaction_hash " + str(record_data['previous_transaction_hash']))
                     inputs_to_insert.append(record_data)
-               except:
+               except Exception as e:
+                  print("error >>>>>>>>>>>>>. "+str(e) )
                   continue
 
             # if len(previous_transactions) > 0:
