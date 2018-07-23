@@ -137,11 +137,11 @@ def search_block_hash(request):
         print(len(transaction_db))
         for transaction in transaction_db:
             transaction_list.append(transaction.transaction_hash)
-            outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
-            inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+           # outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+            #inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
 
-            output_address_list = []
-            input_address_list = []
+            #output_address_list = []
+            #input_address_list = []
 
             #query inputs from outputs
             # input_ = get_all_input_data(inputs_db)
