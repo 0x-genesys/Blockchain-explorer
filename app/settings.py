@@ -109,7 +109,7 @@ DATABASES = {
         'NAME': 'bitcoin',
         'USER': 'karan',
         'PASSWORD': 'blockwala@123',
-        'HOST':'localhost',
+        'HOST':'explorer.blockwala.io',
         'PORT':'5432',
         'CONN_MAX_AGE':50
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
