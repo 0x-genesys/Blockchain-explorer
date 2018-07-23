@@ -13,6 +13,7 @@ import time
 import calendar
 import re
 import io
+import math
 from .calaculate_amount import calculate_amount_tx, calculate_amount_address, calculate_amount_received
 import urllib, base64
 from io import BytesIO
@@ -200,6 +201,8 @@ def search_transaction_hash(request):
         output_scripts = []
         input_scripts = []
         search_term = Transaction_Table.objects.filter(transaction_hash=message).order_by('-timestamp')
+        if len(search_term) == 0:
+            return render(request,'website_api/wrong_search.html')
         block = Block_Table.objects.filter(block_hash=search_term[0].block_hash_id)
         #print(message)
         if not search_term:
@@ -357,15 +360,37 @@ def get_all_input_data(inputs_db):
     tx_hashes = []
     for input_ in inputs_db:
         tx_hashes.append(input_.previous_transaction_hash)
-    print(">>>>>>>")
+    # print(">>>>>>> "+str(tx_hashes))
     if len(tx_hashes) > 0:
-        outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=tx_hashes)
-        for output in outputs:
-            for _input in inputs_db:
-                if _input.previous_transaction_hash == output.transaction_hash_id and output.output_no == _input.transaction_index:
-                    _input.input_address = output.address
-                    _input.input_value = output.output_value
-                    _input.input_script_type = output.output_type
+        length_tx = len(tx_hashes)
+        bucket = 10
+        limit_tx = math.ceil(length_tx/bucket)
+        # print("length_tx "+str(length_tx))
+        # print("limit_tx "+str(limit_tx))
+        for i in range(limit_tx):
+            start = i*bucket
+            end = (i+1)*bucket
+            # print("i  "+str(i))
+            # print("start "+str(start))
+
+            if end > (length_tx):
+                 end = length_tx
+
+            # print("end  "+str(end))
+            sliceObj = slice(start, end)
+            txs = tx_hashes[sliceObj]
+
+            outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=txs)
+
+            for output in outputs:
+                for _input in inputs_db:
+                    # print(_input.previous_transaction_hash + "  " + output.transaction_hash_id )
+                    # print(_input.transaction_index + "  " + output.output_no)
+                    if _input.previous_transaction_hash == output.transaction_hash_id and output.output_no == _input.transaction_index:
+                        _input.input_address = output.address
+                        _input.input_value = output.output_value
+                        _input.input_script_type = output.output_type
+
     return inputs_db
 
 
