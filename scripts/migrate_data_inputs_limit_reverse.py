@@ -15,21 +15,23 @@ from app.settings import BLOCK_DATA_DIR
 #start > stop (reverse)
 def get_blocks(start, stop):
     start = int(start)
-    stop = int(stop)
-    net = stop - start
+    stop = int()
+    thread1 = Mythread(start, stop)
+    thread1.start()
+    # net = stop - start
 
-    bucket = 100000
-    limit = math.ceil(net / bucket)
+    # bucket = 100000
+    # limit = math.ceil(net / bucket)
 
-    print("Limit value is "+ str(limit))
+    # print("Limit value is "+ str(limit))
 
-    for i in range(limit):
-        local_start = start + (i*bucket)
-        local_stop = local_start + bucket
-        local_start = str(local_start)
-        local_stop = str(local_stop)
-        thread1 = Mythread(local_start, local_stop)
-        thread1.start()
+    # for i in range(limit):
+    #     local_start = start + (i*bucket)
+    #     local_stop = local_start + bucket
+    #     local_start = str(local_start)
+    #     local_stop = str(local_stop)
+    #     thread1 = Mythread(local_start, local_stop)
+    #     thread1.start()
 
 
 class Mythread(threading.Thread):
