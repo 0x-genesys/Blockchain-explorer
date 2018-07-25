@@ -265,13 +265,13 @@ def search_address(request):
         try:
             address = request.GET['q']
 
-            print(">>>>>start ")
+            # print(">>>>>start ")
             n_outputs = Output_Table.objects.filter(address=address)
-            print(">>>>>outputs "+str(n_outputs))
+            # print(">>>>>outputs "+str(n_outputs))
 
             n_inputs = Input_Table.objects.filter(input_address=address)
             n_inputs = get_all_input_data(n_inputs)
-            print(">>>>>inputs "+str(n_inputs))
+            # print(">>>>>inputs "+str(n_inputs))
 
             input_transaction_hashes = []
             output_transaction_hashes = []
@@ -280,12 +280,12 @@ def search_address(request):
             for input_entry in n_inputs:
                 tx_hash = input_entry.transaction_hash_id
                 input_transaction_hashes.append(tx_hash)
-            print(">>>>>got n_inputs "+str(input_transaction_hashes))
+            # print(">>>>>got n_inputs "+str(input_transaction_hashes))
 
             for output_entry in n_outputs:
                 tx_hash = output_entry.transaction_hash_id
                 output_transaction_hashes.append(tx_hash)
-            print(">>>>>got n_outputs "+str(output_transaction_hashes))
+            # print(">>>>>got n_outputs "+str(output_transaction_hashes))
 
             #total balance in the account
             balance = calculate_amount_address(n_inputs, n_outputs)
@@ -301,19 +301,19 @@ def search_address(request):
             bucket = 100
             limit_tx = math.ceil(length_tx/bucket)
 
-            print("length_tx "+str(length_tx))
-            print("limit_tx "+str(limit_tx))
+            # print("length_tx "+str(length_tx))
+            # print("limit_tx "+str(limit_tx))
             for i in range(limit_tx):
 
                 start = i * bucket
                 end = (i+1) * bucket
-                print("i  " + str(i))
-                print("start "+str(start))
+                # print("i  " + str(i))
+                # print("start "+str(start))
 
                 if end > (length_tx):
                      end = length_tx
 
-                print("end  "+str(end))
+                # print("end  "+str(end))
                 sliceObj = slice(start, end)
                 txs = transaction_hashes[sliceObj]
 
@@ -406,7 +406,7 @@ def get_all_input_data(inputs_db):
     # print(">>>>>>> "+str(tx_hashes))
     if len(tx_hashes) > 0:
         length_tx = len(tx_hashes)
-        bucket = 1000
+        bucket = 100
         limit_tx = math.ceil(length_tx/bucket)
         # print("length_tx "+str(length_tx))
         # print("limit_tx "+str(limit_tx))
@@ -445,7 +445,7 @@ def get_all_input_data_for_tuple(inputs):
     # print(">>>>>>> "+str(tx_hashes))
     if len(tx_hashes) > 0:
         length_tx = len(tx_hashes)
-        bucket = 1000
+        bucket = 100
         limit_tx = math.ceil(length_tx/bucket)
         # print("length_tx "+str(length_tx))
         # print("limit_tx "+str(limit_tx))
