@@ -5,54 +5,55 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 <div class="row">
+    <div class="col-xs-6">
+      <div class="blockContainer">
+        <font size="2" face="Helvetica" >
+        <table class = "table table-borderless ">
 
-<div class="col-xs-6">
-<div class="blockContainer">
-    <font size="2" face="Helvetica" >
-    <table class = "table table-borderless ">
+          <tbody>
 
-      <tbody>
+              <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
+              <tr><td>Address</td>  <td> {{Address}} </td> </tr>
+              <tr><td>Balance</td>  <td style=" color:#0ac546;"> <b>{{balance}} </b></td> </tr>
+              <tr><td>Total Received</td>  <td style=" color:#0ac546;"> <b>{{total_received}} </b></td> </tr>
+              <tr><td>Transaction Count</td>  <td style=" color:#0ac546;"> <b>{{tx_count}} </b></td> </tr>
 
-          <tr><td class="active"> <b> SUMMARY</b></td> <td></td> </tr>
-          <tr><td>Address</td>  <td> {{Address}} </td> </tr>
-          <tr><td>Balance</td>  <td style=" color:#0ac546;"> <b>{{balance}} </b></td> </tr>
-          <tr><td>Total Received</td>  <td style=" color:#0ac546;"> <b>{{total_received}} </b></td> </tr>
-          <tr><td>Transaction Count</td>  <td style=" color:#0ac546;"> <b>{{tx_count}} </b></td> </tr>
+          </tbody>
+        </table>
+        </font>
+      </div>
+    </div>
 
-      </tbody>
-    </table>
+    <div class="col-xs-6">
+      <div class="block" style="margin-left:60px;">
+
+        <div class="text">
+        <!-- <h1 style="font-size:20px"> <b>QR code For The Address</b> </h1> -->
+        </div>
+
+        <br/>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            function generateBarCode()
+            {
+                var nric = $('#text').val();
+                var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
+                $('#barcode').attr('src', url);
+            }
+        </script>
+
+        <img id='barcode'
+            src="https://api.qrserver.com/v1/create-qr-code/?data={{Address}}"
+            alt="qr_code"
+            title="HELLO"
+            width="250"
+            height="250" />
+
+      </div>
+    </div>
 </div>
-</div>
 
-<div class="col-xs-6">
-<div class="block" style="margin-left:60px;">
-  <div class="text">
-
-
-<!-- <h1 style="font-size:20px"> <b>QR code For The Address</b> </h1> -->
-</div>
-<br>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script type="text/javascript">
-    function generateBarCode()
-    {
-        var nric = $('#text').val();
-        var url = 'https://api.qrserver.com/v1/create-qr-code/?data=' + nric + '&amp;size=50x50';
-        $('#barcode').attr('src', url);
-    }
-</script>
-
-
-
-<img id='barcode'
-    src="https://api.qrserver.com/v1/create-qr-code/?data={{Address}}"
-    alt="qr_code"
-    title="HELLO"
-    width="250"
-    height="250" />
-</div>
-</div>
-</div>
 <br><br>
 <br><br>
 <br><br>
@@ -61,82 +62,97 @@
 
 
 
+<div>
+  <!-- TRANSACTIONS -->
+  {% for transaction in transaction_list %}
+  {% with hash=transaction.tx_entry.transaction_hash%}
+  <div class="compact"style="margin: 0; display: inline-block; float: center;">
 
-<!-- TRANSACTIONS -->
-{% for transaction in transaction_list %}
-{% with hash=transaction.tx_entry.transaction_hash%}
-<div class="compact"style="margin: 0; display: inline-block; float: left;">
+    <div class="blockContainer" >
+          <table class="table table-border">
+            <h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
+              <tr>
+                <td class="active"> <li> <a href="/btc/mainSearch/?q={{hash}}">{{hash}}</a></li> </td>
+              </tr>
 
+              <tr>
+                <td style="text-align:center;vertical-align:middle;">
+                  <b>
+                    Accepted on {{transaction.tx_entry.timestamp}}
+                  </b>
+                </td>
 
+                <td style="text-align:center;vertical-align:middle;">
+                  <div style="height:100%; width:100%; background-color:#fff; color:#0ac546; position:relative;" >
+                    <b>
+                    {{transaction.value}} BTC
+                  </b>
+                  </div>
+                </td>
+              </tr>
 
-<div class="blockContainer" >
-  <table class="table table-border">
-    <h2 style="padding-top:5px;padding-bottom:5px;">&nbsp;&nbsp;&nbsp;Transaction</h2>
-      <tr>
-        <td class="active"> <li> <a href="/btc/mainSearch/?q={{hash}}">{{hash}}</a></li> </td>
-      </tr>
+              <tr>
+                <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
+                <td></td>
+                <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            <tr>
+              <td style="text-align:center;vertical-align:middle;">
+               <!--  {% ifequal transaction.addresses.input 0 %}
+                  <h3>No new inputs (newly generated coins)</h3>
+                {% endifequal %} -->
+                {% for input_address in transaction.addresses.input %}
+                  <ul>
+                      <li> <a class="btn-link" href="/btc/mainSearch/?q={{input_address}}"> {{input_address}} </a></li>
+                  </ul>
+                  {% empty %}
+                    <div class="coinbase">
+                       <b>(newly generated coins)</b><br>
+                       <h1 >Coinbase Transactions</h1>
+                    </div>
+                  {% endfor %}
+                </td>
 
-      <tr>
-        <td style="text-align:center;vertical-align:middle;">
-          <b>
-            Accepted on {{transaction.tx_entry.timestamp}}
-          </b>
-        </td>
+                <td style="text-align:center;vertical-align:middle;">
+                 <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> 
+                </td>
+                  
+                <td align="right" style="text-align:center;vertical-align:middle;">
+                  {% for output_address in transaction.addresses.output %}
+                  <ul>
+                    <li> <a class="btn-link" href="/btc/mainSearch/?q={{output_address}}"> {{output_address}}</a> </li>
+                  </ul>
+                   {% endfor %}
+                </td>
+                 
+            </tr>
+          </table>
+    </div>
+    <br>
+  </div>
+  {% endwith %}
+  {% endfor %}
 
-        <td style="text-align:center;vertical-align:middle;">
-          <div style="height:100%; width:100%; background-color:#fff; color:#0ac546; position:relative;" >
-            <b>
-            {{transaction.value}} BTC
-          </b>
-          </div>
-        </td>
-      </tr>
+  <div  class="container">
+    {% if next_page != None %}
+      <div class="wrongQuery" style="position:relative;  width: 180px; float:right;" align="right">
+        <a class="btn-link" href={{next_page}}> NEXT </a>
+      </div>
+    {%endif%}
 
-      <tr>
-        <td style="text-align:center;vertical-align:middle;"> <b>Inputs</b> </td>
-        <td></td>
-        <td style="text-align:center;vertical-align:middle;"><b>Outputs</b> </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-
-      <td style="text-align:center;vertical-align:middle;">
-       <!--  {% ifequal transaction.addresses.input 0 %}
-          <h3>No new inputs (newly generated coins)</h3>
-        {% endifequal %} -->
-        {% for input_address in transaction.addresses.input %}
-          <ul>
-              <li> <a class="btn-link" href="/btc/mainSearch/?q={{input_address}}"> {{input_address}} </li></a>
-          </ul>
-          {% empty %}
-            <div class="coinbase">
-               <b>(newly generated coins)</b><br>
-               <h1 >Coinbase Transactions</h1>
-            </div>
-          {% endfor %}
-        </td>
-
-        <td style="text-align:center;vertical-align:middle;">
-         <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> 
-        </td>
-          
-        <td align="right" style="text-align:center;vertical-align:middle;">
-          {% for output_address in transaction.addresses.output %}
-          <ul>
-            <li> <a class="btn-link" href="/btc/mainSearch/?q={{output_address}}"> {{output_address}} </li></a>
-          </ul>
-           {% endfor %}
-        </td>
-         
-    </tr>
-</table>
+    {% if previous_page != None %}
+      <div class="wrongQuery" style="position:relative; width: 180px; float:left;" align="left">
+        <a class="btn-link" href={{previous_page}}> PREVIOUS </a>
+      </div>
+    {%endif%}
 </div>
-<br>
+
 </div>
-</font>
-{% endwith %}
-{% endfor %}
+
+
 {% endblock %}

@@ -70,12 +70,11 @@ a set of 100/page. Query is made more repsponsive by indexing.
 """
 def recent_hundred_data(request):
     display_object = Block_Table.objects.all().order_by('-timestamp')
-    paginator = Paginator(display_object,100)
+    paginator = Paginator(display_object, 100)
 
     page = request.GET.get('page')
     dobs = paginator.get_page(page)
-    return render(request,'website_api/recent_hundred_data.html',{'output':dobs,
-                                                            'range':range(5)})
+    return render(request,'website_api/recent_hundred_data.html',{'output':dobs, 'range':range(5)})
 
 
 
@@ -87,8 +86,13 @@ Regex in Python/Django. It gives the user to search from a single search bar lik
 """
 
 def main_search_bar(request):
+    print(request)
     if 'q' in request.GET:
         message = request.GET['q']
+        if 'page' in request.GET:
+            page = request.GET['page']
+        else:
+            page = 0
         pattern_block_hash = re.compile("^[0]{8}[a-zA-Z0-9]{56}$")
         pattern_transaction_hash = re.compile("^[a-zA-Z0-9]{64}$")
         pattern_address = re.compile("^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$")
@@ -103,7 +107,7 @@ def main_search_bar(request):
             print(message)
             print("TRUE")
             #return redirect(search_address,message)
-            return redirect('/btc/searchAddress/?q='+message)
+            return redirect('/btc/searchAddress/?q=' + message +"&page="+str(page))
 
         elif pattern_height.match(message):
             return redirect('/btc/searchBlockHeight/?q='+message)
@@ -191,7 +195,7 @@ def search_block_hash(request):
 View to extract the transaction hash from the database and the corresponding addresses involved in it.
 It is called when the main search function redirects the control over here.
 """
-
+#1NadpqHPHHFVDP15fB7e46mk5GJjs2NP8D
 def search_transaction_hash(request):
     if 'q' in request.GET:
         tx_search = request.GET['q']
@@ -265,11 +269,16 @@ def search_address(request):
         try:
             address = request.GET['q']
 
+            page = 0
+
+            if 'page' in request.GET:
+                page = int(request.GET['page'])
+
             # print(">>>>>start ")
-            n_outputs = Output_Table.objects.filter(address=address)
+            n_outputs = Output_Table.objects.filter(address=address).order_by('id')
             # print(">>>>>outputs "+str(n_outputs))
 
-            n_inputs = Input_Table.objects.filter(input_address=address)
+            n_inputs = Input_Table.objects.filter(input_address=address).order_by('id')
             n_inputs = get_all_input_data(n_inputs)
             # print(">>>>>inputs "+str(n_inputs))
 
@@ -297,66 +306,62 @@ def search_address(request):
             transaction_hashes = list(set(input_transaction_hashes + output_transaction_hashes))
 
             transaction_entries = []
-            length_tx = len(transaction_hashes)
-            bucket = 100
-            limit_tx = math.ceil(length_tx/bucket)
+            # length_tx = len(transaction_hashes)
+            bucket = 10
 
-            # print("length_tx "+str(length_tx))
-            # print("limit_tx "+str(limit_tx))
-            for i in range(limit_tx):
+            offset = page*bucket
 
-                start = i * bucket
-                end = (i+1) * bucket
-                # print("i  " + str(i))
-                # print("start "+str(start))
+            previous = "/btc/mainSearch/?q="+address+"&page="+str(page-1)
+            next_ = "/btc/mainSearch/?q="+address+"&page="+str(page+1)
 
-                if end > (length_tx):
-                     end = length_tx
+            if (offset+bucket) >= len(transaction_hashes):
+                next_ = None
 
-                # print("end  "+str(end))
-                sliceObj = slice(start, end)
-                txs = transaction_hashes[sliceObj]
+            if offset == 0:
+                previous = None
+            
+            tx_entries = get_values_all_query('bitcoin_data_app_transaction_table', transaction_hashes, 'transaction_hash', 'timestamp DESC', str(bucket), str(offset))
+            # print("tx_entries "+str(tx_entries))
 
-                #query all relevant data
+            txs = []
+            for tx_entry in tx_entries:
+                txs.append(tx_entry['transaction_hash'])
 
-                
-                tx_entries = get_values_all_query('bitcoin_data_app_transaction_table', txs, 'transaction_hash')
-                # print("tx_entries "+str(tx_entries))
-                tx_inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id')
-                # print("tx_inputs_db "+ str(tx_inputs_db))
-                # tx_inputs_db = Input_Table.objects.filter(transaction_hash_id__in=txs)
-                tx_inputs_db = get_all_input_data_for_tuple(tx_inputs_db)
-                tx_outputs_db = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id')
-                # tx_outputs_db = Output_Table.objects.filter(transaction_hash_id__in=txs)
-                
-                # print("tx_inputs_db  "+str(tx_inputs_db))
-                # print("tx_outputs_db  "+str(tx_outputs_db))
+            tx_inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id', None, None, None)
+            # print("tx_inputs_db "+ str(tx_inputs_db))
+            # tx_inputs_db = Input_Table.objects.filter(transaction_hash_id__in=txs)
+            tx_inputs_db = get_all_input_data_for_tuple(tx_inputs_db)
+            tx_outputs_db = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
+            # tx_outputs_db = Output_Table.objects.filter(transaction_hash_id__in=txs)
+            
+            # print("tx_inputs_db  "+str(tx_inputs_db))
+            # print("tx_outputs_db  "+str(tx_outputs_db))
 
-                for tx_entry in tx_entries:
-                    tx_inputs = []
-                    tx_outputs = []
-                    # print("tx_entry "+str(tx_entry))
+            for tx_entry in tx_entries:
+                tx_inputs = []
+                tx_outputs = []
+                # print("tx_entry "+str(tx_entry))
 
-                    tx_final_entry = {}
-                    tx_final_entry['tx_entry'] = tx_entry
-                    tx_final_entry['addresses'] = {}
+                tx_final_entry = {}
+                tx_final_entry['tx_entry'] = tx_entry
+                tx_final_entry['addresses'] = {}
 
-                    for tx_input in tx_inputs_db:
-                        if tx_input['transaction_hash_id'] == tx_entry['transaction_hash']:
-                            if tx_input['input_address'] is not None:
-                                tx_inputs.append(tx_input['input_address'])
+                for tx_input in tx_inputs_db:
+                    if tx_input['transaction_hash_id'] == tx_entry['transaction_hash']:
+                        if tx_input['input_address'] is not None:
+                            tx_inputs.append(tx_input['input_address'])
 
-                    for tx_output in tx_outputs_db:
-                        if tx_output['transaction_hash_id'] == tx_entry['transaction_hash']:
-                            tx_outputs.append(tx_output['address'])
+                for tx_output in tx_outputs_db:
+                    if tx_output['transaction_hash_id'] == tx_entry['transaction_hash']:
+                        tx_outputs.append(tx_output['address'])
 
-                    net_value = calculate_amount_received_tuple(tx_outputs_db)
+                net_value = calculate_amount_received_tuple(tx_outputs_db)
 
-                    tx_final_entry['value'] = net_value
-                    tx_final_entry['addresses']['input'] = tx_inputs
-                    tx_final_entry['addresses']['output'] = tx_outputs
+                tx_final_entry['value'] = net_value
+                tx_final_entry['addresses']['input'] = tx_inputs
+                tx_final_entry['addresses']['output'] = tx_outputs
 
-                    transaction_entries.append(tx_final_entry)
+                transaction_entries.append(tx_final_entry)
 
             transaction_entries.sort(key=extract_time_tuple, reverse=True)
         except Exception as e:
@@ -368,7 +373,9 @@ def search_address(request):
                                                                 'transaction_list':transaction_entries,
                                                                 'balance': balance,
                                                                 'total_received': total_received,
-                                                                'tx_count': len(transaction_hashes)
+                                                                'tx_count': len(transaction_hashes),
+                                                                'next_page': next_,
+                                                                'previous_page': previous
                                                                })
 
 def extract_time_tuple(json):
@@ -425,7 +432,7 @@ def get_all_input_data(inputs_db):
 
             # outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=txs)
 
-            outputs = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id')
+            outputs = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
 
             for output in outputs:
                 for _input in inputs_db:
@@ -463,7 +470,7 @@ def get_all_input_data_for_tuple(inputs):
             txs = tx_hashes[sliceObj]
 
             # outputs = Output_Table.objects.only('address', 'output_value','output_type', 'output_no', 'transaction_hash_id').filter(transaction_hash_id__in=txs)
-            outputs = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id')
+            outputs = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
 
             for output in outputs:
                 for _input in inputs:
@@ -477,7 +484,7 @@ def get_all_input_data_for_tuple(inputs):
     return inputs
 
 
-def get_values_all_query(table, data_list, column_to_search):
+def get_values_all_query(table, data_list, column_to_search, order_by, limit, offset):
     # tx_entries = Transaction_Table.objects.filter(transaction_hash__in=txs)
     query_tx = 'select * from '+ table + ' INNER JOIN  ( VALUES '
     # tx_entries = Transaction_Table.objects.all()
@@ -487,7 +494,16 @@ def get_values_all_query(table, data_list, column_to_search):
             query_tx = query_tx + ","
     query_tx = query_tx + ") vals(v) ON ( " + column_to_search + " = v)"
 
-    # print(query_tx)
+    if order_by is not None:
+        query_tx = query_tx + " order by " + order_by
+
+    if offset is not None:
+        query_tx = query_tx +" offset " + offset
+
+    if limit is not None:
+        query_tx = query_tx +" limit " + limit
+
+    print(query_tx)
 
     cursor = connection.cursor()
     cursor.execute(query_tx)
