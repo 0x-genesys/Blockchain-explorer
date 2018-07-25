@@ -99,7 +99,7 @@ def main_search_bar(request):
         pattern_height = re.compile("^[+]?\d+$")
         if pattern_block_hash.match(message):
             print("block")
-            return redirect('/btc/search/?q='+message)
+            return redirect('/btc/search/?q='+message+ "&page="+str(page))
         elif pattern_transaction_hash.match(message):
             print("transaction")
             return redirect('/btc/searchTransaction/?q='+message)
@@ -110,7 +110,7 @@ def main_search_bar(request):
             return redirect('/btc/searchAddress/?q=' + message +"&page="+str(page))
 
         elif pattern_height.match(message):
-            return redirect('/btc/searchBlockHeight/?q='+message)
+            return redirect('/btc/searchBlockHeight/?q=' + message + "&page="+str(page))
         else:
             return render(request,'website_api/wrong_search.html')
 
@@ -125,67 +125,117 @@ View to search for block hash from the database along with the included transact
 corresponding addresses. This function is called when the main search function redirects the control to this function.
 """
 def search_block_hash(request):
-    if 'q' in request.GET:
-        message = request.GET['q']
-        #message = request
-        search_term = Block_Table.objects.filter(block_hash=message)
-        transaction_list = []
+    try:
+        if 'q' in request.GET:
+            print(str("begin"))
+            block_hash = request.GET['q']
 
-        input_address_list_final = []
-        flag = []
-        final_list = []
+            #PAGINATION
 
-        if not search_term:
-            return render(request,'website_api/wrong_search.html')
+            page = 0
 
-        transaction_db = Transaction_Table.objects.filter(block_hash_id = search_term[0].block_hash)
-        print(len(transaction_db))
-        for transaction in transaction_db:
-            transaction_list.append(transaction.transaction_hash)
-           # outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
-            #inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+            if 'page' in request.GET:
+                page = int(request.GET['page'])
 
-            #output_address_list = []
-            #input_address_list = []
+            print(str(page))
 
-            #query inputs from outputs
-            # input_ = get_all_input_data(inputs_db)
+            limit = 10
+            offset = limit * page
 
-            # if inputs_db and len(inputs_db) > 0:
-            #     for input_ in inputs_db:
-            #         if input_.input_address:
-            #             input_address_list.append(input_.input_address)
+            len_tx_for_block = Transaction_Table.objects.filter(block_hash_id = block_hash).count()
+            print(len_tx_for_block)
 
-            # if outputs_db and len(outputs_db) > 0:
-            #     for output in outputs_db:
-            #             output_address_list.append(output.address)
+            previous = "/btc/search/?q=" + block_hash + "&page="+str(page-1)
+            next_ = "/btc/search/?q=" + block_hash + "&page="+str(page+1)
+
+            if (offset+limit) >= len_tx_for_block:
+                next_ = None
+
+            if offset == 0:
+                previous = None
+
+            print(offset)
+            print(limit)
+
+            #LOGIC
+
+            search_term = Block_Table.objects.filter(block_hash=block_hash) #for merkel, prvious block etc.
+            transaction_list = []
+
+            input_address_list_final = []
+            flag = []
+            final_list = []
+
+            if not search_term:
+                return render(request,'website_api/wrong_search.html')
+
+            transaction_db = Transaction_Table.objects.filter(block_hash_id = search_term[0].block_hash)[offset:limit+offset]
+
+            print(transaction_db)
+
+            txs = []
+
+            for transaction in transaction_db:
+                txs.append(transaction.transaction_hash)
+
+            #QUERY + LOOP
+
+            outputs_db = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
+            inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id', None, None, None)
+
+            for transaction in transaction_db:
+                transaction_hash = transaction.transaction_hash
+                # transaction_list.append(transaction_hash)
+                # outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+                # inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+
+                output_address_list = []
+                input_address_list = []
+
+                #query inputs from outputs
+                input_ = get_all_input_data_for_tuple(inputs_db)
+
+                if inputs_db and len(inputs_db) > 0:
+                    for input_ in inputs_db:
+                        if input_['input_address'] and input_['transaction_hash_id'] == transaction_hash:
+                            input_address_list.append(input_['input_address'])
+
+                if outputs_db and len(outputs_db) > 0:
+                    for output in outputs_db:
+                        if output['transaction_hash_id'] == transaction_hash:
+                            output_address_list.append(output['address'])
+                    
+                balance = calculate_amount_received_tuple(outputs_db)  
+
+                record_output_address = {
+                                          'transaction_hash':transaction_hash,
+                                          'output_address':output_address_list,
+                                          'input_address':input_address_list,
+                                          'balance': balance
+                                        }
+
+                final_list.append(record_output_address)
                 
-            # balance = calculate_amount_received(outputs_db)    
+            #VIEW
 
-            record_output_address = {
-                                      'transaction_hash':transaction.transaction_hash,
-                                      # 'output_address':output_address_list,
-                                      # 'input_address':input_address_list,
-                                      # 'balance': balance
-                                    }
-
-            final_list.append(record_output_address)
-            
-
-        return render(request,'website_api/search_block_hash.html', {
-                                                                    'block_hash':search_term[0].block_hash,
-                                                                    'previous_block_hash':search_term[0].previous_block_hash,
-                                                                    'merkle_root':search_term[0].merkle_root,
-                                                                    'block_no_of_transactions':search_term[0].block_no_of_transactions,
-                                                                    'block_size':search_term[0].block_size,
-                                                                    'block_height':search_term[0].block_height,
-                                                                    'timestamp':search_term[0].timestamp,
-                                                                    'difficulty':search_term[0].difficulty,
-                                                                    'bits':search_term[0].bits,
-                                                                    'nonce':search_term[0].nonce,
-                                                                    'final_list':final_list
-                                                                    })
-
+            return render(request,'website_api/search_block_hash.html', {
+                                                                        'block_hash':search_term[0].block_hash,
+                                                                        'previous_block_hash':search_term[0].previous_block_hash,
+                                                                        'merkle_root':search_term[0].merkle_root,
+                                                                        'block_no_of_transactions':search_term[0].block_no_of_transactions,
+                                                                        'block_size':search_term[0].block_size,
+                                                                        'block_height':search_term[0].block_height,
+                                                                        'timestamp':search_term[0].timestamp,
+                                                                        'difficulty':search_term[0].difficulty,
+                                                                        'bits':search_term[0].bits,
+                                                                        'nonce':search_term[0].nonce,
+                                                                        'final_list':final_list,
+                                                                        'next_page': next_,
+                                                                        'previous_page': previous
+                                                                        })
+    except Exception as e:
+        print(e)
+        return render(request,'website_api/wrong_search.html')
 
 
 
@@ -503,7 +553,7 @@ def get_values_all_query(table, data_list, column_to_search, order_by, limit, of
     if limit is not None:
         query_tx = query_tx +" limit " + limit
 
-    print(query_tx)
+    # print(query_tx)
 
     cursor = connection.cursor()
     cursor.execute(query_tx)

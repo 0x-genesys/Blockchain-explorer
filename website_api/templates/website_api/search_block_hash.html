@@ -49,99 +49,115 @@
     <h1 style="margin-top: auto; margin-left: 12px; font-size: 20px">TRANSACTIONS IN BLOCK</h1>
   </div>
 
-  {% for data in final_list %}
-  <div class="transaction-card">
-        <div>
-                <table class="table-container table table-borderless">
-                          <tr>
-                            <h2 style="margin-top:1em">Transaction</h2> 
-                            <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction) </h3>
-                            <br/>
-                            <br/>
-                          </tr>
+  <div>
+    {% for data in final_list %}
+    <div class="transaction-card">
+          <div>
+                  <table class="table-container table table-borderless">
+                            <tr>
+                              <h2 style="margin-top:1em">Transaction</h2> 
+                              <h3 style="margin-top:0.8em"> (View information about a bitcoin Transaction) </h3>
+                              <br/>
+                              <br/>
+                            </tr>
 
-                          <tr>
-                            <td >
-                              <li> 
-                                <a href="/btc/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}</a>
-                              </li> 
-                            </td>
-                          </tr>
+                            <tr>
+                              <td >
+                                <li> 
+                                  <a href="/btc/mainSearch/?q={{data.transaction_hash}}">{{data.transaction_hash}}</a>
+                                </li> 
+                              </td>
+                            </tr>
 
-                          <tr>
-                            <td text-align:center;vertical-align:middle;">
-                              <b>
-                                Accepted on {{timestamp}}
-                              </b>
-                            </td>
-
-                            <td >
-                                <div style="color:#0ac546;" >
-                                  <b>
-                                  <!-- {{data.balance}} BTC -->
+                            <tr>
+                              <td text-align:center;vertical-align:middle;">
+                                <b>
+                                  Accepted on {{timestamp}}
                                 </b>
-                                </div>
                               </td>
 
-                          </tr>
+                              <td >
+                                  <div style="color:#0ac546;" >
+                                    <b>
+                                    <!-- {{data.balance}} BTC -->
+                                  </b>
+                                  </div>
+                                </td>
 
-                          <!-- <tr>
-                            <td> 
-                              <h3>Addresses</h3>
+                            </tr>
+
+                            <tr>
+                              <td> 
+                                <h3>Addresses</h3>
+                              </td>
+                              <td/>
+                            </tr>
+
+                            <tr>
+                              <td style="text-align:center;vertical-align:middle;"> 
+                                <b>Inputs</b> 
+                              </td>  
+                            <td></td>
+                            <td style="text-align:center;vertical-align:middle;">
+                              <b>Outputs</b> 
                             </td>
-                            <td/>
-                          </tr> -->
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                           </tr>
 
-                          <!-- <tr>
-                            <td style="text-align:center;vertical-align:middle;"> 
-                              <b>Inputs</b> 
-                            </td>  
-                          <td></td>
-                          <td style="text-align:center;vertical-align:middle;">
-                            <b>Outputs</b> 
-                          </td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                         </tr>
+                           <td style="text-align:center;vertical-align:middle;">
+                              {% for index_input in data.input_address %}
+                                  <ul>
+                                      <li>
+                                        <a class="btn-link" href="/btc/mainSearch/?q={{index_input}}"> {{index_input}}</a>
+                                      </li>
+                                  </ul>
 
-                         <td style="text-align:center;vertical-align:middle;">
-                            {% for index_input in data.input_address %}
-                                <ul>
-                                    <li>
-                                      <a class="btn-link" href="/btc/mainSearch/?q={{index_input}}"> {{index_input}}</a>
-                                    </li>
-                                </ul>
+                                  {% empty %}
+                                  <div class="coinbase">
+                                       <b>(newly generated coins)</b>
+                                       <h1 >Coinbase Transactions</h1>
+                                  </div>
 
-                                {% empty %}
-                                <div class="coinbase">
-                                     <b>(newly generated coins)</b>
-                                     <h1 >Coinbase Transactions</h1>
-                                </div>
-
-                            {% endfor %}
-                          </td> -->
-
-                          <!-- <td style="text-align:center;vertical-align:middle;">
-                             <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> 
-                          </td> -->
-
-                          <td align="right" style="text-align:center;vertical-align:middle;">
-                              {% for index in data.output_address %}
-                                <ul align="right">
-                                    <li>
-                                      <a class="btn-link" href="/btc/mainSearch/?q={{index}}"> {{index}} </a>
-                                    </li>
-                                </ul>
                               {% endfor %}
-                          </td>
-              </table>
-        </div>
-  </div>
-  {% endfor %}
+                            </td>
+
+                            <td style="text-align:center;vertical-align:middle;">
+                               <img src='/static/images/arrow.png' alt="arrow" width="25" height="25"> 
+                            </td>
+
+                            <td align="right" style="text-align:center;vertical-align:middle;">
+                                {% for index in data.output_address %}
+                                  <ul align="right">
+                                      <li>
+                                        <a class="btn-link" href="/btc/mainSearch/?q={{index}}"> {{index}} </a>
+                                      </li>
+                                  </ul>
+                                {% endfor %}
+                            </td>
+                </table>
+          </div>
+    </div>
+    {% endfor %}
     <!-- </div> -->
+
+    <div  class="container">
+      {% if next_page != None %}
+        <div class="wrongQuery" style="position:relative;  width: 180px; float:right;" align="right">
+          <a class="btn-link" href={{next_page}}> NEXT </a>
+        </div>
+      {%endif%}
+
+      {% if previous_page != None %}
+        <div class="wrongQuery" style="position:relative; width: 180px; float:left;" align="left">
+          <a class="btn-link" href={{previous_page}}> PREVIOUS </a>
+        </div>
+      {%endif%}
+    </div>
+  </div>
 
   </font>
 </div>
