@@ -180,32 +180,35 @@ def search_block_hash(request):
 
             #QUERY + LOOP
 
-            # outputs_db = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
-            # inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id', None, None, None)
+            outputs_db = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
+            inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id', None, None, None)
+            inputs_db = get_all_input_data_for_tuple(inputs_db)
 
             for transaction in transaction_db:
                 transaction_hash = transaction.transaction_hash
                 # transaction_list.append(transaction_hash)
-                outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
-                inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+                # outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+                # inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
 
                 output_address_list = []
                 input_address_list = []
+                output_db_balance = []
 
                 #query inputs from outputs
-                input_ = get_all_input_data(inputs_db)
 
                 if inputs_db and len(inputs_db) > 0:
                     for input_ in inputs_db:
-                        if input_.input_address:
-                            input_address_list.append(input_.input_address)
+                        if input_['input_address'] and input_['transaction_hash_id'] == transaction_hash:
+                            input_address_list.append(input_['input_address'])
 
                 if outputs_db and len(outputs_db) > 0:
                     for output in outputs_db:
-                        # if output['transaction_hash_id'] == transaction_hash:
-                        output_address_list.append(output.address)
+                        if output['transaction_hash_id'] == transaction_hash:
+                            output_address_list.append(output['address'])
+                            output_db_balance.append(output)
                     
-                balance = calculate_amount_received(outputs_db)  
+                balance = calculate_amount_received_tuple(output_db_balance)  
+                print(balance)
 
                 record_output_address = {
                                           'transaction_hash':transaction_hash,
