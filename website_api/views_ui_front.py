@@ -139,7 +139,7 @@ def search_block_hash(request):
 
             print(str(page))
 
-            limit = 10
+            limit = 5
             offset = limit * page
 
             len_tx_for_block = Transaction_Table.objects.filter(block_hash_id = block_hash).count()
