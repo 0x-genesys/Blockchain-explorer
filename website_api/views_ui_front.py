@@ -327,13 +327,13 @@ def search_address(request):
             if 'page' in request.GET:
                 page = int(request.GET['page'])
 
-            # print(">>>>>start ")
-            n_outputs = Output_Table.objects.filter(address=address).order_by('id')
-            # print(">>>>>outputs "+str(n_outputs))
+            print(">>>>>start ")
+            n_outputs = Output_Table.objects.filter(address=address)
+            print(">>>>>outputs "+str(n_outputs))
 
-            n_inputs = Input_Table.objects.filter(input_address=address).order_by('id')
+            n_inputs = Input_Table.objects.filter(input_address=address)
             n_inputs = get_all_input_data(n_inputs)
-            # print(">>>>>inputs "+str(n_inputs))
+            print(">>>>>inputs "+str(n_inputs))
 
             input_transaction_hashes = []
             output_transaction_hashes = []
@@ -372,13 +372,21 @@ def search_address(request):
 
             if offset == 0:
                 previous = None
-            
-            tx_entries = get_values_all_query('bitcoin_data_app_transaction_table', transaction_hashes, 'transaction_hash', 'timestamp DESC', str(bucket), str(offset))
-            # print("tx_entries "+str(tx_entries))
 
             txs = []
+            
+            # if len(transaction_hashes) > 30:
+            #.order_by('-timestamp') add later
+            tx_entries = Transaction_Table.objects.filter(transaction_hash__in=transaction_hashes)[offset:bucket+offset]
             for tx_entry in tx_entries:
-                txs.append(tx_entry['transaction_hash'])
+                txs.append(tx_entry.transaction_hash)
+            # else:
+            #     tx_entries = get_values_all_query('bitcoin_data_app_transaction_table', transaction_hashes, 'transaction_hash', 'timestamp DESC', str(bucket), str(offset))
+            #     for tx_entry in tx_entries:
+            #         txs.append(tx_entry['transaction_hash'])
+            print("tx_entries "+str(tx_entries))
+            print(txs)
+
 
             tx_inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id', None, None, None)
             # print("tx_inputs_db "+ str(tx_inputs_db))
@@ -391,6 +399,7 @@ def search_address(request):
             # print("tx_outputs_db  "+str(tx_outputs_db))
 
             for tx_entry in tx_entries:
+                print(tx_entry)
                 tx_inputs = []
                 tx_outputs = []
                 # print("tx_entry "+str(tx_entry))
@@ -400,12 +409,12 @@ def search_address(request):
                 tx_final_entry['addresses'] = {}
 
                 for tx_input in tx_inputs_db:
-                    if tx_input['transaction_hash_id'] == tx_entry['transaction_hash']:
+                    if tx_input['transaction_hash_id'] == tx_entry.transaction_hash:
                         if tx_input['input_address'] is not None:
                             tx_inputs.append(tx_input['input_address'])
 
                 for tx_output in tx_outputs_db:
-                    if tx_output['transaction_hash_id'] == tx_entry['transaction_hash']:
+                    if tx_output['transaction_hash_id'] == tx_entry.transaction_hash:
                         tx_outputs.append(tx_output['address'])
 
                 net_value = calculate_amount_received_tuple(tx_outputs_db)
@@ -416,7 +425,7 @@ def search_address(request):
 
                 transaction_entries.append(tx_final_entry)
 
-            transaction_entries.sort(key=extract_time_tuple, reverse=True)
+            # transaction_entries.sort(key=extract_time_tuple, reverse=True)
         except Exception as e:
             print(e)
             return render(request,'website_api/wrong_search.html')
@@ -466,7 +475,7 @@ def get_all_input_data(inputs_db):
     # print(">>>>>>> "+str(tx_hashes))
     if len(tx_hashes) > 0:
         length_tx = len(tx_hashes)
-        bucket = 100
+        bucket = 20
         limit_tx = math.ceil(length_tx/bucket)
         # print("length_tx "+str(length_tx))
         # print("limit_tx "+str(limit_tx))
@@ -505,7 +514,7 @@ def get_all_input_data_for_tuple(inputs):
     # print(">>>>>>> "+str(tx_hashes))
     if len(tx_hashes) > 0:
         length_tx = len(tx_hashes)
-        bucket = 100
+        bucket = 20
         limit_tx = math.ceil(length_tx/bucket)
         # print("length_tx "+str(length_tx))
         # print("limit_tx "+str(limit_tx))

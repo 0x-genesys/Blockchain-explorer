@@ -39,6 +39,12 @@ def create_pre_indexes():
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
+	try:
+		print("create bitcoin_data_app_output_table output_tx_hash_timestamp index")
+		cursor.execute('''create index output_tx_hash_timestamp on bitcoin_data_app_output_table(transaction_hash_id, timestamp DESC)''')
+	except (django.db.utils.ProgrammingError) as err:
+		print("Already exists")
+
 
 	cursor.close()
 
