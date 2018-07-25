@@ -30,8 +30,8 @@ class Block_Table(models.Model):
 class Transaction_Table(models.Model):
     # transaction_hash = models.CharField(primary_key=True, db_index=True, max_length=200, null=False)
     # block_height = models.ForeignKey('Block_Table', to_field="block_height", db_index=True, null=True, blank=True, on_delete=models.CASCADE)
-    block_hash_id = models.CharField(db_index=False, max_length=200)
-    transaction_hash = models.CharField(db_index=False,max_length=200, null=False)
+    block_hash_id = models.CharField(max_length=200)
+    transaction_hash = models.CharField(max_length=200, null=False)
     timestamp =  models.DateTimeField(db_index=False,null=False)
     block_size = models.TextField(db_index=False,null=True)
     is_CoinBase = models.BooleanField(db_index=False,default=True)
@@ -50,7 +50,7 @@ class Transaction_Table(models.Model):
 class Input_Table(models.Model):
     # transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     transaction_hash_id = models.CharField(max_length=200, null=False)
-    previous_transaction_hash = models.CharField(db_index=True, max_length=200, null=True)
+    previous_transaction_hash = models.CharField( max_length=200, null=True)
     transaction_index = models.TextField(max_length=20,null=False)
     input_sequence_number = models.CharField(max_length=20, null=False)
     input_size = models.TextField(null=False)
@@ -66,7 +66,7 @@ class Input_Table(models.Model):
 class Input_Table_Temp(models.Model):
     # transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
     transaction_hash_id = models.CharField(max_length=200, null=False)
-    previous_transaction_hash = models.CharField(db_index=True, max_length=200, null=True)
+    previous_transaction_hash = models.CharField( max_length=200, null=True)
     transaction_index = models.TextField(max_length=20,null=False)
     input_sequence_number = models.CharField(max_length=20, null=False)
     input_size = models.TextField(null=False)
@@ -81,12 +81,12 @@ class Input_Table_Temp(models.Model):
 
 class Output_Table(models.Model):
     # transaction_hash = models.ForeignKey('Transaction_Table', db_index=True, max_length=200, blank=True, null=True, on_delete=models.CASCADE)
-    transaction_hash_id = models.CharField(db_index=False, max_length=200, null=False)
+    transaction_hash_id = models.CharField(max_length=200, null=False)
     output_no = models.TextField(db_index=False,null=False)
     output_type = models.CharField(db_index=False,max_length=20, null=False)
     output_value = models.CharField(db_index=False,max_length=100,null=False)
     size = models.TextField(db_index=False,null=False)
-    address = models.CharField(db_index=False,max_length=400, null=False)
+    address = models.CharField(max_length=400, null=False)
     #output_script_type = models.TextField(max_length=400, null=True)
     output_script_value = models.TextField(db_index=False,max_length=400, null=True)
     output_script_operations = models.TextField(db_index=False,max_length=400, null=True)

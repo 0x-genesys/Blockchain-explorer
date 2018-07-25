@@ -34,3 +34,15 @@ def calculate_amount_received(outputs):
 	net_value = sum_outputs / 100000000
 
 	return net_value
+
+
+def calculate_amount_received_tuple(outputs):
+	sum_outputs = 0
+
+	for _output in outputs:
+		sum_outputs+=int(_output['output_value'])
+
+	net_value = sum_outputs / 100000000
+
+	return net_value
+
