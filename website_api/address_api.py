@@ -19,7 +19,7 @@ from .calaculate_amount import calculate_amount_tx, calculate_amount_address, ca
 import urllib, base64
 from io import BytesIO
 from PIL import Image
-from website_api.views_ui_front import get_all_input_data_for_tuple, extract_time_tuple
+from website_api.views_ui_front import get_all_input_data_for_tuple, extract_time_tuple, search_address
 
 
 """
@@ -31,6 +31,15 @@ def search_address_new(request):
     if 'q' in request.GET:
         try:
             address = request.GET['q']
+            n_count = get_output_count(address) #todo how to add input here
+            print(">>>>>n_count "+str(n_count))
+
+            if n_count < 20:
+                #for light pages
+                print(">>>>OLD FLOW")
+                return search_address(request)
+
+            print(">>>>NEW FLOW")
             page = 0
             if 'page' in request.GET:
                 page = int(request.GET['page'])
@@ -47,9 +56,6 @@ def search_address_new(request):
             n_inputs = get_inputs_list(address, offset, bucket)
             print(">>>>>inputs "+str(n_inputs))
 
-            n_count = get_output_count(address) #todo how to add input here
-            print(">>>>>n_count "+str(n_count))
-
             if (offset+bucket) >= n_count:
                 next_ = None
 
@@ -62,11 +68,11 @@ def search_address_new(request):
 
             #total balance in the account
             # balance = calculate_amount_address(n_inputs, n_outputs)
-            balance = 0
+            balance = '???'
 
             #total received in the account
             # total_received = calculate_amount_received(n_outputs)
-            total_received = 0
+            total_received = '???'
 
             #just output because inputs will have same set of tx as outputs
             transactions = {tx['transaction_hash'] for tx in n_outputs}
