@@ -22,3 +22,4 @@ scripts/nohup.out
 nohup.out
 static/
 index-cache.pickle
+cron-log.txt
