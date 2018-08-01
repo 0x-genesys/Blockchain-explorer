@@ -106,7 +106,7 @@ def main_search_bar(request):
         elif pattern_address.match(message):
             print(message)
             print("TRUE")
-            #return redirect(search_address,message)
+            # return redirect(search_address, message)
             return redirect('/btc/searchAddress/?q=' + message +"&page="+str(page))
 
         elif pattern_height.match(message):
@@ -126,6 +126,7 @@ corresponding addresses. This function is called when the main search function r
 """
 def search_block_hash(request):
     try:
+        limit = 10
         if 'q' in request.GET:
             print(str("begin"))
             block_hash = request.GET['q']
@@ -139,7 +140,6 @@ def search_block_hash(request):
 
             print(str(page))
 
-            limit = 5
             offset = limit * page
 
             len_tx_for_block = Transaction_Table.objects.filter(block_hash_id = block_hash).count()
@@ -186,35 +186,35 @@ def search_block_hash(request):
 
             for transaction in transaction_db:
                 transaction_hash = transaction.transaction_hash
-                # transaction_list.append(transaction_hash)
-                # outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
-                # inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+                transaction_list.append(transaction_hash)
+                outputs_db = Output_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+                inputs_db = Input_Table.objects.filter(transaction_hash_id=transaction.transaction_hash)
+                inputs_db = get_all_input_data(inputs_db)
 
                 output_address_list = []
                 input_address_list = []
                 output_db_balance = []
 
                 #query inputs from outputs
+                if inputs_db and len(inputs_db) > 0:
+                    for input_ in inputs_db:
+                        if input_.input_address and input_.transaction_hash_id == transaction_hash:
+                            input_address_list.append(input_.input_address)
 
-                # if inputs_db and len(inputs_db) > 0:
-                #     for input_ in inputs_db:
-                #         if input_['input_address'] and input_['transaction_hash_id'] == transaction_hash:
-                #             input_address_list.append(input_['input_address'])
+                if outputs_db and len(outputs_db) > 0:
+                    for output in outputs_db:
+                        if output.transaction_hash_id == transaction_hash:
+                            output_address_list.append(output.address)
+                            output_db_balance.append(output)
 
-                # if outputs_db and len(outputs_db) > 0:
-                #     for output in outputs_db:
-                #         if output['transaction_hash_id'] == transaction_hash:
-                #             output_address_list.append(output['address'])
-                #             output_db_balance.append(output)
-                    
-                # balance = calculate_amount_received_tuple(output_db_balance)  
-                # print(balance)
+                balance = calculate_amount_received(output_db_balance)  
+                print(balance)
 
                 record_output_address = {
                                           'transaction_hash':transaction_hash,
-                                          # 'output_address':output_address_list,
-                                          # 'input_address':input_address_list,
-                                          # 'balance': balance
+                                          'output_address':output_address_list,
+                                          'input_address':input_address_list,
+                                          'balance': balance
                                         }
 
                 final_list.append(record_output_address)
@@ -307,138 +307,6 @@ def search_transaction_hash(request):
                                                                                 'balance': balance,
                                                                             })
 
-
-
-
-
-
-"""
-View to search for addresses whether it is an input address or an output address.
-It is called when redirected from main search function.
-Creates Qr code for each address.
-"""
-def search_address(request):
-    if 'q' in request.GET:
-        try:
-            address = request.GET['q']
-
-            page = 0
-
-            if 'page' in request.GET:
-                page = int(request.GET['page'])
-
-            print(">>>>>start ")
-            n_outputs = Output_Table.objects.filter(address=address)
-            print(">>>>>outputs "+str(n_outputs))
-
-            n_inputs = Input_Table.objects.filter(input_address=address)
-            n_inputs = get_all_input_data(n_inputs)
-            print(">>>>>inputs "+str(n_inputs))
-
-            input_transaction_hashes = []
-            output_transaction_hashes = []
-            tx_addresses = {}
-
-            for input_entry in n_inputs:
-                tx_hash = input_entry.transaction_hash_id
-                input_transaction_hashes.append(tx_hash)
-            # print(">>>>>got n_inputs "+str(input_transaction_hashes))
-
-            for output_entry in n_outputs:
-                tx_hash = output_entry.transaction_hash_id
-                output_transaction_hashes.append(tx_hash)
-            # print(">>>>>got n_outputs "+str(output_transaction_hashes))
-
-            #total balance in the account
-            balance = calculate_amount_address(n_inputs, n_outputs)
-
-            #total received in the account
-            total_received = calculate_amount_received(n_outputs)
-
-            #get unique hashes
-            transaction_hashes = list(set(input_transaction_hashes + output_transaction_hashes))
-
-            transaction_entries = []
-            # length_tx = len(transaction_hashes)
-            bucket = 10
-
-            offset = page*bucket
-
-            previous = "/btc/mainSearch/?q="+address+"&page="+str(page-1)
-            next_ = "/btc/mainSearch/?q="+address+"&page="+str(page+1)
-
-            if (offset+bucket) >= len(transaction_hashes):
-                next_ = None
-
-            if offset == 0:
-                previous = None
-
-            txs = []
-            
-            # if len(transaction_hashes) > 30:
-            #.order_by('-timestamp') add later
-            tx_entries = Transaction_Table.objects.filter(transaction_hash__in=transaction_hashes)[offset:bucket+offset]
-            for tx_entry in tx_entries:
-                txs.append(tx_entry.transaction_hash)
-            # else:
-            #     tx_entries = get_values_all_query('bitcoin_data_app_transaction_table', transaction_hashes, 'transaction_hash', 'timestamp DESC', str(bucket), str(offset))
-            #     for tx_entry in tx_entries:
-            #         txs.append(tx_entry['transaction_hash'])
-            print("tx_entries "+str(tx_entries))
-            print(txs)
-
-
-            tx_inputs_db = get_values_all_query('bitcoin_data_app_input_table', txs, 'transaction_hash_id', None, None, None)
-            # print("tx_inputs_db "+ str(tx_inputs_db))
-            # tx_inputs_db = Input_Table.objects.filter(transaction_hash_id__in=txs)
-            tx_inputs_db = get_all_input_data_for_tuple(tx_inputs_db)
-            tx_outputs_db = get_values_all_query('bitcoin_data_app_output_table', txs, 'transaction_hash_id', None, None, None)
-            # tx_outputs_db = Output_Table.objects.filter(transaction_hash_id__in=txs)
-            
-            # print("tx_inputs_db  "+str(tx_inputs_db))
-            # print("tx_outputs_db  "+str(tx_outputs_db))
-
-            for tx_entry in tx_entries:
-                print(tx_entry)
-                tx_inputs = []
-                tx_outputs = []
-                # print("tx_entry "+str(tx_entry))
-
-                tx_final_entry = {}
-                tx_final_entry['tx_entry'] = tx_entry
-                tx_final_entry['addresses'] = {}
-
-                for tx_input in tx_inputs_db:
-                    if tx_input['transaction_hash_id'] == tx_entry.transaction_hash:
-                        if tx_input['input_address'] is not None:
-                            tx_inputs.append(tx_input['input_address'])
-
-                for tx_output in tx_outputs_db:
-                    if tx_output['transaction_hash_id'] == tx_entry.transaction_hash:
-                        tx_outputs.append(tx_output['address'])
-
-                net_value = calculate_amount_received_tuple(tx_outputs_db)
-
-                tx_final_entry['value'] = net_value
-                tx_final_entry['addresses']['input'] = tx_inputs
-                tx_final_entry['addresses']['output'] = tx_outputs
-
-                transaction_entries.append(tx_final_entry)
-
-            # transaction_entries.sort(key=extract_time_tuple, reverse=True)
-        except Exception as e:
-            print(e)
-            return render(request,'website_api/wrong_search.html')
-
-        return render(request, 'website_api/search_address.html', {
-                                                                'Address':address,
-                                                                'transaction_list':transaction_entries,
-                                                                'balance': balance,
-                                                                'total_received': total_received,
-                                                                'tx_count': len(transaction_hashes),
-                                                                'next_page': next_,
-                                                                'previous_page': previous
-                                                               })
 
 def extract_time_tuple(json):
     try:
