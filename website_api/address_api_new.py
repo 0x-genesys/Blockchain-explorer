@@ -36,17 +36,17 @@ def search_address(request):
             n_outputs = Output_Table.objects.filter(address=address)
             print(">>>>>outputs "+str(n_outputs))
 
-            n_inputs = Input_Table.objects.filter(input_address=address)
-            n_inputs = get_all_input_data(n_inputs)
-            print(">>>>>inputs "+str(n_inputs))
+            # n_inputs = Input_Table.objects.filter(input_address=address)
+            # n_inputs = get_all_input_data(n_inputs)
+            # print(">>>>>inputs "+str(n_inputs))
 
             input_transaction_hashes = []
             output_transaction_hashes = []
             tx_addresses = {}
 
-            for input_entry in n_inputs:
-                tx_hash = input_entry.transaction_hash_id
-                input_transaction_hashes.append(tx_hash)
+            # for input_entry in n_inputs:
+            #     tx_hash = input_entry.transaction_hash_id
+            #     input_transaction_hashes.append(tx_hash)
             # print(">>>>>got n_inputs "+str(input_transaction_hashes))
 
             for output_entry in n_outputs:
@@ -61,7 +61,7 @@ def search_address(request):
             total_received = calculate_amount_received(n_outputs)
 
             #get unique hashes
-            transaction_hashes = list(set(input_transaction_hashes + output_transaction_hashes))
+            transaction_hashes = list(set(output_transaction_hashes))
 
             transaction_entries = []
             # length_tx = len(transaction_hashes)
@@ -123,6 +123,7 @@ def search_address(request):
                     print("credit")
                     for tx_input_temp in temp_tx_inputs:
                         if tx_input_temp.transaction_hash_id == transaction_hash:
+                            print(tx_input_temp.input_address)
                             if tx_input_temp.input_address is not None:
                                 tx_inputs.append(tx_input_temp.input_address)
                                 # if tx_input_temp.input_address != address:
