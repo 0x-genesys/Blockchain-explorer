@@ -98,7 +98,7 @@ def create_input_indexes():
 	cursor = connection.cursor()
 	try:
 		print("rename table")
-		cursor.execute('''ALTER TABLE bitcoin_data_app_input_table_temp RENAME TO bitcoin_data_app_input_table''')
+		# cursor.execute('''ALTER TABLE bitcoin_data_app_input_table_temp RENAME TO bitcoin_data_app_input_table''')
 	except (django.db.utils.ProgrammingError) as err:
 		print("Already exists")
 
