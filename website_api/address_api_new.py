@@ -55,7 +55,7 @@ def search_address(request):
             # print(">>>>>got n_outputs "+str(output_transaction_hashes))
 
             #total balance in the account
-            balance = calculate_amount_address(n_inputs, n_outputs)
+            # balance = calculate_amount_address([], n_outputs)
 
             #total received in the account
             total_received = calculate_amount_received(n_outputs)
@@ -105,11 +105,11 @@ def search_address(request):
                 tx_final_entry['addresses'] = {}
 
                 #ADDRESS information:
-                for tx_input in n_inputs:
-                    if tx_input.transaction_hash_id == transaction_hash:
-                        if tx_input.input_address is not None:
-                            tx_inputs.append(tx_input.input_address)
-                            amount_transacted = amount_transacted - int(tx_input.input_value)
+                # for tx_input in n_inputs:
+                #     if tx_input.transaction_hash_id == transaction_hash:
+                #         if tx_input.input_address is not None:
+                #             tx_inputs.append(tx_input.input_address)
+                #             amount_transacted = amount_transacted - int(tx_input.input_value)
 
                 for tx_output in n_outputs:
                     if tx_output.transaction_hash_id == transaction_hash:
@@ -160,7 +160,7 @@ def search_address(request):
         return render(request, 'website_api/search_address.html', {
                                                                 'Address':address,
                                                                 'transaction_list':transaction_entries,
-                                                                'balance': balance,
+                                                                # 'balance': balance,
                                                                 'total_received': total_received,
                                                                 'tx_count': len(transaction_hashes),
                                                                 'next_page': next_,

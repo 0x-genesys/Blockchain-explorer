@@ -11,8 +11,6 @@ if DEBUG:
 else:
 	sync_loc = "/Users/karanahuja/Workspace/INTERNAL-projects/bitcoin-block-explorer/scripts/sync.sh"
 
-
-
 def sync():
 	start = 0
 	end = 0
