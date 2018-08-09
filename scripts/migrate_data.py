@@ -71,8 +71,8 @@ class myThread(threading.Thread):
         print("starting for block "+str(block.height))
         # block_object = Block_Table.objects.filter(block_hash=block.hash)
         # if not block_object:
-        loader_block_table = Block_Table(**record)
-        loader_block_table.save()
+        # loader_block_table = Block_Table(**record)
+        # loader_block_table.save()
         # else:
         #     print("Entry is already present")
 
@@ -100,9 +100,9 @@ class myThread(threading.Thread):
             self.get_input_table(tx)
 
         print("starting for tx "+str(tx.hash))
-        Transaction_Table.objects.bulk_create([
-                Transaction_Table(**record) for record in transaction_hash_array
-            ])
+        # Transaction_Table.objects.bulk_create([
+        #         Transaction_Table(**record) for record in transaction_hash_array
+        #     ])
 
 
     def get_input_table(self, tx):
@@ -138,9 +138,9 @@ class myThread(threading.Thread):
             print("starting for inputs from "+str( _input.transaction_hash))
             inputs_to_insert.append(record)
 
-        Input_Table.objects.bulk_create([
-                Input_Table(**record) for record in inputs_to_insert
-            ])
+        # Input_Table.objects.bulk_create([
+        #         Input_Table(**record) for record in inputs_to_insert
+        #     ])
 
 
     def get_output_table(self, tx):
@@ -160,9 +160,9 @@ class myThread(threading.Thread):
                 print("starting for outputs of "+str(_address.address))
                 output_to_create.append(record)
 
-        Output_Table.objects.bulk_create([
-                Output_Table(**record) for record in output_to_create
-            ])
+        # Output_Table.objects.bulk_create([
+        #         Output_Table(**record) for record in output_to_create
+        #     ])
 
 def run(*args):
     print(args)
