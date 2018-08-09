@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 def sync(debug):
-
+	print(debug)
 	if debug == 'true':
 		sync_loc = "/Users/karanahuja/Workspace/INTERNAL-projects/bitcoin-block-explorer/scripts/sync.sh"
 	else:
