@@ -7,7 +7,7 @@ def sync(debug):
 	if debug:
 		sync_loc = "/Users/karanahuja/Workspace/INTERNAL-projects/bitcoin-block-explorer/scripts/sync.sh"
 	else:
-		sync_loc = "/Users/karanahuja/Workspace/INTERNAL-projects/bitcoin-block-explorer/scripts/sync.sh"
+		sync_loc = "/data/bitcoin-sql-migrator/scripts/sync.sh"
 
 
 	#TAKE OUT START FROM PSQL
@@ -15,7 +15,7 @@ def sync(debug):
 	connection = connect_read_db(debug)
 	cursor = connection.cursor()
 	print(cursor)
-	cursor.execute('SELECT * FROM bitcoin_data_app_block_table ORDER BY timestamp DESC limit 1')
+	cursor.execute('SELECT block_height FROM bitcoin_data_app_block_table ORDER BY timestamp DESC limit 1')
 	rows = cursor.fetchall()
 	for row in rows:
 		start = (row[0])
@@ -36,12 +36,12 @@ def sync(debug):
 	print(end)
 
 	#commandline and shell scripts
-	if not debug:
-		subprocess.check_output(['karan-virtualenv-start'])
+	# if not debug:
+	# 	subprocess.check_output(['karan-virtualenv-start'])
 
 	# subprocess.check_output(['ls'])
 
-	# subprocess.check_call(["sh", sync_loc, str(start), str(end)])
+	subprocess.check_call(["sh", sync_loc, str(start), str(end)])
 
 	# if not DEBUG:
 		# subprocess.check_output(['deactivate'])

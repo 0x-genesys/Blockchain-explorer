@@ -68,7 +68,7 @@ class myThread(threading.Thread):
             'difficulty':block.header.difficulty
         }
 
-        # print(record)
+        print("starting for block "+str(block.height))
         # block_object = Block_Table.objects.filter(block_hash=block.hash)
         # if not block_object:
         loader_block_table = Block_Table(**record)
@@ -99,6 +99,7 @@ class myThread(threading.Thread):
             self.get_output_table(tx)
             self.get_input_table(tx)
 
+        print("starting for tx "+str(tx.hash))
         Transaction_Table.objects.bulk_create([
                 Transaction_Table(**record) for record in transaction_hash_array
             ])
@@ -119,24 +120,22 @@ class myThread(threading.Thread):
                         'input_address':None,
                         'input_value': None,
                         'input_script_type': None,
-                        'input_script_value': _input.script.value,
-                        'input_script_operations': _input.script.operations
+                        'input_script_value': _input.script.value
                      }
 
 
-            print(">>" +_input.transaction_hash)
-            print(">>" +str(_input.transaction_index))
+
             #We take out address from previous transaction hash and output no.
-            outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
+            # outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
 
-            print("outputs " + str(outputs))
+            # print("outputs " + str(outputs))
 
-            for output in outputs:
-                print("output['address'] " + str(output))
-                record['input_address'] = output.address
-                record['input_value'] = output.output_value
-                record['input_script_type'] = output.output_type
-
+            # for output in outputs:
+                # print("output['address'] " + str(output))
+                # record['input_address'] = output.address
+                # record['input_value'] = output.output_value
+                # record['input_script_type'] = output.output_type
+            print("starting for inputs from "+str( _input.transaction_hash))
             inputs_to_insert.append(record)
 
         Input_Table.objects.bulk_create([
@@ -156,10 +155,9 @@ class myThread(threading.Thread):
                             'output_value':output.value,
                             'size':output.size,
                             'address':_address.address,
-                            'output_script_value': output.script.value,
-                            'output_script_operations': output.script.operations
+                            'output_script_value': output.script.value
                           }
-
+                print("starting for outputs of "+str(_address.address))
                 output_to_create.append(record)
 
         Output_Table.objects.bulk_create([
