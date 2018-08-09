@@ -39,10 +39,15 @@ def sync(debug):
 	# if not debug:
 	# 	subprocess.check_output(['karan-virtualenv-start'])
 
-	# subprocess.check_output(['ls'])
-
+	print("Stopping Bitcoin Core :   ----->")
+	subprocess.check_output(['karan-bitcoin-stop'])
+	print("XX Bitcoin Core Stopped XX")
 	subprocess.check_call(["sh", sync_loc, str(start), str(end)])
+	print("Migration complete :)")
+	print("Starting Bitcoin Core :   ----->")
+	subprocess.check_output(['karan-bitcoin-start'])
 
+	
 	# if not DEBUG:
 		# subprocess.check_output(['deactivate'])
 
