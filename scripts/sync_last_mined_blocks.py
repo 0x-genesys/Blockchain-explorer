@@ -1,11 +1,12 @@
 from bitcoinrpc.authproxy import AuthServiceProxy
 import psycopg2
 import time
+import sys
 import subprocess
 
 def sync(debug):
 
-	if debug:
+	if debug == 'true':
 		sync_loc = "/Users/karanahuja/Workspace/INTERNAL-projects/bitcoin-block-explorer/scripts/sync.sh"
 	else:
 		sync_loc = "/data/bitcoin-sql-migrator/scripts/sync.sh"
@@ -36,6 +37,10 @@ def sync(debug):
 	print(start)
 	print(end)
 
+	if start == None or end == None:
+		print("something is wrong with psql or bitcoin core")
+		sys.exit(0)
+
 	#commandline and shell scripts
 	# if not debug:
 	# 	subprocess.check_output(['karan-virtualenv-start'])
@@ -57,7 +62,7 @@ def sync(debug):
 
 
 def connect_blockchain_rpc(debug):
-	if debug:
+	if debug == 'true':
 		print("debug true")
 		access = AuthServiceProxy("http://%s:%s@explorer.blockwala.io:8332"%('karan', 'blockwala@123'))
 		# access = AuthServiceProxy("http://%s:%s@127.0.0.1:8332"%('root', 'root'))
@@ -67,7 +72,7 @@ def connect_blockchain_rpc(debug):
 
 def connect_read_db(debug):
 	try:
-		if debug:
+		if debug == 'true':
 			conn = psycopg2.connect(dbname='bitcoin', user='karan', host='explorer.blockwala.io', port='5432', password='blockwala@123')
 		else:
 			conn = psycopg2.connect(dbname='bitcoin', user='karan', host='localhost', port='5432', password='blockwala@123')
