@@ -41,7 +41,7 @@ def sync(debug):
 	# 	subprocess.check_output(['karan-virtualenv-start'])
 
 	print("Stopping Bitcoin Core :   ----->")
-	subprocess.check_output(['bitcoin-cli -datadir=/data/bitcoin/ stop'], shell=True )
+	subprocess.call(['bitcoin-cli -datadir=/data/bitcoin/ stop'], shell=True )
 	print("XX Bitcoin Core Stopped XX")
 	print("Sleeping while lock is released on core dir")
 	time.sleep(10)
@@ -49,7 +49,7 @@ def sync(debug):
 	subprocess.check_call(["sh", sync_loc, str(start), str(end)])
 	print("Migration complete :)")
 	print("Starting Bitcoin Core :   ----->")
-	subprocess.check_output(["bitcoind -datadir='/data/bitcoin/' -daemon"], shell=True )
+	subprocess.call(["bitcoind -datadir='/data/bitcoin/' -daemon"], shell=True )
 
 
 	# if not DEBUG:
