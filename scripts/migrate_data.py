@@ -71,8 +71,8 @@ class myThread(threading.Thread):
         print("starting for block "+str(block.height))
         block_object = Block_Table.objects.filter(block_hash=block.hash)
         if not block_object:
-        loader_block_table = Block_Table(**record)
-        loader_block_table.save()
+            loader_block_table = Block_Table(**record)
+            loader_block_table.save()
         else:
             print("Entry is already present")
 
