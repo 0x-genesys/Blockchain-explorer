@@ -19,34 +19,26 @@ def extract_input_output_main_from_blockchain(start, stop):
     print("BLOCKS accessed")
     print("start "+str(start))
     print("stop "+str(stop))
-    threads = []
-
-    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', int(start), int(stop), 'index-cache.pickle'):
-        thread1 = myThread(block)
-        thread1.start()
-        threads.append(thread1)
-
-        for thread in threads:
-            thread.join()
-
-        count_thread = threading.active_count()
-
-        while count_thread > MAX_NUM_OF_THREAD:
-            continue
-
+    thread1 = myThread(start, stop)
+    thread1.start()
     print("DONE....")
 
 
 
 class myThread(threading.Thread):
 
-    def __init__(self, block):
+    def __init__(self, start, stop):
         threading.Thread.__init__(self)
-        self.block = block
+        self.start = start
+        self.stop = stop
 
     def run(self):
         print("--------------run block "+str(self.block.height))
-        self.get_block(self.block)
+        connection.autocommit = False
+        for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
+            self.get_block(self.block)
+            if int(block.height) % 10 == 0:
+                connection.commit()
         print("---------------stop block "+str(self.block.height))	
         gc.collect()
         connection.close()
@@ -79,7 +71,6 @@ class myThread(threading.Thread):
         self.get_tx_table(block)
 
 
-
     def get_tx_table(self, block):
         transaction_hash_array = []
         for index, tx in enumerate(self.block.transactions):
@@ -108,35 +99,33 @@ class myThread(threading.Thread):
     def get_input_table(self, tx):
         inputs_to_insert = []
         for _input in tx.inputs:
+            try:
+                print("_input.transaction_hash. "+str(_input.transaction_hash))
+                record = {
+                            'transaction_hash_id': tx.hash,
+                            'previous_transaction_hash':  _input.transaction_hash,
+                            'transaction_index': _input.transaction_index,
+                            'input_sequence_number': _input.sequence_number,
+                            'input_size': _input.size,
+                            'input_address':None,
+                            'input_value': None,
+                            'input_script_type': None,
+                            'input_script_value': _input.script.value
+                         }
+                #We take out address from previous transaction hash and output no.
+                # outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
 
-            print("_input.transaction_hash. "+str(_input.transaction_hash))
+                # print("outputs " + str(outputs))
 
-            record = {
-                        'transaction_hash_id': tx.hash,
-                        'previous_transaction_hash':  _input.transaction_hash,
-                        'transaction_index': _input.transaction_index,
-                        'input_sequence_number': _input.sequence_number,
-                        'input_size': _input.size,
-                        'input_address':None,
-                        'input_value': None,
-                        'input_script_type': None,
-                        'input_script_value': _input.script.value
-                     }
-
-
-
-            #We take out address from previous transaction hash and output no.
-            # outputs = Output_Table.objects.only('address', 'output_value').filter(transaction_hash_id=_input.transaction_hash, output_no=int(_input.transaction_index))
-
-            # print("outputs " + str(outputs))
-
-            # for output in outputs:
-                # print("output['address'] " + str(output))
-                # record['input_address'] = output.address
-                # record['input_value'] = output.output_value
-                # record['input_script_type'] = output.output_type
-            print("starting for inputs from "+str( _input.transaction_hash))
-            inputs_to_insert.append(record)
+                # for output in outputs:
+                    # print("output['address'] " + str(output))
+                    # record['input_address'] = output.address
+                    # record['input_value'] = output.output_value
+                    # record['input_script_type'] = output.output_type
+                print("starting for inputs from "+str( _input.transaction_hash))
+                inputs_to_insert.append(record)
+            except:
+                continue
 
         Input_Table.objects.bulk_create([
                 Input_Table(**record) for record in inputs_to_insert
@@ -146,20 +135,22 @@ class myThread(threading.Thread):
     def get_output_table(self, tx):
         output_to_create = []
         for number, output in enumerate(tx.outputs):
-            for _address in output.addresses:
-                record = {
-                            # 'transaction_hash':Transaction_Table.objects.get(transaction_hash=tx.hash),
-                            'transaction_hash_id': tx.hash,
-                            'output_no':number,
-                            'output_type':output.type,
-                            'output_value':output.value,
-                            'size':output.size,
-                            'address':_address.address,
-                            'output_script_value': output.script.value
-                          }
-                print("starting for outputs of "+str(_address.address))
-                output_to_create.append(record)
-
+            try:
+                for _address in output.addresses:
+                    print("Output for "+ tx.hash)
+                    record = {
+                                'transaction_hash_id': tx.hash,
+                                'output_no':number,
+                                'output_type':output.type,
+                                'output_value':output.value,
+                                'size':output.size,
+                                'address':_address.address,
+                                'output_script_value': output.script.value,
+                            }
+                    print("starting for outputs of "+str(_address.address))
+                    output_to_create.append(record)
+            except:
+                continue
         Output_Table.objects.bulk_create([
                 Output_Table(**record) for record in output_to_create
             ])
