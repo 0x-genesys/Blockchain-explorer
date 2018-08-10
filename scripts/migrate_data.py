@@ -21,7 +21,7 @@ def extract_input_output_main_from_blockchain(start, stop):
     print("stop "+str(stop))
     threads = []
 
-    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
+    for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', int(start), int(stop), 'index-cache.pickle'):
         thread1 = myThread(block)
         thread1.start()
         threads.append(thread1)
