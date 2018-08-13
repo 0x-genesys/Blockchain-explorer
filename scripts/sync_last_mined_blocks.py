@@ -51,7 +51,10 @@ def sync(debug):
 	print("Sleeping while lock is released on core dir")
 	time.sleep(10)
 	print("Good Morning :)")
-	subprocess.check_call(["sh", sync_loc, str(start), str(end)])
+	try:
+		subprocess.check_call(["sh", sync_loc, str(start), str(end)])
+	except subprocess.CalledProcessError as e:
+		print(e)
 	print("Migration complete :)")
 	print("Starting Bitcoin Core :   ----->")
 	subprocess.call(["bitcoind -datadir='/data/bitcoin/' -daemon"], shell=True )

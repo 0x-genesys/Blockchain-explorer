@@ -15,32 +15,32 @@ MAX_NUM_OF_THREAD = 1
 
 def extract_input_output_main_from_blockchain(start, stop):
 
-    blockchain = Blockchain(BLOCK_DATA_DIR)
     print("BLOCKS accessed")
     print("start "+str(start))
     print("stop "+str(stop))
-    thread1 = myThread(start, stop)
-    thread1.start()
-    print("DONE....")
+    thread_class_sync = myThreadSync(str(start), str(stop))
+    thread_class_sync.start()
 
 
 
-class myThread(threading.Thread):
+class myThreadSync(threading.Thread):
 
-    def __init__(self, start, stop):
+    def __init__(self, local_start, local_stop):
         threading.Thread.__init__(self)
-        self.start = start
-        self.stop = stop
+        self.local_start = local_start
+        self.local_stop = local_stop
 
     def run(self):
-        print("--------------run block "+str(self.block.height))
+        blockchain = Blockchain(BLOCK_DATA_DIR)
         connection.autocommit = False
-        for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=int(start), end=int(stop)):
-            self.get_block(self.block)
+        for block in blockchain.get_ordered_blocks(BLOCK_DATA_DIR + '/index', start=(int(self.local_start)+1), end=(int(self.local_stop)+1)):
+            print("--------------run block "+str(block.height))
+            self.get_block(block)
             if int(block.height) % 10 == 0:
                 connection.commit()
-        print("---------------stop block "+str(self.block.height))	
-        gc.collect()
+            print("---------------stop block "+str(block.height))
+            gc.collect()
+        print("DONE")
         connection.close()
         exit()
 
@@ -73,7 +73,7 @@ class myThread(threading.Thread):
 
     def get_tx_table(self, block):
         transaction_hash_array = []
-        for index, tx in enumerate(self.block.transactions):
+        for index, tx in enumerate(block.transactions):
             record = {
                         'transaction_hash':tx.hash,
                         'block_hash_id' : block.hash,
