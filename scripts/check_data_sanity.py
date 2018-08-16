@@ -93,6 +93,8 @@ class myThreadSync(threading.Thread):
                 transaction_hash_array.append(record)
                 self.get_output_table(tx)
                 self.get_input_table(tx)
+            else:
+                print("transaction present " + tx.hash)
 
         print("starting for tx "+str(tx.hash))
         Transaction_Table.objects.bulk_create([
