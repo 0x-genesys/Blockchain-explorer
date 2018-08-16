@@ -75,7 +75,7 @@ class myThreadSync(threading.Thread):
         transaction_hash_array = []
         for index, tx in enumerate(block.transactions):
             record = {
-                        'transaction_hash':tx.hash,
+                        'transaction_hash':tx.txid,
                         'block_hash_id' : block.hash,
                         'timestamp': block.header.timestamp,
                         'block_size': block.size,
@@ -87,16 +87,17 @@ class myThreadSync(threading.Thread):
                         'transaction_hash_size':tx.size
                     }
 
-            transaction = Transaction_Table.objects.filter(transaction_hash=tx.hash)
+            transaction = Transaction_Table.objects.filter(transaction_hash=tx.txid)
+            print("transaction " + tx.txid)
             if not transaction:
                 #transaction does not exist so save it and its inputs and outputs
                 transaction_hash_array.append(record)
                 self.get_output_table(tx)
                 self.get_input_table(tx)
             else:
-                print("transaction present " + tx.hash)
+                print("transaction present " + tx.txid)
 
-        print("starting for tx "+str(tx.hash))
+        print("starting for tx "+str(tx.txid))
         Transaction_Table.objects.bulk_create([
                 Transaction_Table(**record) for record in transaction_hash_array
             ])
@@ -108,7 +109,7 @@ class myThreadSync(threading.Thread):
             try:
                 print("_input.transaction_hash. "+str(_input.transaction_hash))
                 record = {
-                            'transaction_hash_id': tx.hash,
+                            'transaction_hash_id': tx.txid,
                             'previous_transaction_hash':  _input.transaction_hash,
                             'transaction_index': _input.transaction_index,
                             'input_sequence_number': _input.sequence_number,
@@ -143,9 +144,9 @@ class myThreadSync(threading.Thread):
         for number, output in enumerate(tx.outputs):
             try:
                 for _address in output.addresses:
-                    print("Output for "+ tx.hash)
+                    print("Output for "+ tx.txid)
                     record = {
-                                'transaction_hash_id': tx.hash,
+                                'transaction_hash_id': tx.txid,
                                 'output_no':number,
                                 'output_type':output.type,
                                 'output_value':output.value,
