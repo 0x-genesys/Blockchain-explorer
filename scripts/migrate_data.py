@@ -43,9 +43,9 @@ class myThreadSync(threading.Thread):
             if int(block.height) % 10 == 0:
                 connection.commit()
             print("---------------stop block "+str(block.height))
+            #run match making for last entered block
+            cd = urllib.request.urlopen("http://52.221.208.27:8082/matchmaking/").read()
             gc.collect()
-        #run match making for last block
-        cd = urllib.request.urlopen("http://52.221.208.27:8082/matchmaking/").read()
         print("DONE")
         connection.close()
         exit()
