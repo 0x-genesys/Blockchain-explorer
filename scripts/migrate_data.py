@@ -8,6 +8,7 @@ from bitcoin_data_app.models import Transaction_Table, Input_Table, Output_Table
 from django.http import JsonResponse
 from django.db import connection
 from app.settings import BLOCK_DATA_DIR
+import urllib.request
 ############### Location of directories ####################
 #pass the path for the bitcoin-node data
 
@@ -18,9 +19,12 @@ def extract_input_output_main_from_blockchain(start, stop):
     print("BLOCKS accessed")
     print("start "+str(start))
     print("stop "+str(stop))
-    thread_class_sync = myThreadSync(str(start), str(stop))
-    thread_class_sync.start()
-
+    if (int(stop) - int(start)) > 0:
+        thread_class_sync = myThreadSync(str(start), str(stop))
+        thread_class_sync.start()
+    else:
+        print("no new blocks to sync")
+        exit()
 
 
 class myThreadSync(threading.Thread):
@@ -40,6 +44,8 @@ class myThreadSync(threading.Thread):
                 connection.commit()
             print("---------------stop block "+str(block.height))
             gc.collect()
+        #run match making for last block
+        cd = urllib.request.urlopen("http://52.221.208.27:8082/matchmaking/").read()
         print("DONE")
         connection.close()
         exit()
