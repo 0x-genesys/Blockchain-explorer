@@ -45,7 +45,7 @@ class myThreadSync(threading.Thread):
                 connection.commit()
             print("---------------stop block "+str(block.height))
             #run match making for last entered block
-            download_thread = threading.Thread(target=self.call_bot_match_making, args=None)
+            download_thread = threading.Thread(target=self.call_bot_match_making)
             download_thread.start()
             gc.collect()
         print("DONE")
