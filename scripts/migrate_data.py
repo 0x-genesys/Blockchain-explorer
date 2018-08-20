@@ -52,7 +52,7 @@ class myThreadSync(threading.Thread):
         connection.close()
         exit()
 
-    def call_bot_match_making():
+    def call_bot_match_making(self):
         cd = urllib.request.urlopen("http://52.221.208.27:8082/matchmaking/").read()
 
     def get_block(self, block):
