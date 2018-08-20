@@ -76,10 +76,10 @@ class myThreadSync(threading.Thread):
         if not block_object:
             loader_block_table = Block_Table(**record)
             loader_block_table.save()
+            self.get_tx_table(block)
         else:
             print("Entry is already present")
-
-        self.get_tx_table(block)
+            exit()
 
 
     def get_tx_table(self, block):
@@ -99,13 +99,10 @@ class myThreadSync(threading.Thread):
                     }
             transaction = Transaction_Table.objects.filter(transaction_hash=tx.txid)
             print("transaction " + tx.txid)
-            if not transaction:
-                #transaction does not exist so save it and its inputs and outputs
-                transaction_hash_array.append(record)
-                self.get_output_table(tx)
-                self.get_input_table(tx)
-            else:
-                print("transaction present " + tx.txid)
+            #transaction does not exist so save it and its inputs and outputs
+            transaction_hash_array.append(record)
+            self.get_output_table(tx)
+            self.get_input_table(tx)
 
         # print("starting for tx "+str(tx.txid))
         Transaction_Table.objects.bulk_create([
