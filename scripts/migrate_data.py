@@ -97,11 +97,17 @@ class myThreadSync(threading.Thread):
                         'version':tx.version,
                         'transaction_hash_size':tx.size
                     }
-            transaction_hash_array.append(record)
-            self.get_output_table(tx)
-            self.get_input_table(tx)
+            transaction = Transaction_Table.objects.filter(transaction_hash=tx.txid)
+            print("transaction " + tx.txid)
+            if not transaction:
+                #transaction does not exist so save it and its inputs and outputs
+                transaction_hash_array.append(record)
+                self.get_output_table(tx)
+                self.get_input_table(tx)
+            else:
+                print("transaction present " + tx.txid)
 
-        print("starting for tx "+str(tx.txid))
+        # print("starting for tx "+str(tx.txid))
         Transaction_Table.objects.bulk_create([
                 Transaction_Table(**record) for record in transaction_hash_array
             ])
@@ -111,7 +117,7 @@ class myThreadSync(threading.Thread):
         inputs_to_insert = []
         for _input in tx.inputs:
             try:
-                print("_input.transaction_hash. "+str(_input.transaction_hash))
+                # print("_input.transaction_hash. "+str(_input.transaction_hash))
                 record = {
                             'transaction_hash_id': tx.txid,
                             'previous_transaction_hash':  _input.transaction_hash,
@@ -133,7 +139,7 @@ class myThreadSync(threading.Thread):
                     # record['input_address'] = output.address
                     # record['input_value'] = output.output_value
                     # record['input_script_type'] = output.output_type
-                print("starting for inputs from "+str( _input.transaction_hash))
+                # print("starting for inputs from "+str( _input.transaction_hash))
                 inputs_to_insert.append(record)
             except:
                 continue
@@ -148,7 +154,7 @@ class myThreadSync(threading.Thread):
         for number, output in enumerate(tx.outputs):
             try:
                 for _address in output.addresses:
-                    print("Output for "+ tx.txid)
+                    # print("Output for "+ tx.txid)
                     record = {
                                 'transaction_hash_id': tx.txid,
                                 'output_no':number,
@@ -158,7 +164,7 @@ class myThreadSync(threading.Thread):
                                 'address':_address.address,
                                 'output_script_value': output.script.value,
                             }
-                    print("starting for outputs of "+str(_address.address))
+                    # print("starting for outputs of "+str(_address.address))
                     output_to_create.append(record)
             except:
                 continue
