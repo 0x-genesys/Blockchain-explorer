@@ -79,7 +79,6 @@ class myThreadSync(threading.Thread):
             self.get_tx_table(block)
         else:
             print("Entry is already present")
-            exit()
 
 
     def get_tx_table(self, block):
