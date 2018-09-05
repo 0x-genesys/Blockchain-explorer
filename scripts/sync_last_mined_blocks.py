@@ -39,6 +39,7 @@ def sync(debug):
 
 	if start == None or end == None:
 		print("something is wrong with psql or bitcoin core")
+		subprocess.call(["bitcoind -datadir='/data/bitcoin/' -daemon"], shell=True)
 		sys.exit(0)
 
 	#commandline and shell scripts
