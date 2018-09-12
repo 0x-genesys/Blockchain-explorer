@@ -18,7 +18,7 @@ import os
 
 ###END POINT####
 
-API = "http://explorer.blockwala.io"
+API = "https://explorer.blockwala.io"
 
 #API = "http://localhost:8000"
 
